@@ -89,6 +89,12 @@ Route::middleware('auth')->group(function () {
         [OrderController::class, 'checkout']
     )->name('orders.checkout');
 
+    // MINHA CONTA
+
+    Route::get('/minha-conta', function () {
+        return view('account.index');
+    })->name('account.index');
+
     // PERFIL
 
     Route::get(

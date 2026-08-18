@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Favorite;
 use App\Models\Product;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
@@ -57,12 +59,14 @@ class CategoryController extends Controller
     }
 
     private function catalogView(
-        $products,
+        Collection $products,
         string $title,
         ?string $description
     ): View {
         $favoriteProductIds = Auth::check()
-            ? Auth::user()->favorites()->pluck('product_id')->all()
+            ? Favorite::where('user_id', Auth::id())
+                ->pluck('product_id')
+                ->all()
             : [];
 
         return view('products.index', compact(

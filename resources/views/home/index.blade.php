@@ -934,6 +934,22 @@ body.login-travado{
         display: none;
     }
 }
+
+.carrossel-wrapper {
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-y;
+}
+
+.carrossel-wrapper.arrastando {
+    cursor: grabbing;
+}
+
+.carrossel-wrapper a,
+.carrossel-wrapper img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
     </style>
 </head>
 
@@ -1415,213 +1431,158 @@ body.login-travado{
             '.scrollbar-trilho'
         );
 
-        let arrastando = false;
-        let arrastou = false;
-        let inicioX = 0;
+        let arrastandoCarrossel = false;
+        let arrastandoBarra = false;
+        let houveMovimento = false;
+
+        let inicioMouse = 0;
         let scrollInicial = 0;
 
+        let inicioBarra = 0;
+        let scrollInicialBarra = 0;
+
         function atualizarBarra() {
-            const maximo =
+            const scrollMaximo =
                 wrapper.scrollWidth - wrapper.clientWidth;
 
-            const proporcaoVisivel = Math.min(
-                1,
-                wrapper.clientWidth / wrapper.scrollWidth
-            );
+            if (scrollMaximo <= 0) {
+                progresso.style.width = '100%';
+                progresso.style.left = '0';
+                return;
+            }
 
-            const largura = Math.max(
+            const proporcaoVisivel =
+                wrapper.clientWidth / wrapper.scrollWidth;
+
+            const larguraPorcentagem = Math.max(
                 12,
                 proporcaoVisivel * 100
             );
 
-            const deslocamento = maximo > 0
-                ? (
-                    wrapper.scrollLeft / maximo
-                ) * (100 - largura)
-                : 0;
+            const posicaoPorcentagem =
+                (wrapper.scrollLeft / scrollMaximo)
+                * (100 - larguraPorcentagem);
 
-            progresso.style.width = largura + '%';
-            progresso.style.left = deslocamento + '%';
+            progresso.style.width =
+                larguraPorcentagem + '%';
+
+            progresso.style.left =
+                posicaoPorcentagem + '%';
         }
 
-        wrapper.addEventListener(
-            'pointerdown',
-            function (event) {
-                if (event.target.closest('button, form')) {
-                    return;
+        wrapper.querySelectorAll('a, img').forEach(function (elemento) {
+            elemento.setAttribute('draggable', 'false');
+        });
+
+        wrapper.addEventListener('dragstart', function (event) {
+            event.preventDefault();
+        });
+
+        wrapper.addEventListener('mousedown', function (event) {
+            if (
+                event.button !== 0
+                || event.target.closest('button, form')
+            ) {
+                return;
+            }
+
+            arrastandoCarrossel = true;
+            houveMovimento = false;
+
+            inicioMouse = event.clientX;
+            scrollInicial = wrapper.scrollLeft;
+
+            wrapper.classList.add('arrastando');
+        });
+
+        progresso.addEventListener('mousedown', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            arrastandoBarra = true;
+
+            inicioBarra = event.clientX;
+            scrollInicialBarra = wrapper.scrollLeft;
+        });
+
+        window.addEventListener('mousemove', function (event) {
+            if (arrastandoCarrossel) {
+                const distancia =
+                    event.clientX - inicioMouse;
+
+                if (Math.abs(distancia) > 3) {
+                    houveMovimento = true;
                 }
 
-                arrastando = true;
-                arrastou = false;
-                inicioX = event.clientX;
-                scrollInicial = wrapper.scrollLeft;
-
-                wrapper.setPointerCapture(event.pointerId);
+                wrapper.scrollLeft =
+                    scrollInicial - distancia;
             }
-        );
 
-        wrapper.addEventListener(
-            'pointermove',
-            function (event) {
-                if (arrastando) {
+            if (arrastandoBarra) {
+                const areaTrilho =
+                    trilho.getBoundingClientRect();
+
+                const larguraDisponivel =
+                    areaTrilho.width - progresso.offsetWidth;
+
+                const scrollMaximo =
+                    wrapper.scrollWidth - wrapper.clientWidth;
+
+                if (larguraDisponivel > 0) {
                     const distancia =
-                        event.clientX - inicioX;
+                        event.clientX - inicioBarra;
 
-                    if (Math.abs(distancia) > 5) {
-                        arrastou = true;
-
-                        wrapper.classList.add(
-                            'arrastando'
-                        );
-
-                        wrapper.scrollLeft =
-                            scrollInicial - distancia;
-                    }
-
-                    return;
-                }
-
-                // Movimenta ao aproximar o mouse das laterais
-                if (event.pointerType === 'mouse') {
-                    const area =
-                        wrapper.getBoundingClientRect();
-
-                    const posicao =
-                        event.clientX - area.left;
-
-                    if (posicao < 55) {
-                        wrapper.scrollLeft -= 10;
-                    }
-
-                    if (posicao > area.width - 55) {
-                        wrapper.scrollLeft += 10;
-                    }
+                    wrapper.scrollLeft =
+                        scrollInicialBarra
+                        + (
+                            distancia / larguraDisponivel
+                        ) * scrollMaximo;
                 }
             }
-        );
+        });
 
-        function encerrarArraste() {
-            arrastando = false;
+        window.addEventListener('mouseup', function () {
+            if (arrastandoCarrossel) {
+                arrastandoCarrossel = false;
+                wrapper.classList.remove('arrastando');
 
-            wrapper.classList.remove(
-                'arrastando'
-            );
-        }
+                setTimeout(function () {
+                    houveMovimento = false;
+                }, 0);
+            }
 
-        wrapper.addEventListener(
-            'pointerup',
-            encerrarArraste
-        );
-
-        wrapper.addEventListener(
-            'pointercancel',
-            encerrarArraste
-        );
+            arrastandoBarra = false;
+        });
 
         wrapper.addEventListener(
             'click',
             function (event) {
-                if (arrastou) {
+                if (houveMovimento) {
                     event.preventDefault();
                     event.stopPropagation();
-                    arrastou = false;
                 }
             },
             true
         );
 
-        trilho.addEventListener(
-            'pointerdown',
-            function (event) {
-                if (event.target === progresso) {
-                    return;
-                }
-
-                const area =
-                    trilho.getBoundingClientRect();
-
-                const porcentagem =
-                    (event.clientX - area.left)
-                    / area.width;
-
-                wrapper.scrollLeft =
-                    porcentagem *
-                    (
-                        wrapper.scrollWidth
-                        - wrapper.clientWidth
-                    );
+        trilho.addEventListener('mousedown', function (event) {
+            if (event.target === progresso) {
+                return;
             }
-        );
 
-        progresso.addEventListener(
-            'pointerdown',
-            function (event) {
-                event.preventDefault();
+            const area =
+                trilho.getBoundingClientRect();
 
-                progresso.setPointerCapture(
-                    event.pointerId
-                );
+            const porcentagem =
+                (event.clientX - area.left)
+                / area.width;
 
-                const inicio = event.clientX;
-                const scrollAntes = wrapper.scrollLeft;
+            const scrollMaximo =
+                wrapper.scrollWidth - wrapper.clientWidth;
 
-                function mover(movimento) {
-                    const area =
-                        trilho.getBoundingClientRect();
-
-                    const maximo =
-                        wrapper.scrollWidth
-                        - wrapper.clientWidth;
-
-                    const larguraUtil =
-                        area.width
-                        - progresso.offsetWidth;
-
-                    if (larguraUtil > 0) {
-                        wrapper.scrollLeft =
-                            scrollAntes
-                            + (
-                                (
-                                    movimento.clientX
-                                    - inicio
-                                ) / larguraUtil
-                            ) * maximo;
-                    }
-                }
-
-                function soltar() {
-                    progresso.removeEventListener(
-                        'pointermove',
-                        mover
-                    );
-
-                    progresso.removeEventListener(
-                        'pointerup',
-                        soltar
-                    );
-
-                    progresso.removeEventListener(
-                        'pointercancel',
-                        soltar
-                    );
-                }
-
-                progresso.addEventListener(
-                    'pointermove',
-                    mover
-                );
-
-                progresso.addEventListener(
-                    'pointerup',
-                    soltar
-                );
-
-                progresso.addEventListener(
-                    'pointercancel',
-                    soltar
-                );
-            }
-        );
+            wrapper.scrollLeft =
+                porcentagem * scrollMaximo;
+        });
 
         wrapper.addEventListener(
             'scroll',

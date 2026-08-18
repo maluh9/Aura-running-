@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
@@ -15,8 +16,7 @@ class ProductController extends Controller
             ->firstOrFail();
 
         $isFavorite = Auth::check()
-            && Auth::user()
-                ->favorites()
+            && Favorite::where('user_id', Auth::id())
                 ->where('product_id', $product->id)
                 ->exists();
 

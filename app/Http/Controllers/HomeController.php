@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Favorite;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,7 +23,9 @@ class HomeController extends Controller
             ->get();
 
         $favoriteProductIds = Auth::check()
-            ? Auth::user()->favorites()->pluck('product_id')->all()
+            ? Favorite::where('user_id', Auth::id())
+                ->pluck('product_id')
+                ->all()
             : [];
 
         return view('home.index', compact(

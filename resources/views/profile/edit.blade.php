@@ -244,12 +244,12 @@
     ← Voltar para minha conta
 </a>
 
-
+```blade
 </header>
 
 <main class="page">
 
-```
+
 <h1>Meus dados</h1>
 
 <p class="subtitle">
@@ -302,7 +302,7 @@
         @method('PATCH')
 
 
-    
+
 
         {{-- NOME --}}
 
