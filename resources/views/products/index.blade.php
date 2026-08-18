@@ -8,7 +8,7 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>{{ $title }} | AURA Running</title>
+    @include('partials.page-meta', ['pageTitle' => $title])
 
     <style>
         * {

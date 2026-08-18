@@ -48,8 +48,8 @@ class CategoryController extends Controller
             ->get();
 
         $title = $gender === 'masculino'
-            ? 'Produtos masculinos'
-            : 'Produtos femininos';
+            ? 'Masculino'
+            : 'Feminino';
 
         return $this->catalogView(
             $products,

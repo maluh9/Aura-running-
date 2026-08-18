@@ -9,7 +9,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>{{ $product->name }} | AURA Running</title>
+@include('partials.page-meta', ['pageTitle' => $product->name])
 
 <style>
 

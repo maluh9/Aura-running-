@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
-<title>Meus dados | AURA Running</title>
+@include('partials.page-meta', ['pageTitle' => 'Perfil'])
 
 <style>
     * {
