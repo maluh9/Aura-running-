@@ -7,6 +7,8 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ProductController as AdminProductController;
 
 
 /*
@@ -62,21 +64,20 @@ Route::middleware('auth')->group(function () {
 Route::post('/finalizar-compra', [OrderController::class, 'checkout'])
     ->name('orders.checkout');
 
-    /*
-    |--------------------------------------------------------------------------
-    | PEDIDOS
-    |--------------------------------------------------------------------------
-    */
+  /*
+|--------------------------------------------------------------------------
+| PEDIDOS
+|--------------------------------------------------------------------------
+*/
 
-    Route::get('/meus-pedidos', [OrderController::class, 'index'])
-        ->name('orders.index');
+Route::get('/meus-pedidos', [OrderController::class, 'index'])
+    ->name('orders.index');
 
-    Route::get('/meus-pedidos/{id}', [OrderController::class, 'show'])
-        ->name('orders.show');
+Route::get('/meus-pedidos/{id}', [OrderController::class, 'show'])
+    ->name('orders.show');
 
-    Route::post('/finalizar-compra', [OrderController::class, 'checkout'])
-        ->name('orders.checkout');
-
+Route::post('/finalizar-compra', [OrderController::class, 'checkout'])
+    ->name('orders.checkout');
 
     /*
     |--------------------------------------------------------------------------
@@ -143,3 +144,50 @@ Route::delete('/profile', [ProfileController::class, 'destroy'])
 */
 
 require __DIR__.'/auth.php';
+
+/*
+|--------------------------------------------------------------------------
+| ADMIN
+|--------------------------------------------------------------------------
+*/
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        /*
+        |--------------------------------------------------------------------------
+        | DASHBOARD
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/', [DashboardController::class, 'index'])
+            ->name('dashboard');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | PRODUTOS
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/produtos', [AdminProductController::class, 'index'])
+            ->name('products.index');
+
+        Route::get('/produtos/novo', [AdminProductController::class, 'create'])
+            ->name('products.create');
+
+        Route::post('/produtos', [AdminProductController::class, 'store'])
+            ->name('products.store');
+
+        Route::get('/produtos/{product}/editar', [AdminProductController::class, 'edit'])
+            ->name('products.edit');
+
+        Route::put('/produtos/{product}', [AdminProductController::class, 'update'])
+            ->name('products.update');
+
+        Route::patch('/produtos/{product}/status', [AdminProductController::class, 'toggleStatus'])
+            ->name('products.toggle-status');
+
+    });
