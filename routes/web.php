@@ -9,7 +9,8 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
-
+use App\Http\Controllers\Admin\StockController;
+use App\Http\Controllers\Admin\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -189,5 +190,43 @@ Route::middleware(['auth', 'admin'])
 
         Route::patch('/produtos/{product}/status', [AdminProductController::class, 'toggleStatus'])
             ->name('products.toggle-status');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | ESTOQUE
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/estoque', [StockController::class, 'index'])
+            ->name('stock.index');
+
+        Route::patch('/estoque/{product}', [StockController::class, 'update'])
+            ->name('stock.update');
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CATEGORIAS
+        |--------------------------------------------------------------------------
+        */
+
+        Route::get('/categorias', [CategoryController::class, 'index'])
+            ->name('categories.index');
+
+        Route::get('/categorias/nova', [CategoryController::class, 'create'])
+            ->name('categories.create');
+
+        Route::post('/categorias', [CategoryController::class, 'store'])
+            ->name('categories.store');
+
+        Route::get('/categorias/{category}/editar', [CategoryController::class, 'edit'])
+            ->name('categories.edit');
+
+        Route::put('/categorias/{category}', [CategoryController::class, 'update'])
+            ->name('categories.update');
+
+        Route::patch('/categorias/{category}/status', [CategoryController::class, 'toggleStatus'])
+            ->name('categories.toggle-status');
 
     });

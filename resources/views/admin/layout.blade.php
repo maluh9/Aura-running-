@@ -731,23 +731,28 @@
 </a>
 
 
-            <a href="#">
+            <a
+    href="{{ route('admin.stock.index') }}"
+    class="{{ request()->routeIs('admin.stock.*') ? 'ativo' : '' }}"
+>
 
-                <i class="fa-solid fa-boxes-stacked"></i>
+    <i class="fa-solid fa-boxes-stacked"></i>
 
-                Estoque
+    Estoque
 
-            </a>
+</a>
 
 
-            <a href="#">
+            <a
+    href="{{ route('admin.categories.index') }}"
+    class="{{ request()->routeIs('admin.categories.*') ? 'ativo' : '' }}"
+>
 
-                <i class="fa-solid fa-tags"></i>
+    <i class="fa-solid fa-tags"></i>
 
-                Categorias
+    Categorias
 
-            </a>
-
+</a>
 
             <a href="#">
 
