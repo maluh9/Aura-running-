@@ -866,39 +866,160 @@ body.login-travado{
     }
 }
 
+.card-destaque,
+.card-roupa {
+    position: relative;
+}
+
+.favorite-product-form {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 10;
+    margin: 0;
+}
+
+.favorite-button,
+.btn-favorito {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .38);
+    color: #fff;
+    font-size: 25px;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.favorite-button.active,
+.btn-favorito.active {
+    background: #fff;
+    color: #ff4765;
+}
+
+.card-destaque-link {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: inherit;
+}
+
+.carrossel-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+}
+
+.carrossel-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.carrossel-wrapper.arrastando {
+    cursor: grabbing;
+}
+
+@media (max-width: 900px) {
+    .barra-navegacao {
+        padding: 0 18px;
+    }
+
+    .menu-links > a:not(.icone),
+    .nav-divider {
+        display: none;
+    }
+}
     </style>
 </head>
 
 <body>
 <header>
-        <nav class="barra-navegacao">
-            <a href="#">
-                <img src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 08_44_05.png') }}" alt="AURA Running" height="50"/>
-            </a>
-            <div class="menu-links">
-                <a href="#produtos">Produtos</a>
-                <a href="#destaques">Destaques</a>
-                <a href="#outfits">Favoritos</a>
-                <a href="#copa">Copa do Mundo</a>
 
-                <span class="nav-divider"></span>
+<nav class="barra-navegacao">
+    <a href="{{ route('home') }}">
+        <img
+            src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 08_44_05.png') }}"
+            alt="AURA Running"
+            height="50"
+        >
+    </a>
 
-                <!-- Ícone pesquisa -->
-                <a href="#" class="icone" title="Pesquisar">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                </a>
+    <div class="menu-links">
+        <a href="#produtos">Produtos</a>
+        <a href="#destaques">Destaques</a>
 
-<!-- Ícone cadastro -->
-<div class="cadastro-container">
-	<a href="{{ route('login') }}" class="icone" title="Login">
-		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-			<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-			<circle cx="12" cy="7" r="4"/>
-		</svg>
-	</a>
-</div>
+        <a href="{{ route('favorites.index') }}">
+            Favoritos
+        </a>
+
+        <a href="#copa">Copa do Mundo</a>
+
+        <span class="nav-divider"></span>
+
+        <!-- Favoritos -->
+        <a
+            href="{{ route('favorites.index') }}"
+            class="icone"
+            title="Favoritos"
+        >
+            <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+            </svg>
+        </a>
+
+        <!-- Carrinho -->
+        <a
+            href="{{ route('cart.index') }}"
+            class="icone"
+            title="Carrinho"
+        >
+            <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <circle cx="9" cy="20" r="1"/>
+                <circle cx="19" cy="20" r="1"/>
+                <path d="M3 4h2l2.7 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"/>
+            </svg>
+        </a>
+
+        <!-- Perfil -->
+        <a
+            href="{{ auth()->check()
+                ? route('profile.edit')
+                : route('login') }}"
+            class="icone"
+            title="{{ auth()->check() ? 'Meu perfil' : 'Entrar' }}"
+        >
+            <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+        </a>
+    </div>
 </nav>
 
 <div class="painel-overlay" id="overlay"></div>
@@ -933,9 +1054,20 @@ body.login-travado{
 </div>
         <div class="hero-conteudo">
             <div class="hero-esquerda">
-                <a href="#" class="btn-hero btn-claro">Para ele</a>
-                <a href="#" class="btn-hero btn-escuro">Para ela</a>
-            </div>
+                <a
+                    href="{{ route('products.gender', 'masculino') }}"
+                    class="btn-hero btn-claro"
+                >
+                    Para ele
+                </a>
+
+                <a
+                    href="{{ route('products.gender', 'feminino') }}"
+                    class="btn-hero btn-escuro"
+                >
+                    Para ela
+                </a>
+        </div>
             <h1 class="hero-titulo">Feito para quem<br>não para</h1>
         </div>
     </header>
@@ -944,17 +1076,40 @@ body.login-travado{
         <h2 class="titulo-secao">Nossos Produtos</h2>
         <div class="grade-produtos">
             <div class="coluna-esquerda">
-                <a href="#" class="card-produto">
-                    <img src="{{ asset('imagens/Tênis Floresta.png') }}" alt="Tênis"/>
+                <a
+                    href="{{ route('categories.show', 'tenis') }}"
+                    class="card-produto"
+                >
+                    <img
+                        src="{{ asset('imagens/Tênis Floresta.png') }}"
+                        alt="Tênis"
+                    >
+
                     <span>Tênis</span>
                 </a>
-                <a href="#" class="card-produto">
-                    <img src="{{ asset('imagens/Acessórios.png') }}" alt="Acessórios"/>
+
+                <a
+                    href="{{ route('categories.show', 'acessorios') }}"
+                    class="card-produto"
+                >
+                    <img
+                        src="{{ asset('imagens/Acessórios.png') }}"
+                        alt="Acessórios"
+                    >
+
                     <span>Acessórios</span>
                 </a>
             </div>
-            <a href="#" class="card-produto card-vertical">
-                <img src="{{ asset('imagens/Corrida deserto.png') }}" alt="Roupas"/>
+
+            <a
+                href="{{ route('categories.show', 'roupas') }}"
+                class="card-produto card-vertical"
+            >
+                <img
+                    src="{{ asset('imagens/Corrida deserto.png') }}"
+                    alt="Outfits"
+                >
+
                 <span>Outfits</span>
             </a>
         </div>
@@ -962,147 +1117,156 @@ body.login-travado{
 
 <!-- Destaques e scrollbar -->
 
-    <section id="destaques" class="secao-destaques">
+<section id="destaques" class="secao-destaques">
     <h2 class="titulo-secao">Destaques</h2>
 
-    <div class="carrossel-wrapper" id="carrossel-wrapper">
+    <div
+        class="carrossel-wrapper"
+        id="carrossel-wrapper"
+    >
         <div class="carrossel">
-            @foreach ($products as $product)
-                <div class="card-destaque">
+            @foreach($featuredProducts as $product)
+                <article class="card-destaque">
                     @auth
-                        <form action="{{ route('favorites.toggle', $product->id) }}" method="POST"
-                              class="favorite-product-form">
+                        <form
+                            action="{{ route('favorites.toggle', $product->id) }}"
+                            method="POST"
+                            class="favorite-product-form"
+                        >
                             @csrf
-                            <button type="submit" class="favorite-button" title="Adicionar aos favoritos">
-                                ♡
+
+                            <button
+                                type="submit"
+                                class="favorite-button {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
+                                title="Alternar favorito"
+                            >
+                                {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
                             </button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="favorite-button" title="Entre para favoritar">
-                            ♡
-                        </a>
+                        <div class="favorite-product-form">
+                            <a
+                                href="{{ route('login') }}"
+                                class="favorite-button"
+                                title="Entre para favoritar"
+                            >
+                                ♡
+                            </a>
+                        </div>
                     @endauth
 
-                    <a href="{{ route('products.show', $product->slug) }}" class="product-link card-destaque-link">
+                    <a
+                        href="{{ route('products.show', $product->slug) }}"
+                        class="card-destaque-link"
+                    >
                         <img
-                            src="{{ asset('storage/' . $product->image) }}"
+                            src="{{ $product->image_url }}"
                             alt="{{ $product->name }}"
                         >
-                        <span class="card-destaque-nome">{{ $product->name }}</span>
+
+                        <span class="card-destaque-nome">
+                            {{ $product->name }}
+                        </span>
                     </a>
-                </div>
+                </article>
             @endforeach
         </div>
     </div>
 </section>
-<div class="scrollbar-destaques" id="scrollbar-destaques">
+
+<div
+    class="scrollbar-destaques"
+    id="scrollbar-destaques"
+>
     <div class="scrollbar-trilho">
-        <div class="scrollbar-progresso" id="scrollbar-progresso"></div>
+        <div
+            class="scrollbar-progresso"
+            id="scrollbar-progresso"
+        ></div>
     </div>
 </div>
 
-<section id="outfits" class="secao-destaques secao-roupas">
-    <h2 class="titulo-secao">Monte seu outfit de alta performance</h2>
+<section
+    id="outfits"
+    class="secao-destaques secao-roupas"
+>
+    <h2 class="titulo-secao">
+        Monte seu outfit de alta performance
+    </h2>
 
-    <div class="carrossel-wrapper" id="carrossel-roupas">
+    <div
+        class="carrossel-wrapper"
+        id="carrossel-roupas"
+    >
         <div class="carrossel">
+            @foreach($outfitProducts as $product)
+                <article class="card-roupa">
+                    @auth
+                        <form
+                            action="{{ route('favorites.toggle', $product->id) }}"
+                            method="POST"
+                            class="favorite-product-form"
+                        >
+                            @csrf
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_1.png') }}" alt="AeroFlex">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>AeroFlex</h3>
-                    <p>Corra em qualquer lugar com estilo</p>
-                    <strong>R$ 419,90</strong>
-                </div>
-            </div>
+                            <button
+                                type="submit"
+                                class="btn-favorito {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
+                            >
+                                {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
+                            </button>
+                        </form>
+                    @else
+                        <div class="favorite-product-form">
+                            <a
+                                href="{{ route('login') }}"
+                                class="btn-favorito"
+                            >
+                                ♡
+                            </a>
+                        </div>
+                    @endauth
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_2.png') }}" alt="Horizon Dry Fit">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Horizon Dry Fit</h3>
-                    <p>Treine com conforto</p>
-                    <strong>R$ 289,00</strong>
-                </div>
-            </div>
+                    <a
+                        href="{{ route('products.show', $product->slug) }}"
+                        class="card-roupa-img"
+                    >
+                        <img
+                            src="{{ $product->image_url }}"
+                            alt="{{ $product->name }}"
+                        >
+                    </a>
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_3.png') }}" alt="Urban Run">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Urban Run</h3>
-                    <p>Visual casual e esportivo</p>
-                    <strong>R$ 409,00</strong>
-                </div>
-            </div>
+                    <div class="card-roupa-info">
+                        @if(in_array($product->id, $favoriteProductIds))
+                            <span class="tag-favoritos">
+                                Favorito
+                            </span>
+                        @endif
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_4.png') }}" alt="Core Dry Fit">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Core Dry Fit</h3>
-                    <p>Leveza para o dia a dia</p>
-                    <strong>R$ 329,00</strong>
-                </div>
-            </div>
+                        <h3>{{ $product->name }}</h3>
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_5.png') }}" alt="Flex Jogger Run">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Flex Jogger Run</h3>
-                    <p>Corra com performance e mobilidade</p>
-                    <strong>R$ 439,90</strong>
-                </div>
-            </div>
+                        <p>{{ $product->description }}</p>
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_6.png') }}" alt="Essential-T">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <h3>Essential-T</h3>
-                    <p>Básica, respirável e confortável</p>
-                    <strong>R$ 599,00</strong>
-                </div>
-            </div>
-
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_7.png') }}" alt="Run Shift">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <h3>Run Shift</h3>
-                    <p>Relaxe ou corra com conforto</p>
-                    <strong>R$ 305,00</strong>
-                </div>
-            </div>
-
+                        <strong>
+                            R$ {{ number_format($product->price, 2, ',', '.') }}
+                        </strong>
+                    </div>
+                </article>
+            @endforeach
         </div>
     </div>
 </section>
 
-<div class="scrollbar-destaques" id="scrollbar-roupas">
+<div
+    class="scrollbar-destaques"
+    id="scrollbar-roupas"
+>
     <div class="scrollbar-trilho">
-        <div class="scrollbar-progresso" id="progresso-roupas"></div>
+        <div
+            class="scrollbar-progresso"
+            id="progresso-roupas"
+        ></div>
     </div>
 </div>
 
@@ -1232,6 +1396,259 @@ body.login-travado{
     </div>
 
 </footer>
+
+<script>
+    function configurarCarrossel(
+        wrapperId,
+        scrollbarId,
+        progressoId
+    ) {
+        const wrapper = document.getElementById(wrapperId);
+        const scrollbar = document.getElementById(scrollbarId);
+        const progresso = document.getElementById(progressoId);
+
+        if (!wrapper || !scrollbar || !progresso) {
+            return;
+        }
+
+        const trilho = scrollbar.querySelector(
+            '.scrollbar-trilho'
+        );
+
+        let arrastando = false;
+        let arrastou = false;
+        let inicioX = 0;
+        let scrollInicial = 0;
+
+        function atualizarBarra() {
+            const maximo =
+                wrapper.scrollWidth - wrapper.clientWidth;
+
+            const proporcaoVisivel = Math.min(
+                1,
+                wrapper.clientWidth / wrapper.scrollWidth
+            );
+
+            const largura = Math.max(
+                12,
+                proporcaoVisivel * 100
+            );
+
+            const deslocamento = maximo > 0
+                ? (
+                    wrapper.scrollLeft / maximo
+                ) * (100 - largura)
+                : 0;
+
+            progresso.style.width = largura + '%';
+            progresso.style.left = deslocamento + '%';
+        }
+
+        wrapper.addEventListener(
+            'pointerdown',
+            function (event) {
+                if (event.target.closest('button, form')) {
+                    return;
+                }
+
+                arrastando = true;
+                arrastou = false;
+                inicioX = event.clientX;
+                scrollInicial = wrapper.scrollLeft;
+
+                wrapper.setPointerCapture(event.pointerId);
+            }
+        );
+
+        wrapper.addEventListener(
+            'pointermove',
+            function (event) {
+                if (arrastando) {
+                    const distancia =
+                        event.clientX - inicioX;
+
+                    if (Math.abs(distancia) > 5) {
+                        arrastou = true;
+
+                        wrapper.classList.add(
+                            'arrastando'
+                        );
+
+                        wrapper.scrollLeft =
+                            scrollInicial - distancia;
+                    }
+
+                    return;
+                }
+
+                // Movimenta ao aproximar o mouse das laterais
+                if (event.pointerType === 'mouse') {
+                    const area =
+                        wrapper.getBoundingClientRect();
+
+                    const posicao =
+                        event.clientX - area.left;
+
+                    if (posicao < 55) {
+                        wrapper.scrollLeft -= 10;
+                    }
+
+                    if (posicao > area.width - 55) {
+                        wrapper.scrollLeft += 10;
+                    }
+                }
+            }
+        );
+
+        function encerrarArraste() {
+            arrastando = false;
+
+            wrapper.classList.remove(
+                'arrastando'
+            );
+        }
+
+        wrapper.addEventListener(
+            'pointerup',
+            encerrarArraste
+        );
+
+        wrapper.addEventListener(
+            'pointercancel',
+            encerrarArraste
+        );
+
+        wrapper.addEventListener(
+            'click',
+            function (event) {
+                if (arrastou) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    arrastou = false;
+                }
+            },
+            true
+        );
+
+        trilho.addEventListener(
+            'pointerdown',
+            function (event) {
+                if (event.target === progresso) {
+                    return;
+                }
+
+                const area =
+                    trilho.getBoundingClientRect();
+
+                const porcentagem =
+                    (event.clientX - area.left)
+                    / area.width;
+
+                wrapper.scrollLeft =
+                    porcentagem *
+                    (
+                        wrapper.scrollWidth
+                        - wrapper.clientWidth
+                    );
+            }
+        );
+
+        progresso.addEventListener(
+            'pointerdown',
+            function (event) {
+                event.preventDefault();
+
+                progresso.setPointerCapture(
+                    event.pointerId
+                );
+
+                const inicio = event.clientX;
+                const scrollAntes = wrapper.scrollLeft;
+
+                function mover(movimento) {
+                    const area =
+                        trilho.getBoundingClientRect();
+
+                    const maximo =
+                        wrapper.scrollWidth
+                        - wrapper.clientWidth;
+
+                    const larguraUtil =
+                        area.width
+                        - progresso.offsetWidth;
+
+                    if (larguraUtil > 0) {
+                        wrapper.scrollLeft =
+                            scrollAntes
+                            + (
+                                (
+                                    movimento.clientX
+                                    - inicio
+                                ) / larguraUtil
+                            ) * maximo;
+                    }
+                }
+
+                function soltar() {
+                    progresso.removeEventListener(
+                        'pointermove',
+                        mover
+                    );
+
+                    progresso.removeEventListener(
+                        'pointerup',
+                        soltar
+                    );
+
+                    progresso.removeEventListener(
+                        'pointercancel',
+                        soltar
+                    );
+                }
+
+                progresso.addEventListener(
+                    'pointermove',
+                    mover
+                );
+
+                progresso.addEventListener(
+                    'pointerup',
+                    soltar
+                );
+
+                progresso.addEventListener(
+                    'pointercancel',
+                    soltar
+                );
+            }
+        );
+
+        wrapper.addEventListener(
+            'scroll',
+            atualizarBarra,
+            { passive: true }
+        );
+
+        window.addEventListener(
+            'resize',
+            atualizarBarra
+        );
+
+        atualizarBarra();
+    }
+
+    configurarCarrossel(
+        'carrossel-wrapper',
+        'scrollbar-destaques',
+        'scrollbar-progresso'
+    );
+
+    configurarCarrossel(
+        'carrossel-roupas',
+        'scrollbar-roupas',
+        'progresso-roupas'
+    );
+</script>
 
 </body>
 </html>

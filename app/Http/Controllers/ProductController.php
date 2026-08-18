@@ -2,19 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
-    public function show($slug)
+    public function show(string $slug)
     {
         $product = Product::where('slug', $slug)
             ->where('active', true)
             ->with('category')
             ->firstOrFail();
 
-        return view('products.show', compact('product'));
-    }
+        $isFavorite = Auth::check()
+            && Auth::user()
+                ->favorites()
+                ->where('product_id', $product->id)
+                ->exists();
 
+        return view('products.show', compact(
+            'product',
+            'isFavorite'
+        ));
+    }
 }

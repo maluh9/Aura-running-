@@ -16,6 +16,7 @@ class Product extends Model
         'description',
         'price',
         'stock',
+        'gender',
         'featured',
         'active',
     ];
@@ -36,11 +37,23 @@ class Product extends Model
         return $this->hasMany(CartItem::class);
     }
 
-
     public function favorites(): HasMany
     {
         return $this->hasMany(Favorite::class);
     }
 
+    public function getImageUrlAttribute(): string
+    {
+        if (!$this->image) {
+            return asset('favicon.ico');
+        }
 
+        // Imagens que estão dentro de public/imagens
+        if (str_starts_with($this->image, 'imagens/')) {
+            return asset($this->image);
+        }
+
+        // Imagens cadastradas pelo sistema em storage/app/public
+        return asset('storage/' . $this->image);
+    }
 }

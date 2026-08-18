@@ -203,33 +203,7 @@
 
 <body>
 
-<header>
-
-
-<div class="logo">
-    AURA
-</div>
-
-<nav>
-    <a href="/">TÊNIS</a>
-    <a href="/">ROUPAS</a>
-    <a href="/">ACESSÓRIOS</a>
-</nav>
-
-<div class="header-icons">
-
-    <a href="{{ route('favorites.index') }}" title="Favoritos">
-        ♥
-    </a>
-
-    <a href="{{ route('cart.index') }}" title="Carrinho">
-        🛒
-    </a>
-
-</div>
-
-
-</header>
+@include('partials.store-header')
 
 <main class="page">
 
@@ -252,7 +226,7 @@
                 <div class="product-image">
 
                     <img
-                        src="{{ asset('storage/' . $favorite->product->image) }}"
+                        src="{{ $favorite->product->image_url }}"
                         alt="{{ $favorite->product->name }}"
                     >
 
@@ -276,20 +250,19 @@
                     </a>
 
                     <form
-                        action="{{ route('favorites.toggle', $favorite->product->id) }}"
-                        method="POST"
-                    >
-                        @csrf
+    action="{{ route('favorites.toggle', $favorite->product->id) }}"
+    method="POST"
+>
+    @csrf
 
-                        <button
-                            type="submit"
-                            class="remove-button"
-                            title="Remover dos favoritos"
-                        >
-                            ♥
-                        </button>
-
-                    </form>
+    <button
+        type="submit"
+        class="remove-button"
+        title="Remover dos favoritos"
+    >
+        ♥
+    </button>
+</form>
 
                 </div>
 

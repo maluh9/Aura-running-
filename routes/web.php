@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrderController;
@@ -8,138 +9,106 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// HOME
 
-/*
-|--------------------------------------------------------------------------
-| AURA RUNNING
-|--------------------------------------------------------------------------
-*/
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
-// Página inicial
-Route::get('/', [HomeController::class, 'index']);
+// PÁGINAS DE MASCULINO E FEMININO
 
+Route::get(
+    '/produtos/genero/{gender}',
+    [CategoryController::class, 'gender']
+)->name('products.gender');
 
-// Página do produto
-Route::get('/produto/{slug}', [ProductController::class, 'show'])
-    ->name('products.show');
+// PÁGINAS TÊNIS, ACESSÓRIOS E OUTFITS
 
+Route::get(
+    '/produtos/{category}',
+    [CategoryController::class, 'show']
+)->name('categories.show');
 
+// PÁGINA INDIVIDUAL DO PRODUTO
 
-/*
-|--------------------------------------------------------------------------
-| USUÁRIO LOGADO
-|--------------------------------------------------------------------------
-*/
+Route::get(
+    '/produto/{slug}',
+    [ProductController::class, 'show']
+)->name('products.show');
+
+// ROTAS PROTEGIDAS POR LOGIN
 
 Route::middleware('auth')->group(function () {
+    // CARRINHO
 
+    Route::get(
+        '/carrinho',
+        [CartController::class, 'index']
+    )->name('cart.index');
 
-    /*
-    |--------------------------------------------------------------------------
-    | CARRINHO
-    |--------------------------------------------------------------------------
-    */
+    Route::post(
+        '/carrinho/adicionar/{productId}',
+        [CartController::class, 'add']
+    )->name('cart.add');
 
-    Route::post('/carrinho/adicionar/{id}', [CartController::class, 'add'])
-        ->name('cart.add');
+    Route::post(
+        '/carrinho/atualizar/{itemId}',
+        [CartController::class, 'update']
+    )->name('cart.update');
 
-    Route::get('/carrinho', [CartController::class, 'index'])
-        ->name('cart.index');
+    Route::delete(
+        '/carrinho/remover/{itemId}',
+        [CartController::class, 'remove']
+    )->name('cart.remove');
 
-    Route::post('/carrinho/atualizar/{itemId}', [CartController::class, 'update'])
-        ->name('cart.update');
+    // FAVORITOS
 
-    Route::delete('/carrinho/remover/{itemId}', [CartController::class, 'remove'])
-        ->name('cart.remove');
+    Route::get(
+        '/favoritos',
+        [FavoriteController::class, 'index']
+    )->name('favorites.index');
 
+    Route::post(
+        '/favoritos/{productId}',
+        [FavoriteController::class, 'toggle']
+    )->name('favorites.toggle');
 
-    /*
-|--------------------------------------------------------------------------
-| FINALIZAR COMPRA
-|--------------------------------------------------------------------------
-*/
+    // PEDIDOS
 
-Route::post('/finalizar-compra', [OrderController::class, 'checkout'])
-    ->name('orders.checkout');
+    Route::get(
+        '/meus-pedidos',
+        [OrderController::class, 'index']
+    )->name('orders.index');
 
-    /*
-    |--------------------------------------------------------------------------
-    | PEDIDOS
-    |--------------------------------------------------------------------------
-    */
+    Route::get(
+        '/meus-pedidos/{id}',
+        [OrderController::class, 'show']
+    )->name('orders.show');
 
-    Route::get('/meus-pedidos', [OrderController::class, 'index'])
-        ->name('orders.index');
+    Route::post(
+        '/finalizar-compra',
+        [OrderController::class, 'checkout']
+    )->name('orders.checkout');
 
-    Route::get('/meus-pedidos/{id}', [OrderController::class, 'show'])
-        ->name('orders.show');
+    // PERFIL
 
-    Route::post('/finalizar-compra', [OrderController::class, 'checkout'])
-        ->name('orders.checkout');
+    Route::get(
+        '/profile',
+        [ProfileController::class, 'edit']
+    )->name('profile.edit');
 
+    Route::patch(
+        '/profile',
+        [ProfileController::class, 'update']
+    )->name('profile.update');
 
-    /*
-    |--------------------------------------------------------------------------
-    | MINHA CONTA
-    |--------------------------------------------------------------------------
-    */
+    Route::get('/profile/password', function () {
+        return view('profile.password');
+    })->name('profile.password');
 
-    Route::get('/minha-conta', function () {
-        return view('account.index');
-    })->name('account.index');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | FAVORITOS 
-    |--------------------------------------------------------------------------
-    */
-
-    Route::post('/favoritos/{productId}', [FavoriteController::class, 'toggle'])
-        ->name('favorites.toggle');
-
-    Route::get('/favoritos', [FavoriteController::class, 'index'])
-        ->name('favorites.index');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | DASHBOARD
-    |--------------------------------------------------------------------------
-    */
-
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
-
-
-   /*
-|--------------------------------------------------------------------------
-| PERFIL
-|--------------------------------------------------------------------------
-*/
-
-Route::get('/profile', [ProfileController::class, 'edit'])
-    ->name('profile.edit');
-
-Route::patch('/profile', [ProfileController::class, 'update'])
-    ->name('profile.update');
-
-Route::get('/profile/password', function () {
-    return view('profile.password');
-})->name('profile.password');
-
-Route::delete('/profile', [ProfileController::class, 'destroy'])
-    ->name('profile.destroy');
-
+    Route::delete(
+        '/profile',
+        [ProfileController::class, 'destroy']
+    )->name('profile.destroy');
 });
-
-
-
-/*
-|--------------------------------------------------------------------------
-| LOGIN / REGISTER / LOGOUT
-|--------------------------------------------------------------------------
-*/
 
 require __DIR__.'/auth.php';

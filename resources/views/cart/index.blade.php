@@ -296,6 +296,31 @@
 
     }
 
+    .cart-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.cart-controls input {
+    width: 64px;
+    padding: 9px;
+    border: 1px solid #ccc;
+}
+
+.cart-controls button {
+    padding: 9px 12px;
+    border: 1px solid #111;
+    background: #fff;
+    cursor: pointer;
+}
+
+.cart-controls .remove {
+    color: #b00020;
+    border-color: #b00020;
+}
+
 </style>
 
 
@@ -306,38 +331,7 @@
 
 <!-- HEADER -->
 
-<header>
-
-    <div class="logo">
-        AURA
-    </div>
-
-    <nav>
-
-        <a href="/">
-            TÊNIS
-        </a>
-
-        <a href="/">
-            ROUPAS
-        </a>
-
-        <a href="/">
-            ACESSÓRIOS
-        </a>
-
-    </nav>
-
-    <div class="header-icons">
-
-        <span>♡</span>
-
-        <span>🛒</span>
-
-    </div>
-
-</header>
-
+@include('partials.store-header')
 
 <!-- CARRINHO -->
 
@@ -361,7 +355,7 @@
                 <div class="cart-image">
 
                     <img
-                        src="{{ asset('storage/' . $item->product->image) }}"
+                        src="{{ $item->product->image_url }}"
                         alt="{{ $item->product->name }}"
                     >
 
@@ -390,6 +384,43 @@
                         Quantidade:
                         {{ $item->quantity }}
                     </p>
+
+                    <div class="cart-controls">
+    <form
+        action="{{ route('cart.update', $item->id) }}"
+        method="POST"
+    >
+        @csrf
+
+        <input
+            type="number"
+            name="quantity"
+            min="1"
+            max="{{ $item->product->stock }}"
+            value="{{ $item->quantity }}"
+            aria-label="Quantidade"
+        >
+
+        <button type="submit">
+            Atualizar
+        </button>
+    </form>
+
+    <form
+        action="{{ route('cart.remove', $item->id) }}"
+        method="POST"
+    >
+        @csrf
+        @method('DELETE')
+
+        <button
+            type="submit"
+            class="remove"
+        >
+            Remover
+        </button>
+    </form>
+</div>
 
                 </div>
 
