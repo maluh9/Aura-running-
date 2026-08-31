@@ -360,6 +360,9 @@
 
 </head>
 
+@include('partials.page-meta', [
+    'pageTitle' => 'PEDIDO #' . $order->order_number,
+])
 
 <body>
 

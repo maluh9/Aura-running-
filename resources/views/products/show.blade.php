@@ -9,7 +9,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>{{ $product->name }} | AURA Running</title>
+@include('partials.page-meta', ['pageTitle' => $product->name])
 
 <style>
 
@@ -292,48 +292,7 @@
 
 <!-- HEADER -->
 
-<header>
-
-    <div class="logo">
-        AURA
-    </div>
-
-    <nav>
-
-        <a href="/">
-            TÊNIS
-        </a>
-
-        <a href="/">
-            ROUPAS
-        </a>
-
-        <a href="/">
-            ACESSÓRIOS
-        </a>
-
-    </nav>
-
-   <div class="header-icons">
-
-    @auth
-        <a href="{{ route('account.index') }}" title="Meus favoritos">
-            ♡
-        </a>
-    @else
-        <a href="{{ route('login') }}" title="Entrar">
-            ♡
-        </a>
-    @endauth
-
-    <a href="{{ route('cart.index') }}" title="Carrinho">
-        🛒
-    </a>
-
-</div>
-
-</header>
-
+@include('partials.store-header')
 
 <!-- PRODUTO -->
 
@@ -345,7 +304,7 @@
     <div class="product-image">
 
         <img
-            src="{{ asset('storage/' . $product->image) }}"
+            src="{{ $product->image_url }}"
             alt="{{ $product->name }}"
         >
 
@@ -384,167 +343,101 @@
         </div>
 
 
-        <!-- FORMULÁRIO DO CARRINHO -->
+@php
+    $sizes = match($product->category->slug) {
+        'tenis' => [
+            '35', '36', '37', '38',
+            '39', '40', '41', '42'
+        ],
 
-        <form
-            action="{{ route('cart.add', $product->id) }}"
-            method="POST"
-            class="cart-form"
-        >
+        'roupas' => [
+            'P', 'M', 'G', 'GG'
+        ],
 
-            @csrf
+        default => [
+            'Único'
+        ],
+    };
+@endphp
 
+@auth
+    <form
+        action="{{ route('cart.add', $product->id) }}"
+        method="POST"
+        class="cart-form"
+    >
+        @csrf
 
-            <!-- TAMANHO -->
+        <div class="sizes-title">
+            Escolha o tamanho
+        </div>
 
-            <div class="sizes-title">
-
-                Escolha seu tamanho
-
-            </div>
-
-
-            <div class="sizes">
-
-
+        <div class="sizes">
+            @foreach($sizes as $size)
                 <label class="size">
-
                     <input
                         type="radio"
                         name="size"
-                        value="35"
+                        value="{{ $size }}"
                         required
                     >
 
-                    35
-
+                    {{ $size }}
                 </label>
+            @endforeach
+        </div>
 
+        <button
+            type="submit"
+            class="cart-button"
+        >
+            ADICIONAR AO CARRINHO
+        </button>
+    </form>
+@else
+    <a
+        href="{{ route('login') }}"
+        class="cart-button"
+        style="
+            display: block;
+            text-align: center;
+            text-decoration: none;
+        "
+    >
+        ENTRE PARA ADICIONAR AO CARRINHO
+    </a>
+@endauth
 
-                <label class="size">
+@auth
+    <form
+        action="{{ route('favorites.toggle', $product->id) }}"
+        method="POST"
+    >
+        @csrf
 
-                    <input
-                        type="radio"
-                        name="size"
-                        value="36"
-                    >
-
-                    36
-
-                </label>
-
-
-                <label class="size">
-
-                    <input
-                        type="radio"
-                        name="size"
-                        value="37"
-                    >
-
-                    37
-
-                </label>
-
-
-                <label class="size">
-
-                    <input
-                        type="radio"
-                        name="size"
-                        value="38"
-                    >
-
-                    38
-
-                </label>
-
-
-                <label class="size">
-
-                    <input
-                        type="radio"
-                        name="size"
-                        value="39"
-                    >
-
-                    39
-
-                </label>
-
-
-                <label class="size">
-
-                    <input
-                        type="radio"
-                        name="size"
-                        value="40"
-                    >
-
-                    40
-
-                </label>
-
-
-                <label class="size">
-
-                    <input
-                        type="radio"
-                        name="size"
-                        value="41"
-                    >
-
-                    41
-
-                </label>
-
-
-                <label class="size">
-
-                    <input
-                        type="radio"
-                        name="size"
-                        value="42"
-                    >
-
-                    42
-
-                </label>
-
-
-            </div>
-
-
-            <!-- ADICIONAR AO CARRINHO -->
-
-            <button
-                type="submit"
-                class="cart-button"
-            >
-
-                ADICIONAR AO CARRINHO
-
-            </button>
-
-
-        </form>
-
-
-        <!-- FAVORITO -->
-
-       <form
-    action="{{ route('favorites.toggle', $product->id) }}"
-    method="POST"
->
-    @csrf
-
-
-<button type="submit" class="favorite">
-    ♡ ADICIONAR AOS FAVORITOS
-</button>
-
-
-</form>
+        <button
+            type="submit"
+            class="favorite"
+        >
+            {{ $isFavorite
+                ? '♥ REMOVER DOS FAVORITOS'
+                : '♡ ADICIONAR AOS FAVORITOS' }}
+        </button>
+    </form>
+@else
+    <a
+        href="{{ route('login') }}"
+        class="favorite"
+        style="
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            color: #111;
+        "
+    >
+        ♡ ENTRE PARA FAVORITAR
+    </a>
+@endauth
 
 
 

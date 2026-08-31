@@ -14,8 +14,17 @@ class Category extends Model
         'active',
     ];
 
+    protected $casts = [
+        'active' => 'boolean',
+    ];
+
     public function products(): HasMany
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
     }
 }

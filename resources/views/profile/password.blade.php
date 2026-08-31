@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Alterar Senha | AURA Running</title>
+    @include('partials.page-meta', ['pageTitle' => 'Alterar Senha'])
 
     <style>
         * {

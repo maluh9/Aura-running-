@@ -5,7 +5,19 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+        @php
+    $guestPageTitle = match (request()->route()?->getName()) {
+        'login' => 'LOGIN',
+        'register' => 'CADASTRO',
+        'password.request' => 'RECUPERAR SENHA',
+        'password.reset' => 'REDEFINIR SENHA',
+        'password.confirm' => 'CONFIRMAR SENHA',
+        'verification.notice' => 'VERIFICAR E-MAIL',
+        default => 'AURA',
+    };
+@endphp
+
+@include('partials.page-meta', ['pageTitle' => $guestPageTitle])
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
