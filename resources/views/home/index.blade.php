@@ -948,10 +948,197 @@ body.login-travado{
     user-select: none;
     -webkit-user-drag: none;
 }
+
+/* ══════════════════════════════
+   TROCA SITE / ADMIN
+   Visível somente para usuários administradores
+══════════════════════════════ */
+.admin-view-switch {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 999999;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 48px;
+    padding: 6px 8px 6px 10px;
+
+    background: rgba(255, 255, 255, 0.96);
+    color: #111;
+
+    border: 1px solid rgba(17, 17, 17, 0.14);
+    border-radius: 999px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+
+    text-decoration: none;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        transform 0.22s ease,
+        background 0.22s ease,
+        color 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.admin-view-switch:hover {
+    transform: translateY(-2px);
+    background: #111;
+    color: #fff;
+    border-color: #111;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.admin-view-eye {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f2f2f2;
+    color: #111;
+
+    font-size: 15px;
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        transform 0.22s ease;
+}
+
+.admin-view-switch:hover .admin-view-eye {
+    background: #fff;
+    color: #111;
+    transform: scale(1.04);
+}
+
+.admin-view-text {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.05;
+}
+
+.admin-view-text small {
+    margin-bottom: 3px;
+
+    color: #8c8c8c;
+
+    font-family: 'Barlow', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+
+    transition: color 0.22s ease;
+}
+
+.admin-view-text strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.admin-view-switch:hover .admin-view-text small {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.admin-switch-track {
+    position: relative;
+
+    width: 38px;
+    height: 22px;
+
+    margin-left: 2px;
+
+    border-radius: 999px;
+
+    background: #e6e6e6;
+
+    transition: background 0.22s ease;
+}
+
+.admin-switch-dot {
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: #111;
+
+    transition:
+        left 0.22s ease,
+        background 0.22s ease;
+}
+
+.admin-view-switch:hover .admin-switch-track {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.admin-view-switch:hover .admin-switch-dot {
+    left: 19px;
+    background: #fff;
+}
+
+@media (max-width: 600px) {
+    .admin-view-switch {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .admin-view-text small {
+        display: none;
+    }
+}
+
     </style>
 </head>
 
 <body>
+
+@auth
+    @if(auth()->user()->is_admin)
+        <a
+            href="{{ route('admin.dashboard') }}"
+            class="admin-view-switch"
+            title="Abrir painel administrativo"
+            aria-label="Abrir painel administrativo"
+        >
+            <span class="admin-view-eye">
+                <i class="fa-regular fa-eye"></i>
+            </span>
+
+            <span class="admin-view-text">
+                <small>Visualização atual</small>
+                <strong>Modo Admin</strong>
+            </span>
+
+            <span class="admin-switch-track" aria-hidden="true">
+                <span class="admin-switch-dot"></span>
+            </span>
+        </a>
+    @endif
+@endauth
+
 <header>
 
 <nav class="barra-navegacao">

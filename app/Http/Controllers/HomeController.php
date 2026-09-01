@@ -23,10 +23,7 @@ class HomeController extends Controller
             ->whereHas('category', function ($query) {
                 $query->where('slug', 'roupas');
             })
-            ->whereNotIn('name', [
-                'Aura Performance T-Shirt',
-                'Aura Running Shorts',
-            ])
+            
             ->with('category')
             ->orderBy('id')
             ->get();

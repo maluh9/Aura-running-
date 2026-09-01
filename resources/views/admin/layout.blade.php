@@ -666,6 +666,76 @@
 
 }
 
+/* =========================================
+   PAGINAÇÃO ADMIN
+========================================= */
+
+.admin-custom-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+.admin-page-link {
+    width: 38px;
+    height: 38px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #ddd;
+    border-radius: 50%;
+
+    background: #fff;
+    color: #111;
+
+    text-decoration: none;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition: .2s ease;
+}
+
+.admin-page-link:hover {
+    background: #111;
+    color: #fff;
+
+    border-color: #111;
+}
+
+.admin-page-link.active {
+    background: #111;
+    color: #fff;
+
+    border-color: #111;
+}
+
+.admin-page-link.disabled {
+    color: #bbb;
+
+    background: #f7f7f7;
+
+    cursor: default;
+}
+
+.admin-page-link.disabled:hover {
+    color: #bbb;
+
+    background: #f7f7f7;
+
+    border-color: #ddd;
+}
+
+.admin-page-dots {
+    padding: 0 4px;
+
+    color: #888;
+}
+
 </style>
 
 @yield('page-styles')
@@ -754,13 +824,16 @@
 
 </a>
 
-            <a href="#">
+            <a
+    href="{{ route('admin.orders.index') }}"
+    class="{{ request()->routeIs('admin.orders.*') ? 'ativo' : '' }}"
+>
 
-                <i class="fa-solid fa-bag-shopping"></i>
+    <i class="fa-solid fa-bag-shopping"></i>
 
-                Pedidos
+    Pedidos
 
-            </a>
+</a>
 
 
             <a href="#">
