@@ -10,88 +10,228 @@ class ProductSeeder extends Seeder
 {
     public function run(): void
     {
-        $tenis = Category::where('slug', 'tenis')->first();
-        $roupas = Category::where('slug', 'roupas')->first();
-        $acessorios = Category::where('slug', 'acessorios')->first();
+        $tenis = Category::where('slug', 'tenis')->firstOrFail();
+        $roupas = Category::where('slug', 'roupas')->firstOrFail();
+        $acessorios = Category::where('slug', 'acessorios')->firstOrFail();
 
-        Product::create([
-            'category_id' => $tenis->id,
-            'name' => 'Aura Monster',
-            'slug' => 'aura-monster',
-            'image' => 'products/aura-monster.png',
-            'description' => 'Tênis de corrida desenvolvido para proporcionar conforto, estabilidade e desempenho.',
-            'price' => 799.90,
-            'stock' => 20,
-            'featured' => true,
-            'active' => true,
-        ]);
+        $products = [
+            [
+                $tenis->id,
+                'Aura Monster',
+                'aura-monster',
+                'imagens/destaque_1.png',
+                'Tênis de corrida com conforto, estabilidade e alto desempenho.',
+                799.90,
+                20,
+                'unissex',
+                true,
+            ],
+            [
+                $tenis->id,
+                'The Sigma Fire',
+                'the-sigma-fire',
+                'imagens/destaque_2.png',
+                'Tênis esportivo leve e versátil para seus treinos.',
+                499.90,
+                15,
+                'masculino',
+                true,
+            ],
+            [
+                $tenis->id,
+                'Aurazenith',
+                'aurazenith',
+                'imagens/destaque_3.png',
+                'Tecnologia e conforto para acompanhar sua rotina de corrida.',
+                699.90,
+                10,
+                'feminino',
+                true,
+            ],
+            [
+    $tenis->id,
+    'Aura Street Pace',
+    'aura-street-pace',
+    'imagens/destaque_4.png',
+    'Estilo urbano, estabilidade e conforto para todos os dias.',
+    549.90,
+    16,
+    'unissex',
+    true,
+],
+[
+    $acessorios->id,
+    'Aura Recovery Slide',
+    'aura-recovery-slide',
+    'imagens/destaque_5.png',
+    'Conforto e recuperação para depois do treino.',
+    189.90,
+    25,
+    'unissex',
+    true,
+],
+[
+    $acessorios->id,
+    'Aura Training Bag',
+    'aura-training-bag',
+    'imagens/destaque_6.png',
+    'Bolsa esportiva espaçosa para acompanhar sua rotina.',
+    279.90,
+    14,
+    'unissex',
+    true,
+],
+[
+    $acessorios->id,
+    'Aura Sport Bottle',
+    'aura-sport-bottle',
+    'imagens/destaque_7.png',
+    'Garrafa esportiva para acompanhar seus treinos.',
+    79.90,
+    40,
+    'unissex',
+    true,
+],
+[
+    $acessorios->id,
+    'Aura Running Cap',
+    'aura-running-cap',
+    'imagens/destaque_8.png',
+    'Boné esportivo leve para corrida.',
+    99.90,
+    20,
+    'unissex',
+    true,
+],
+[
+    $acessorios->id,
+    'Aura Pace Watch Black',
+    'aura-pace-watch-black',
+    'imagens/destaque_9.png',
+    'Relógio esportivo para monitorar seus treinos e sua evolução.',
+    899.90,
+    10,
+    'unissex',
+    true,
+],
+[
+    $acessorios->id,
+    'Aura Pace Watch Sand',
+    'aura-pace-watch-sand',
+    'imagens/destaque_10.png',
+    'Relógio esportivo com design claro e recursos para corrida.',
+    899.90,
+    10,
+    'unissex',
+    true,
+],
 
-        Product::create([
-            'category_id' => $tenis->id,
-            'name' => 'The Sigma Fire',
-            'slug' => 'the-sigma-fire',
-            'image' => 'products/the-sigma-fire.png',
-            'description' => 'Tênis esportivo leve e versátil para seus treinos.',
-            'price' => 499.90,
-            'stock' => 15,
-            'featured' => true,
-            'active' => true,
-        ]);
+            // OUTFITS
 
-        Product::create([
-            'category_id' => $tenis->id,
-            'name' => 'Aurazenith',
-            'slug' => 'aurazenith',
-            'image' => 'products/aurazenith.png',   
-            'description' => 'Tecnologia e conforto para acompanhar sua rotina de corrida.',
-            'price' => 699.90,
-            'stock' => 10,
-            'featured' => true,
-            'active' => true,
-        ]);
+            [
+                $roupas->id,
+                'AeroFlex',
+                'aeroflex',
+                'imagens/roupa_1.png',
+                'Corra em qualquer lugar com estilo.',
+                419.90,
+                18,
+                'feminino',
+                false,
+            ],
+            [
+                $roupas->id,
+                'Horizon Dry Fit',
+                'horizon-dry-fit',
+                'imagens/roupa_2.png',
+                'Treine com conforto.',
+                289.00,
+                24,
+                'masculino',
+                false,
+            ],
+            [
+                $roupas->id,
+                'Urban Run',
+                'urban-run',
+                'imagens/roupa_3.png',
+                'Visual casual e esportivo.',
+                409.00,
+                14,
+                'feminino',
+                false,
+            ],
+            [
+                $roupas->id,
+                'Core Dry Fit',
+                'core-dry-fit',
+                'imagens/roupa_4.png',
+                'Leveza para o dia a dia.',
+                329.00,
+                22,
+                'masculino',
+                false,
+            ],
+            [
+                $roupas->id,
+                'Flex Jogger Run',
+                'flex-jogger-run',
+                'imagens/roupa_5.png',
+                'Performance e mobilidade para correr.',
+                439.90,
+                16,
+                'feminino',
+                false,
+            ],
+            [
+                $roupas->id,
+                'Essential-T',
+                'essential-t',
+                'imagens/roupa_6.png',
+                'Básica, respirável e confortável.',
+                599.00,
+                12,
+                'masculino',
+                false,
+            ],
+            [
+                $roupas->id,
+                'Run Shift',
+                'run-shift',
+                'imagens/roupa_7.png',
+                'Relaxe ou corra com conforto.',
+                305.00,
+                20,
+                'unissex',
+                false,
+            ],
+        ];
 
-        Product::create([
-            'category_id' => $roupas->id,
-            'name' => 'Aura Performance T-Shirt',
-            'slug' => 'aura-performance-t-shirt',
-            'description' => 'Camiseta esportiva leve e confortável.',
-            'price' => 149.90,
-            'stock' => 30,
-            'featured' => false,
-            'active' => true,
-        ]);
-
-        Product::create([
-            'category_id' => $roupas->id,
-            'name' => 'Aura Running Shorts',
-            'slug' => 'aura-running-shorts',
-            'description' => 'Short esportivo para corrida e treino.',
-            'price' => 129.90,
-            'stock' => 25,
-            'featured' => false,
-            'active' => true,
-        ]);
-
-        Product::create([
-            'category_id' => $acessorios->id,
-            'name' => 'Aura Running Cap',
-            'slug' => 'aura-running-cap',
-            'description' => 'Boné esportivo leve para corrida.',
-            'price' => 99.90,
-            'stock' => 20,
-            'featured' => false,
-            'active' => true,
-        ]);
-
-        Product::create([
-            'category_id' => $acessorios->id,
-            'name' => 'Aura Sport Bottle',
-            'slug' => 'aura-sport-bottle',
-            'description' => 'Garrafa esportiva para acompanhar seus treinos.',
-            'price' => 79.90,
-            'stock' => 40,
-            'featured' => false,
-            'active' => true,
-        ]);
+        foreach ($products as [
+            $categoryId,
+            $name,
+            $slug,
+            $image,
+            $description,
+            $price,
+            $stock,
+            $gender,
+            $featured
+        ]) {
+            Product::updateOrCreate(
+                ['slug' => $slug],
+                [
+                    'category_id' => $categoryId,
+                    'name' => $name,
+                    'image' => $image,
+                    'description' => $description,
+                    'price' => $price,
+                    'stock' => $stock,
+                    'gender' => $gender,
+                    'featured' => $featured,
+                    'active' => true,
+                ]
+            );
+        }
     }
 }

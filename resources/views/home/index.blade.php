@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AURA Running</title>
-
-    <link rel="icon" type="image/png" href="{{ asset('favicon.ico') }}">
+    @include('partials.page-meta', ['pageTitle' => 'AURA'])
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
@@ -866,39 +864,361 @@ body.login-travado{
     }
 }
 
+.card-destaque,
+.card-roupa {
+    position: relative;
+}
+
+.favorite-product-form {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    z-index: 10;
+    margin: 0;
+}
+
+.favorite-button,
+.btn-favorito {
+    width: 42px;
+    height: 42px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255, 255, 255, .8);
+    border-radius: 50%;
+    background: rgba(0, 0, 0, .38);
+    color: #fff;
+    font-size: 25px;
+    text-decoration: none;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.favorite-button.active,
+.btn-favorito.active {
+    background: #fff;
+    color: #ff4765;
+}
+
+.card-destaque-link {
+    width: 100%;
+    height: 100%;
+    display: block;
+    color: inherit;
+}
+
+.carrossel-wrapper {
+    overflow-x: auto;
+    overflow-y: hidden;
+    cursor: grab;
+    user-select: none;
+    scrollbar-width: none;
+}
+
+.carrossel-wrapper::-webkit-scrollbar {
+    display: none;
+}
+
+.carrossel-wrapper.arrastando {
+    cursor: grabbing;
+}
+
+@media (max-width: 900px) {
+    .barra-navegacao {
+        padding: 0 18px;
+    }
+
+    .menu-links > a:not(.icone),
+    .nav-divider {
+        display: none;
+    }
+}
+
+.carrossel-wrapper {
+    cursor: grab;
+    user-select: none;
+    touch-action: pan-y;
+}
+
+.carrossel-wrapper.arrastando {
+    cursor: grabbing;
+}
+
+.carrossel-wrapper a,
+.carrossel-wrapper img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+/* ══════════════════════════════
+   TROCA SITE / ADMIN
+   Visível somente para usuários administradores
+══════════════════════════════ */
+.admin-view-switch {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 999999;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 11px;
+
+    min-height: 48px;
+    padding: 6px 8px 6px 10px;
+
+    background: rgba(255, 255, 255, 0.96);
+    color: #111;
+
+    border: 1px solid rgba(17, 17, 17, 0.14);
+    border-radius: 999px;
+
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.14);
+
+    text-decoration: none;
+
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    transition:
+        transform 0.22s ease,
+        background 0.22s ease,
+        color 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.admin-view-switch:hover {
+    transform: translateY(-2px);
+    background: #111;
+    color: #fff;
+    border-color: #111;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.22);
+}
+
+.admin-view-eye {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #f2f2f2;
+    color: #111;
+
+    font-size: 15px;
+
+    transition:
+        background 0.22s ease,
+        color 0.22s ease,
+        transform 0.22s ease;
+}
+
+.admin-view-switch:hover .admin-view-eye {
+    background: #fff;
+    color: #111;
+    transform: scale(1.04);
+}
+
+.admin-view-text {
+    display: flex;
+    flex-direction: column;
+
+    line-height: 1.05;
+}
+
+.admin-view-text small {
+    margin-bottom: 3px;
+
+    color: #8c8c8c;
+
+    font-family: 'Barlow', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+
+    transition: color 0.22s ease;
+}
+
+.admin-view-text strong {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.admin-view-switch:hover .admin-view-text small {
+    color: rgba(255, 255, 255, 0.68);
+}
+
+.admin-switch-track {
+    position: relative;
+
+    width: 38px;
+    height: 22px;
+
+    margin-left: 2px;
+
+    border-radius: 999px;
+
+    background: #e6e6e6;
+
+    transition: background 0.22s ease;
+}
+
+.admin-switch-dot {
+    position: absolute;
+
+    top: 3px;
+    left: 3px;
+
+    width: 16px;
+    height: 16px;
+
+    border-radius: 50%;
+
+    background: #111;
+
+    transition:
+        left 0.22s ease,
+        background 0.22s ease;
+}
+
+.admin-view-switch:hover .admin-switch-track {
+    background: rgba(255, 255, 255, 0.22);
+}
+
+.admin-view-switch:hover .admin-switch-dot {
+    left: 19px;
+    background: #fff;
+}
+
+@media (max-width: 600px) {
+    .admin-view-switch {
+        right: 14px;
+        bottom: 14px;
+    }
+
+    .admin-view-text small {
+        display: none;
+    }
+}
+
     </style>
 </head>
 
 <body>
+
+@auth
+    @if(auth()->user()->is_admin)
+        <a
+            href="{{ route('admin.dashboard') }}"
+            class="admin-view-switch"
+            title="Abrir painel administrativo"
+            aria-label="Abrir painel administrativo"
+        >
+            <span class="admin-view-eye">
+                <i class="fa-regular fa-eye"></i>
+            </span>
+
+            <span class="admin-view-text">
+                <small>Visualização atual</small>
+                <strong>Modo Admin</strong>
+            </span>
+
+            <span class="admin-switch-track" aria-hidden="true">
+                <span class="admin-switch-dot"></span>
+            </span>
+        </a>
+    @endif
+@endauth
+
 <header>
-        <nav class="barra-navegacao">
-            <a href="#">
-                <img src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 08_44_05.png') }}" alt="AURA Running" height="50"/>
-            </a>
-            <div class="menu-links">
-                <a href="#produtos">Produtos</a>
-                <a href="#destaques">Destaques</a>
-                <a href="#outfits">Favoritos</a>
-                <a href="#copa">Copa do Mundo</a>
 
-                <span class="nav-divider"></span>
+<nav class="barra-navegacao">
+    <a href="{{ route('home') }}">
+        <img
+            src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 08_44_05.png') }}"
+            alt="AURA Running"
+            height="50"
+        >
+    </a>
 
-                <!-- Ícone pesquisa -->
-                <a href="#" class="icone" title="Pesquisar">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                    </svg>
-                </a>
+    <div class="menu-links">
+        <a href="#produtos">Produtos</a>
+        <a href="#destaques">Destaques</a>
 
-<!-- Ícone cadastro -->
-<div class="cadastro-container">
-	<a href="{{ route('login') }}" class="icone" title="Login">
-		<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-			<path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/>
-			<circle cx="12" cy="7" r="4"/>
-		</svg>
-	</a>
-</div>
+        <a href="#outfits">Outfits</a>
+
+        <a href="#copa">Copa do Mundo</a>
+
+        <span class="nav-divider"></span>
+
+        <!-- Favoritos -->
+        <a
+            href="{{ route('favorites.index') }}"
+            class="icone"
+            title="Favoritos"
+        >
+            <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8Z"/>
+            </svg>
+        </a>
+
+        <!-- Carrinho -->
+        <a
+            href="{{ route('cart.index') }}"
+            class="icone"
+            title="Carrinho"
+        >
+            <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <circle cx="9" cy="20" r="1"/>
+                <circle cx="19" cy="20" r="1"/>
+                <path d="M3 4h2l2.7 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"/>
+            </svg>
+        </a>
+
+        <!-- Perfil -->
+        <a
+            href="{{ auth()->check()
+                ? route('profile.edit')
+                : route('login') }}"
+            class="icone"
+            title="{{ auth()->check() ? 'Meu perfil' : 'Entrar' }}"
+        >
+            <svg
+                width="19"
+                height="19"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+            >
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+            </svg>
+        </a>
+    </div>
 </nav>
 
 <div class="painel-overlay" id="overlay"></div>
@@ -933,9 +1253,20 @@ body.login-travado{
 </div>
         <div class="hero-conteudo">
             <div class="hero-esquerda">
-                <a href="#" class="btn-hero btn-claro">Para ele</a>
-                <a href="#" class="btn-hero btn-escuro">Para ela</a>
-            </div>
+                <a
+                    href="{{ route('products.gender', 'masculino') }}"
+                    class="btn-hero btn-claro"
+                >
+                    Para ele
+                </a>
+
+                <a
+                    href="{{ route('products.gender', 'feminino') }}"
+                    class="btn-hero btn-escuro"
+                >
+                    Para ela
+                </a>
+        </div>
             <h1 class="hero-titulo">Feito para quem<br>não para</h1>
         </div>
     </header>
@@ -944,17 +1275,40 @@ body.login-travado{
         <h2 class="titulo-secao">Nossos Produtos</h2>
         <div class="grade-produtos">
             <div class="coluna-esquerda">
-                <a href="#" class="card-produto">
-                    <img src="{{ asset('imagens/Tênis Floresta.png') }}" alt="Tênis"/>
+                <a
+                    href="{{ route('categories.show', 'tenis') }}"
+                    class="card-produto"
+                >
+                    <img
+                        src="{{ asset('imagens/Tênis Floresta.png') }}"
+                        alt="Tênis"
+                    >
+
                     <span>Tênis</span>
                 </a>
-                <a href="#" class="card-produto">
-                    <img src="{{ asset('imagens/Acessórios.png') }}" alt="Acessórios"/>
+
+                <a
+                    href="{{ route('categories.show', 'acessorios') }}"
+                    class="card-produto"
+                >
+                    <img
+                        src="{{ asset('imagens/Acessórios.png') }}"
+                        alt="Acessórios"
+                    >
+
                     <span>Acessórios</span>
                 </a>
             </div>
-            <a href="#" class="card-produto card-vertical">
-                <img src="{{ asset('imagens/Corrida deserto.png') }}" alt="Roupas"/>
+
+            <a
+                href="{{ route('categories.show', 'roupas') }}"
+                class="card-produto card-vertical"
+            >
+                <img
+                    src="{{ asset('imagens/Corrida deserto.png') }}"
+                    alt="Outfits"
+                >
+
                 <span>Outfits</span>
             </a>
         </div>
@@ -962,147 +1316,156 @@ body.login-travado{
 
 <!-- Destaques e scrollbar -->
 
-    <section id="destaques" class="secao-destaques">
+<section id="destaques" class="secao-destaques">
     <h2 class="titulo-secao">Destaques</h2>
 
-    <div class="carrossel-wrapper" id="carrossel-wrapper">
+    <div
+        class="carrossel-wrapper"
+        id="carrossel-wrapper"
+    >
         <div class="carrossel">
-            @foreach ($products as $product)
-                <div class="card-destaque">
+            @foreach($featuredProducts as $product)
+                <article class="card-destaque">
                     @auth
-                        <form action="{{ route('favorites.toggle', $product->id) }}" method="POST"
-                              class="favorite-product-form">
+                        <form
+                            action="{{ route('favorites.toggle', $product->id) }}"
+                            method="POST"
+                            class="favorite-product-form"
+                        >
                             @csrf
-                            <button type="submit" class="favorite-button" title="Adicionar aos favoritos">
-                                ♡
+
+                            <button
+                                type="submit"
+                                class="favorite-button {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
+                                title="Alternar favorito"
+                            >
+                                {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
                             </button>
                         </form>
                     @else
-                        <a href="{{ route('login') }}" class="favorite-button" title="Entre para favoritar">
-                            ♡
-                        </a>
+                        <div class="favorite-product-form">
+                            <a
+                                href="{{ route('login') }}"
+                                class="favorite-button"
+                                title="Entre para favoritar"
+                            >
+                                ♡
+                            </a>
+                        </div>
                     @endauth
 
-                    <a href="{{ route('products.show', $product->slug) }}" class="product-link card-destaque-link">
+                    <a
+                        href="{{ route('products.show', $product->slug) }}"
+                        class="card-destaque-link"
+                    >
                         <img
-                            src="{{ asset('storage/' . $product->image) }}"
+                            src="{{ $product->image_url }}"
                             alt="{{ $product->name }}"
                         >
-                        <span class="card-destaque-nome">{{ $product->name }}</span>
+
+                        <span class="card-destaque-nome">
+                            {{ $product->name }}
+                        </span>
                     </a>
-                </div>
+                </article>
             @endforeach
         </div>
     </div>
 </section>
-<div class="scrollbar-destaques" id="scrollbar-destaques">
+
+<div
+    class="scrollbar-destaques"
+    id="scrollbar-destaques"
+>
     <div class="scrollbar-trilho">
-        <div class="scrollbar-progresso" id="scrollbar-progresso"></div>
+        <div
+            class="scrollbar-progresso"
+            id="scrollbar-progresso"
+        ></div>
     </div>
 </div>
 
-<section id="outfits" class="secao-destaques secao-roupas">
-    <h2 class="titulo-secao">Monte seu outfit de alta performance</h2>
+<section
+    id="outfits"
+    class="secao-destaques secao-roupas"
+>
+    <h2 class="titulo-secao">
+        Monte seu outfit de alta performance
+    </h2>
 
-    <div class="carrossel-wrapper" id="carrossel-roupas">
+    <div
+        class="carrossel-wrapper"
+        id="carrossel-roupas"
+    >
         <div class="carrossel">
+            @foreach($outfitProducts as $product)
+                <article class="card-roupa">
+                    @auth
+                        <form
+                            action="{{ route('favorites.toggle', $product->id) }}"
+                            method="POST"
+                            class="favorite-product-form"
+                        >
+                            @csrf
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_1.png') }}" alt="AeroFlex">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>AeroFlex</h3>
-                    <p>Corra em qualquer lugar com estilo</p>
-                    <strong>R$ 419,90</strong>
-                </div>
-            </div>
+                            <button
+                                type="submit"
+                                class="btn-favorito {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
+                            >
+                                {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
+                            </button>
+                        </form>
+                    @else
+                        <div class="favorite-product-form">
+                            <a
+                                href="{{ route('login') }}"
+                                class="btn-favorito"
+                            >
+                                ♡
+                            </a>
+                        </div>
+                    @endauth
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_2.png') }}" alt="Horizon Dry Fit">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Horizon Dry Fit</h3>
-                    <p>Treine com conforto</p>
-                    <strong>R$ 289,00</strong>
-                </div>
-            </div>
+                    <a
+                        href="{{ route('products.show', $product->slug) }}"
+                        class="card-roupa-img"
+                    >
+                        <img
+                            src="{{ $product->image_url }}"
+                            alt="{{ $product->name }}"
+                        >
+                    </a>
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_3.png') }}" alt="Urban Run">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Urban Run</h3>
-                    <p>Visual casual e esportivo</p>
-                    <strong>R$ 409,00</strong>
-                </div>
-            </div>
+                    <div class="card-roupa-info">
+                        @if(in_array($product->id, $favoriteProductIds))
+                            <span class="tag-favoritos">
+                                Favorito
+                            </span>
+                        @endif
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_4.png') }}" alt="Core Dry Fit">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Core Dry Fit</h3>
-                    <p>Leveza para o dia a dia</p>
-                    <strong>R$ 329,00</strong>
-                </div>
-            </div>
+                        <h3>{{ $product->name }}</h3>
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_5.png') }}" alt="Flex Jogger Run">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <span class="tag-favoritos">Favoritos</span>
-                    <h3>Flex Jogger Run</h3>
-                    <p>Corra com performance e mobilidade</p>
-                    <strong>R$ 439,90</strong>
-                </div>
-            </div>
+                        <p>{{ $product->description }}</p>
 
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_6.png') }}" alt="Essential-T">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <h3>Essential-T</h3>
-                    <p>Básica, respirável e confortável</p>
-                    <strong>R$ 599,00</strong>
-                </div>
-            </div>
-
-            <div class="card-roupa">
-                <a href="#" class="card-roupa-img">
-                    <img src="{{ asset('imagens/roupa_7.png') }}" alt="Run Shift">
-                    <button class="btn-favorito" onclick="toggleFavorito(this, event)">♡</button>
-                </a>
-                <div class="card-roupa-info">
-                    <h3>Run Shift</h3>
-                    <p>Relaxe ou corra com conforto</p>
-                    <strong>R$ 305,00</strong>
-                </div>
-            </div>
-
+                        <strong>
+                            R$ {{ number_format($product->price, 2, ',', '.') }}
+                        </strong>
+                    </div>
+                </article>
+            @endforeach
         </div>
     </div>
 </section>
 
-<div class="scrollbar-destaques" id="scrollbar-roupas">
+<div
+    class="scrollbar-destaques"
+    id="scrollbar-roupas"
+>
     <div class="scrollbar-trilho">
-        <div class="scrollbar-progresso" id="progresso-roupas"></div>
+        <div
+            class="scrollbar-progresso"
+            id="progresso-roupas"
+        ></div>
     </div>
 </div>
 
@@ -1232,6 +1595,204 @@ body.login-travado{
     </div>
 
 </footer>
+
+<script>
+    function configurarCarrossel(
+        wrapperId,
+        scrollbarId,
+        progressoId
+    ) {
+        const wrapper = document.getElementById(wrapperId);
+        const scrollbar = document.getElementById(scrollbarId);
+        const progresso = document.getElementById(progressoId);
+
+        if (!wrapper || !scrollbar || !progresso) {
+            return;
+        }
+
+        const trilho = scrollbar.querySelector(
+            '.scrollbar-trilho'
+        );
+
+        let arrastandoCarrossel = false;
+        let arrastandoBarra = false;
+        let houveMovimento = false;
+
+        let inicioMouse = 0;
+        let scrollInicial = 0;
+
+        let inicioBarra = 0;
+        let scrollInicialBarra = 0;
+
+        function atualizarBarra() {
+            const scrollMaximo =
+                wrapper.scrollWidth - wrapper.clientWidth;
+
+            if (scrollMaximo <= 0) {
+                progresso.style.width = '100%';
+                progresso.style.left = '0';
+                return;
+            }
+
+            const proporcaoVisivel =
+                wrapper.clientWidth / wrapper.scrollWidth;
+
+            const larguraPorcentagem = Math.max(
+                12,
+                proporcaoVisivel * 100
+            );
+
+            const posicaoPorcentagem =
+                (wrapper.scrollLeft / scrollMaximo)
+                * (100 - larguraPorcentagem);
+
+            progresso.style.width =
+                larguraPorcentagem + '%';
+
+            progresso.style.left =
+                posicaoPorcentagem + '%';
+        }
+
+        wrapper.querySelectorAll('a, img').forEach(function (elemento) {
+            elemento.setAttribute('draggable', 'false');
+        });
+
+        wrapper.addEventListener('dragstart', function (event) {
+            event.preventDefault();
+        });
+
+        wrapper.addEventListener('mousedown', function (event) {
+            if (
+                event.button !== 0
+                || event.target.closest('button, form')
+            ) {
+                return;
+            }
+
+            arrastandoCarrossel = true;
+            houveMovimento = false;
+
+            inicioMouse = event.clientX;
+            scrollInicial = wrapper.scrollLeft;
+
+            wrapper.classList.add('arrastando');
+        });
+
+        progresso.addEventListener('mousedown', function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            arrastandoBarra = true;
+
+            inicioBarra = event.clientX;
+            scrollInicialBarra = wrapper.scrollLeft;
+        });
+
+        window.addEventListener('mousemove', function (event) {
+            if (arrastandoCarrossel) {
+                const distancia =
+                    event.clientX - inicioMouse;
+
+                if (Math.abs(distancia) > 3) {
+                    houveMovimento = true;
+                }
+
+                wrapper.scrollLeft =
+                    scrollInicial - distancia;
+            }
+
+            if (arrastandoBarra) {
+                const areaTrilho =
+                    trilho.getBoundingClientRect();
+
+                const larguraDisponivel =
+                    areaTrilho.width - progresso.offsetWidth;
+
+                const scrollMaximo =
+                    wrapper.scrollWidth - wrapper.clientWidth;
+
+                if (larguraDisponivel > 0) {
+                    const distancia =
+                        event.clientX - inicioBarra;
+
+                    wrapper.scrollLeft =
+                        scrollInicialBarra
+                        + (
+                            distancia / larguraDisponivel
+                        ) * scrollMaximo;
+                }
+            }
+        });
+
+        window.addEventListener('mouseup', function () {
+            if (arrastandoCarrossel) {
+                arrastandoCarrossel = false;
+                wrapper.classList.remove('arrastando');
+
+                setTimeout(function () {
+                    houveMovimento = false;
+                }, 0);
+            }
+
+            arrastandoBarra = false;
+        });
+
+        wrapper.addEventListener(
+            'click',
+            function (event) {
+                if (houveMovimento) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            },
+            true
+        );
+
+        trilho.addEventListener('mousedown', function (event) {
+            if (event.target === progresso) {
+                return;
+            }
+
+            const area =
+                trilho.getBoundingClientRect();
+
+            const porcentagem =
+                (event.clientX - area.left)
+                / area.width;
+
+            const scrollMaximo =
+                wrapper.scrollWidth - wrapper.clientWidth;
+
+            wrapper.scrollLeft =
+                porcentagem * scrollMaximo;
+        });
+
+        wrapper.addEventListener(
+            'scroll',
+            atualizarBarra,
+            { passive: true }
+        );
+
+        window.addEventListener(
+            'resize',
+            atualizarBarra
+        );
+
+        atualizarBarra();
+    }
+
+    configurarCarrossel(
+        'carrossel-wrapper',
+        'scrollbar-destaques',
+        'scrollbar-progresso'
+    );
+
+    configurarCarrossel(
+        'carrossel-roupas',
+        'scrollbar-roupas',
+        'progresso-roupas'
+    );
+</script>
 
 </body>
 </html>

@@ -6,48 +6,53 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function add(Request $request, $productId)
+    public function add(Request $request, int $productId)
     {
-        // Só usuário logado pode adicionar ao carrinho
-        if (!Auth::check()) {
-            return redirect()
-                ->route('login')
-                ->with('error', 'Você precisa estar logado para adicionar produtos ao carrinho.');
+        $product = Product::where('active', true)
+            ->findOrFail($productId);
+
+        $validated = $request->validate([
+            'size' => ['required', 'string', 'max:20'],
+        ]);
+
+        if ($product->stock < 1) {
+            return back()->with(
+                'error',
+                'Este produto está sem estoque no momento.'
+            );
         }
 
-        $product = Product::findOrFail($productId);
+        $cart = Cart::firstOrCreate(
+            [
+                'user_id' => $request->user()->id,
+            ],
+            [
+                'session_id' => $request->session()->getId(),
+            ]
+        );
 
-        $request->validate([
-            'size' => 'required|string',
-        ]);
-
-        // Procura o carrinho do usuário
-        $cart = Cart::firstOrCreate([
-            'user_id' => Auth::id(),
-        ], [
-            'session_id' => $request->session()->getId(),
-        ]);
-
-        // Procura se o mesmo produto e tamanho já estão no carrinho
         $item = CartItem::where('cart_id', $cart->id)
             ->where('product_id', $product->id)
-            ->where('size', $request->size)
+            ->where('size', $validated['size'])
             ->first();
 
         if ($item) {
+            if ($item->quantity >= $product->stock) {
+                return back()->with(
+                    'error',
+                    'Quantidade máxima disponível atingida.'
+                );
+            }
 
             $item->increment('quantity');
-
         } else {
-
             CartItem::create([
                 'cart_id' => $cart->id,
                 'product_id' => $product->id,
-                'size' => $request->size,
+                'size' => $validated['size'],
                 'quantity' => 1,
                 'price' => $product->price,
             ]);
@@ -55,40 +60,44 @@ class CartController extends Controller
 
         return redirect()
             ->route('cart.index')
-            ->with('success', 'Produto adicionado ao carrinho!');
+            ->with('success', 'Produto adicionado ao carrinho.');
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        // Só usuário logado pode acessar o carrinho
-        if (!Auth::check()) {
-            return redirect()
-                ->route('login')
-                ->with('error', 'Faça login para acessar seu carrinho.');
-        }
-
-        $cart = Cart::with('items.product.category')
-            ->where('user_id', Auth::id())
+        $cart = Cart::where(
+            'user_id',
+            $request->user()->id
+        )
+            ->with('items.product.category')
             ->first();
 
         return view('cart.index', compact('cart'));
     }
 
-    public function update(Request $request, $itemId)
+    public function update(Request $request, int $itemId)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
+        $item = CartItem::whereHas('cart', function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id);
+        })
+            ->with('product')
+            ->findOrFail($itemId);
+
+        $validated = $request->validate([
+            'quantity' => ['required', 'integer', 'min:1'],
+        ]);
+
+        if ($item->product->stock < 1) {
+            return back()->with(
+                'error',
+                'Este produto está sem estoque no momento.'
+            );
         }
 
-        $item = CartItem::whereHas('cart', function ($query) {
-            $query->where('user_id', Auth::id());
-        })->findOrFail($itemId);
-
-        $quantity = (int) $request->quantity;
-
-        if ($quantity < 1) {
-            $quantity = 1;
-        }
+        $quantity = min(
+            (int) $validated['quantity'],
+            $item->product->stock
+        );
 
         $item->update([
             'quantity' => $quantity,
@@ -96,23 +105,19 @@ class CartController extends Controller
 
         return redirect()
             ->route('cart.index')
-            ->with('success', 'Quantidade atualizada!');
+            ->with('success', 'Quantidade atualizada.');
     }
 
-    public function remove($itemId)
+    public function remove(Request $request, int $itemId)
     {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $item = CartItem::whereHas('cart', function ($query) {
-            $query->where('user_id', Auth::id());
+        $item = CartItem::whereHas('cart', function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id);
         })->findOrFail($itemId);
 
         $item->delete();
 
         return redirect()
             ->route('cart.index')
-            ->with('success', 'Produto removido do carrinho!');
+            ->with('success', 'Produto removido do carrinho.');
     }
 }
