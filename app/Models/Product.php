@@ -42,18 +42,18 @@ class Product extends Model
         return $this->hasMany(Favorite::class);
     }
 
-    public function getImageUrlAttribute(): string
-    {
-        if (!$this->image) {
-            return null;
+    public function getImageUrlAttribute(): ?string
+{
+    if (!$this->image) {
+        return null;
     }
 
-        // Imagens que já ficam dentro de public/imagens
-        if (str_starts_with($this->image, 'imagens/')) {
-            return asset($this->image);
+    // Imagens que já ficam dentro de public/imagens
+    if (str_starts_with($this->image, 'imagens/')) {
+        return asset($this->image);
     }
 
-        // Imagens cadastradas pelo painel Admin
-        return asset('storage/' . ltrim($this->image, '/'));
-    }
+    // Imagens cadastradas pelo painel Admin
+    return asset('storage/' . ltrim($this->image, '/'));
+}
 }
