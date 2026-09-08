@@ -12,7 +12,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
-use App\Http\Controllers\Admin\OrderController as AdminOrderController; 
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 
 // HOME
@@ -39,7 +39,6 @@ Route::get(
 
 // ROTAS PROTEGIDAS POR LOGIN
 Route::middleware('auth')->group(function () {
-    
     // CARRINHO
     Route::get('/carrinho', [CartController::class, 'index'])->name('cart.index');
     Route::post('/carrinho/adicionar/{productId}', [CartController::class, 'add'])->name('cart.add');

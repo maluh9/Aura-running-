@@ -466,7 +466,6 @@ header {
     text-align: left;
 }
 
-.card-selecao:hover,
 .card-selecao.ativo {
     border-color: #111;
 }
@@ -1699,11 +1698,11 @@ body.login-travado{
         </div>
 
         <div class="footer-redes">
-            <a href="#"><i class="fa-brands fa-instagram"></i></a>
-            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="#"><i class="fa-brands fa-youtube"></i></a>
-            <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="https://www.instagram.com"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://www.tiktok.com"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="https://www.youtube.com"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://www.twitter.com"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://www.linkedin.com"><i class="fa-brands fa-linkedin-in"></i></a>
         </div>
 
     </div>
@@ -1906,6 +1905,73 @@ body.login-travado{
         'scrollbar-roupas',
         'progresso-roupas'
     );
+
+    // ================================
+// SELEÇÃO DAS CAMISETAS DA COPA
+// ================================
+
+const cardsSelecao = document.querySelectorAll('.card-selecao');
+const imagemCamisa = document.getElementById('imagemCamisa');
+const previewCamisa = document.getElementById('previewCamisa');
+
+let selecaoAtual = document.querySelector('.card-selecao.ativo');
+
+function selecionarSelecao(card) {
+    if (!card) {
+        return;
+    }
+
+    // Remove a seleção de todos os brasões
+    cardsSelecao.forEach(function (item) {
+        item.classList.remove('ativo');
+    });
+
+    // Ativa o brasão escolhido
+    card.classList.add('ativo');
+
+    // Troca a camiseta
+    const novaCamisa = card.dataset.camisa;
+
+    if (novaCamisa) {
+        imagemCamisa.src = novaCamisa;
+    }
+
+    // Guarda a última seleção
+    selecaoAtual = card;
+
+    // Atualiza o link da camiseta
+    if (card.dataset.link) {
+        previewCamisa.href = card.dataset.link;
+    }
+}
+
+// Passar o mouse pelos brasões
+cardsSelecao.forEach(function (card) {
+
+    card.addEventListener('mouseenter', function () {
+        selecionarSelecao(card);
+    });
+
+    // Clicar no brasão
+    card.addEventListener('click', function () {
+
+        if (card.dataset.link) {
+            window.location.href = card.dataset.link;
+        }
+
+    });
+
+});
+
+// Clicar na camiseta grande
+previewCamisa.addEventListener('click', function () {
+
+    if (selecaoAtual && selecaoAtual.dataset.link) {
+        window.location.href = selecaoAtual.dataset.link;
+    }
+
+});
+
 </script>
 
 </body>
