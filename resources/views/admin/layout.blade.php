@@ -315,39 +315,110 @@
         }
 
 
-        .btn-loja {
+        /* =========================================
+           TROCA ADMIN / SITE
+        ========================================= */
 
-            width: 44px;
-
-            height: 44px;
-
-            border-radius: 50%;
-
-            border: 1px solid #ddd;
-
-            display: flex;
-
+        .view-site-switch {
+            min-height: 48px;
+            display: inline-flex;
             align-items: center;
-
-            justify-content: center;
-
+            gap: 11px;
+            padding: 6px 9px 6px 10px;
+            background: #111;
+            color: #fff;
+            border: 1px solid #111;
+            border-radius: 999px;
             text-decoration: none;
-
-            color: #111;
-
-            background: white;
-
-            transition: .2s;
+            box-shadow: 0 8px 24px rgba(0,0,0,.10);
+            transition: transform .22s ease, background .22s ease, color .22s ease, box-shadow .22s ease, border-color .22s ease;
         }
 
+        .view-site-switch:hover {
+            background: #fff;
+            color: #111;
+            border-color: #dcdcdc;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(0,0,0,.12);
+        }
 
-        .btn-loja:hover {
+        .view-site-eye {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: #fff;
+            color: #111;
+            border-radius: 50%;
+            font-size: 15px;
+            transition: background .22s ease, color .22s ease, transform .22s ease;
+        }
 
+        .view-site-switch:hover .view-site-eye {
             background: #111;
+            color: #fff;
+            transform: scale(1.04);
+        }
 
-            color: white;
+        .view-site-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.05;
+        }
 
-            border-color: #111;
+        .view-site-text small {
+            margin-bottom: 3px;
+            color: rgba(255,255,255,.58);
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: .10em;
+            text-transform: uppercase;
+            transition: color .22s ease;
+        }
+
+        .view-site-text strong {
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: .05em;
+            text-transform: uppercase;
+        }
+
+        .view-site-switch:hover .view-site-text small {
+            color: #888;
+        }
+
+        .view-site-track {
+            position: relative;
+            width: 38px;
+            height: 22px;
+            margin-left: 2px;
+            flex-shrink: 0;
+            background: rgba(255,255,255,.22);
+            border-radius: 999px;
+            transition: background .22s ease;
+        }
+
+        .view-site-dot {
+            position: absolute;
+            top: 3px;
+            right: 3px;
+            width: 16px;
+            height: 16px;
+            background: #fff;
+            border-radius: 50%;
+            transition: right .22s ease, background .22s ease;
+        }
+
+        .view-site-switch:hover .view-site-track {
+            background: #e7e7e7;
+        }
+
+        .view-site-switch:hover .view-site-dot {
+            right: 19px;
+            background: #111;
         }
 
 
@@ -835,14 +906,14 @@
 
 </a>
 
+<a
+    href="{{ route('admin.customers.index') }}"
+    class="{{ request()->routeIs('admin.customers.*') ? 'ativo' : '' }}"
+>
+    <i class="fa-solid fa-users"></i>
 
-            <a href="#">
-
-                <i class="fa-solid fa-users"></i>
-
-                Clientes
-
-            </a>
+    Clientes
+</a>
 
 
         </nav>
@@ -932,9 +1003,32 @@
             </div>
 
 
-            <a href="{{ url('/') }}" class="btn-loja" title="Visualizar loja">
+            <a
+                href="{{ route('home') }}"
+                class="view-site-switch"
+                title="Visualizar site"
+                aria-label="Visualizar site"
+            >
 
-                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                <span class="view-site-eye">
+                    <i class="fa-regular fa-eye"></i>
+                </span>
+
+                <span class="view-site-text">
+
+                    <small>
+                        Visualização atual
+                    </small>
+
+                    <strong>
+                        Ver site
+                    </strong>
+
+                </span>
+
+                <span class="view-site-track" aria-hidden="true">
+                    <span class="view-site-dot"></span>
+                </span>
 
             </a>
 

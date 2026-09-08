@@ -1,449 +1,849 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
+    <meta charset="UTF-8">
 
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-<meta charset="UTF-8">
+    @include('partials.page-meta', ['pageTitle' => $product->name])
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
 
-@include('partials.page-meta', ['pageTitle' => $product->name])
-
-<style>
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        color: #111;
-        background: #fff;
-    }
-
-    /* HEADER */
-
-    header {
-        height: 80px;
-
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        padding: 0 50px;
-
-        border-bottom: 1px solid #eee;
-    }
-
-    .logo {
-        font-size: 25px;
-        font-weight: 800;
-        letter-spacing: 3px;
-    }
-
-    nav {
-        display: flex;
-        gap: 35px;
-    }
-
-    nav a {
-        color: #111;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    nav a:hover {
-        opacity: 0.5;
-    }
-
-   .header-icons {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    font-size: 20px;
-}
-
-.header-icons a {
-    color: #111;
-    text-decoration: none;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-}
-
-.header-icons a:hover {
-    color: #111;
-    opacity: 0.5;
-    text-decoration: none;
-}
-
-    /* PRODUTO */
-
-    .product-page {
-        display: grid;
-        grid-template-columns: 1.2fr 1fr;
-        min-height: calc(100vh - 80px);
-    }
-
-    .product-image {
-        background: #f5f5f5;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        padding: 60px;
-    }
-
-    .product-image img {
-        width: 100%;
-        max-width: 650px;
-        height: 600px;
-        object-fit: contain;
-    }
-
-    .product-info {
-        padding: 80px 70px;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .category {
-        font-size: 13px;
-        color: #666;
-
-        text-transform: uppercase;
-
-        margin-bottom: 15px;
-    }
-
-    .product-info h1 {
-        font-size: 45px;
-        margin-bottom: 20px;
-    }
-
-    .description {
-        color: #555;
-        line-height: 1.6;
-        margin-bottom: 25px;
-    }
-
-    .price {
-        font-size: 25px;
-        font-weight: bold;
-        margin-bottom: 30px;
-    }
-
-    /* FORMULÁRIO */
-
-    .cart-form {
-        width: 100%;
-    }
-
-    /* TAMANHOS */
-
-    .sizes-title {
-        font-size: 14px;
-        font-weight: bold;
-        margin-bottom: 12px;
-    }
-
-    .sizes {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-
-        margin-bottom: 30px;
-    }
-
-    .size {
-        width: 50px;
-        height: 45px;
-
-        border: 1px solid #ccc;
-        background: white;
-
-        cursor: pointer;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        font-size: 14px;
-    }
-
-    .size:hover {
-        border-color: #111;
-    }
-
-    /* ESCONDE O RADIO */
-
-    .size input {
-        display: none;
-    }
-
-    /* TAMANHO SELECIONADO */
-
-    .size:has(input:checked) {
-        background: #111;
-        color: white;
-        border-color: #111;
-    }
-
-    /* BOTÃO CARRINHO */
-
-    .cart-button {
-        width: 100%;
-
-        padding: 18px;
-
-        border: none;
-
-        background: #111;
-        color: white;
-
-        font-size: 15px;
-        font-weight: bold;
-
-        cursor: pointer;
-
-        transition: 0.3s;
-    }
-
-    .cart-button:hover {
-        background: #333;
-    }
-
-    /* FAVORITO */
-
-    .favorite {
-        width: 100%;
-
-        margin-top: 15px;
-
-        padding: 15px;
-
-        border: 1px solid #111;
-
-        background: white;
-
-        cursor: pointer;
-
-        font-size: 15px;
-    }
-
-    .favorite:hover {
-        background: #f5f5f5;
-    }
-
-    /* RESPONSIVO */
-
-    @media (max-width: 900px) {
-
-        header {
-            padding: 0 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        nav {
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            font-family: 'Barlow', sans-serif;
+            color: #111;
+            background: #fff;
+            overflow-x: hidden;
+        }
+
+
+        /* ========================================
+           ÁREA PRINCIPAL DO PRODUTO
+        ======================================== */
+
+        .product-page {
+            width: 100%;
+            max-width: 1480px;
+
+            height: calc(100vh - 96px);
+
+            margin: 0 auto;
+
+            padding: 28px 50px;
+
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                minmax(440px, 0.88fr);
+
+            align-items: center;
+
+            gap: 58px;
+        }
+
+
+        /* ========================================
+           IMAGEM
+        ======================================== */
+
+        .product-image-wrapper {
+            position: relative;
+
+            width: 100%;
+            height: 100%;
+
+            max-height: 560px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: transparent;
+
+            overflow: hidden;
+        }
+
+
+        .product-image-wrapper img {
+            display: block;
+
+            width: 100%;
+            height: 100%;
+
+            max-width: 720px;
+            max-height: 560px;
+
+            object-fit: contain;
+
+            border-radius: 5px;
+
+            transition:
+                transform .3s ease,
+                opacity .3s ease;
+        }
+
+
+        .product-image-wrapper:hover img {
+            transform: scale(1.015);
+        }
+
+
+        /* SEM ESTOQUE NA IMAGEM */
+
+        .product-image-wrapper.out-of-stock img {
+            opacity: .68;
+        }
+
+
+        .stock-badge {
+            position: absolute;
+
+            top: 18px;
+            left: 18px;
+
+            z-index: 5;
+
+            padding: 8px 14px;
+
+            background: #111;
+            color: #fff;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            letter-spacing: .12em;
+
+            text-transform: uppercase;
+
+            border-radius: 3px;
+        }
+
+
+        /* ========================================
+           INFORMAÇÕES
+        ======================================== */
+
+        .product-info {
+            width: 100%;
+
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+
+        .category {
+            margin-bottom: 10px;
+
+            color: #777;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 13px;
+            font-weight: 500;
+
+            letter-spacing: .12em;
+
+            text-transform: uppercase;
+        }
+
+
+        .product-info h1 {
+            margin-bottom: 18px;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: clamp(42px, 3.4vw, 56px);
+
+            font-weight: 600;
+
+            line-height: .95;
+
+            letter-spacing: -0.02em;
+
+            text-transform: uppercase;
+        }
+
+
+        .description {
+            max-width: 620px;
+
+            margin-bottom: 22px;
+
+            color: #555;
+
+            font-size: 16px;
+
+            line-height: 1.5;
+        }
+
+
+        .price {
+            margin-bottom: 24px;
+
+            font-size: 27px;
+
+            font-weight: 600;
+        }
+
+
+        /* ========================================
+           AVISO SEM ESTOQUE
+        ======================================== */
+
+        .stock-alert {
+            margin-bottom: 20px;
+
+            padding: 14px 16px;
+
+            background: #f5f5f5;
+
+            border-left: 3px solid #111;
+        }
+
+
+        .stock-alert strong {
+            display: block;
+
+            margin-bottom: 4px;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 15px;
+
+            font-weight: 600;
+
+            letter-spacing: .08em;
+
+            text-transform: uppercase;
+        }
+
+
+        .stock-alert span {
+            color: #666;
+
+            font-size: 13px;
+        }
+
+
+        /* ========================================
+           TAMANHOS
+        ======================================== */
+
+        .cart-form {
+            width: 100%;
+        }
+
+
+        .sizes-title {
+            margin-bottom: 10px;
+
+            font-size: 14px;
+
+            font-weight: 600;
+        }
+
+
+        .sizes {
+            display: flex;
+
+            flex-wrap: wrap;
+
+            gap: 9px;
+
+            margin-bottom: 22px;
+        }
+
+
+        .size {
+            width: 50px;
+            height: 46px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #fff;
+
+            border: 1px solid #ccc;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+
+        .size:hover {
+            border-color: #111;
+        }
+
+
+        .size input {
             display: none;
         }
 
-        .product-page {
-            grid-template-columns: 1fr;
-        }
 
-        .product-image {
-            padding: 30px;
-        }
+        .size:has(input:checked) {
+            background: #111;
 
-        .product-image img {
-            height: 400px;
-        }
+            color: #fff;
 
-        .product-info {
-            padding: 40px 25px;
+            border-color: #111;
         }
 
 
-        .header-icons a {
-            color: #111;
+        /* ========================================
+           BOTÃO DO CARRINHO
+        ======================================== */
+
+        .cart-button {
+            width: 100%;
+
+            min-height: 54px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 14px 20px;
+
+            border: 1px solid #111;
+
+            background: #111;
+
+            color: #fff;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 17px;
+
+            font-weight: 600;
+
+            letter-spacing: .05em;
+
+            text-transform: uppercase;
+
             text-decoration: none;
-            font-size: 20px;
+
+            cursor: pointer;
+
+            transition: .2s ease;
         }
 
-        .header-icons a:hover {
-            opacity: 0.5;
+
+        .cart-button:hover {
+            background: #333;
+
+            border-color: #333;
         }
-    }
-
-</style>
 
 
+        .cart-button.disabled,
+        .cart-button:disabled {
+            background: #d7d7d7;
+
+            color: #777;
+
+            border-color: #d7d7d7;
+
+            cursor: not-allowed;
+        }
+
+
+        .cart-button.disabled:hover,
+        .cart-button:disabled:hover {
+            background: #d7d7d7;
+
+            border-color: #d7d7d7;
+        }
+
+
+        /* ========================================
+           FAVORITO
+        ======================================== */
+
+        .favorite {
+            width: 100%;
+
+            min-height: 50px;
+
+            margin-top: 12px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            padding: 12px 18px;
+
+            border: 1px solid #111;
+
+            background: #fff;
+
+            color: #111;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 16px;
+
+            font-weight: 500;
+
+            letter-spacing: .04em;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+
+        .favorite:hover {
+            background: #f4f4f4;
+        }
+
+
+        /* ========================================
+           DESKTOP
+           SEM ROLAGEM VERTICAL
+        ======================================== */
+
+        @media (min-width: 1001px) and (min-height: 700px) {
+
+            body {
+                overflow-y: hidden;
+            }
+
+        }
+
+
+        /* ========================================
+           NOTEBOOKS MENORES
+        ======================================== */
+
+        @media (max-width: 1250px) and (min-width: 1001px) {
+
+            .product-page {
+                padding: 24px 34px;
+
+                gap: 38px;
+
+                grid-template-columns:
+                    minmax(0, 1fr)
+                    minmax(390px, .88fr);
+            }
+
+
+            .product-image-wrapper,
+            .product-image-wrapper img {
+                max-height: 500px;
+            }
+
+
+            .product-info h1 {
+                font-size: 46px;
+            }
+
+
+            .description {
+                margin-bottom: 18px;
+            }
+
+
+            .price {
+                margin-bottom: 20px;
+            }
+
+        }
+
+
+        /* ========================================
+           TABLET
+        ======================================== */
+
+        @media (max-width: 1000px) {
+
+            body {
+                overflow-y: auto;
+            }
+
+
+            .product-page {
+                height: auto;
+
+                grid-template-columns: 1fr;
+
+                gap: 30px;
+
+                padding: 32px 25px 60px;
+            }
+
+
+            .product-image-wrapper {
+                height: auto;
+
+                max-height: none;
+            }
+
+
+            .product-image-wrapper img {
+                width: 100%;
+
+                height: auto;
+
+                max-width: 720px;
+
+                max-height: 500px;
+            }
+
+        }
+
+
+        /* ========================================
+           CELULAR
+        ======================================== */
+
+        @media (max-width: 600px) {
+
+            .product-page {
+                padding: 20px 16px 45px;
+
+                gap: 24px;
+            }
+
+
+            .product-image-wrapper img {
+                max-height: 350px;
+            }
+
+
+            .product-info h1 {
+                font-size: 42px;
+            }
+
+
+            .description {
+                font-size: 15px;
+            }
+
+
+            .size {
+                width: 46px;
+
+                height: 44px;
+            }
+
+        }
+
+    </style>
 </head>
+
 
 <body>
 
 
-<!-- HEADER -->
-
-@include('partials.store-header')
-
-<!-- PRODUTO -->
-
-<main class="product-page">
+    @include('partials.store-header')
 
 
-    <!-- IMAGEM -->
+    <main class="product-page">
 
-    <div class="product-image">
 
-        <img
-            src="{{ $product->image_url }}"
-            alt="{{ $product->name }}"
+        {{-- IMAGEM DO PRODUTO --}}
+
+        <div
+            class="product-image-wrapper {{ $product->stock <= 0 ? 'out-of-stock' : '' }}"
         >
 
-    </div>
+
+            @if($product->stock <= 0)
+
+                <span class="stock-badge">
+                    Sem estoque
+                </span>
+
+            @endif
 
 
-    <!-- INFORMAÇÕES -->
+            <img
+                src="{{ $product->image_url }}"
+                alt="{{ $product->name }}"
+            >
 
-    <div class="product-info">
-
-        <span class="category">
-
-            {{ $product->category->name }}
-
-        </span>
-
-
-        <h1>
-
-            {{ $product->name }}
-
-        </h1>
-
-
-        <p class="description">
-
-            {{ $product->description }}
-
-        </p>
-
-
-        <div class="price">
-
-            R$ {{ number_format($product->price, 2, ',', '.') }}
 
         </div>
 
 
-@php
-    $sizes = match($product->category->slug) {
-        'tenis' => [
-            '35', '36', '37', '38',
-            '39', '40', '41', '42'
-        ],
 
-        'roupas' => [
-            'P', 'M', 'G', 'GG'
-        ],
+        {{-- INFORMAÇÕES DO PRODUTO --}}
 
-        default => [
-            'Único'
-        ],
-    };
-@endphp
+        <div class="product-info">
 
-@auth
-    <form
-        action="{{ route('cart.add', $product->id) }}"
-        method="POST"
-        class="cart-form"
-    >
-        @csrf
 
-        <div class="sizes-title">
-            Escolha o tamanho
-        </div>
+            <span class="category">
 
-        <div class="sizes">
-            @foreach($sizes as $size)
-                <label class="size">
-                    <input
-                        type="radio"
-                        name="size"
-                        value="{{ $size }}"
-                        required
+                {{ $product->category->name }}
+
+            </span>
+
+
+            <h1>
+
+                {{ $product->name }}
+
+            </h1>
+
+
+            <p class="description">
+
+                {{ $product->description }}
+
+            </p>
+
+
+            <div class="price">
+
+                R$ {{ number_format(
+                    $product->price,
+                    2,
+                    ',',
+                    '.'
+                ) }}
+
+            </div>
+
+
+
+            {{-- AVISO SEM ESTOQUE --}}
+
+            @if($product->stock <= 0)
+
+                <div class="stock-alert">
+
+                    <strong>
+                        Sem estoque
+                    </strong>
+
+                    <span>
+                        Este produto está temporariamente indisponível.
+                    </span>
+
+                </div>
+
+            @endif
+
+
+
+            {{-- TAMANHOS --}}
+
+            @php
+
+                $sizes = match($product->category->slug) {
+
+                    'tenis' => [
+                        '35',
+                        '36',
+                        '37',
+                        '38',
+                        '39',
+                        '40',
+                        '41',
+                        '42'
+                    ],
+
+                    'roupas' => [
+                        'P',
+                        'M',
+                        'G',
+                        'GG'
+                    ],
+
+                    default => [
+                        'Único'
+                    ],
+
+                };
+
+            @endphp
+
+
+
+            {{-- PRODUTO DISPONÍVEL --}}
+
+            @if($product->stock > 0)
+
+
+                @auth
+
+
+                    <form
+                        action="{{ route('cart.add', $product->id) }}"
+                        method="POST"
+                        class="cart-form"
                     >
 
-                    {{ $size }}
-                </label>
-            @endforeach
+                        @csrf
+
+
+                        <div class="sizes-title">
+                            Escolha o tamanho
+                        </div>
+
+
+                        <div class="sizes">
+
+
+                            @foreach($sizes as $size)
+
+
+                                <label class="size">
+
+
+                                    <input
+                                        type="radio"
+                                        name="size"
+                                        value="{{ $size }}"
+                                        required
+                                    >
+
+
+                                    {{ $size }}
+
+
+                                </label>
+
+
+                            @endforeach
+
+
+                        </div>
+
+
+
+                        <button
+                            type="submit"
+                            class="cart-button"
+                        >
+
+                            Adicionar ao carrinho
+
+                        </button>
+
+
+                    </form>
+
+
+                @else
+
+
+                    <a
+                        href="{{ route('login') }}"
+                        class="cart-button"
+                    >
+
+                        Entre para adicionar ao carrinho
+
+                    </a>
+
+
+                @endauth
+
+
+
+            {{-- PRODUTO SEM ESTOQUE --}}
+
+            @else
+
+
+                <button
+                    type="button"
+                    class="cart-button disabled"
+                    disabled
+                >
+
+                    Produto indisponível
+
+                </button>
+
+
+            @endif
+
+
+
+            {{-- FAVORITOS --}}
+
+            @auth
+
+
+                <form
+                    action="{{ route('favorites.toggle', $product->id) }}"
+                    method="POST"
+                >
+
+                    @csrf
+
+
+                    <button
+                        type="submit"
+                        class="favorite"
+                    >
+
+                        {{ $isFavorite
+                            ? '♥ REMOVER DOS FAVORITOS'
+                            : '♡ ADICIONAR AOS FAVORITOS'
+                        }}
+
+                    </button>
+
+
+                </form>
+
+
+            @else
+
+
+                <a
+                    href="{{ route('login') }}"
+                    class="favorite"
+                >
+
+                    ♡ ENTRE PARA FAVORITAR
+
+                </a>
+
+
+            @endauth
+
+
         </div>
 
-        <button
-            type="submit"
-            class="cart-button"
-        >
-            ADICIONAR AO CARRINHO
-        </button>
-    </form>
-@else
-    <a
-        href="{{ route('login') }}"
-        class="cart-button"
-        style="
-            display: block;
-            text-align: center;
-            text-decoration: none;
-        "
-    >
-        ENTRE PARA ADICIONAR AO CARRINHO
-    </a>
-@endauth
 
-@auth
-    <form
-        action="{{ route('favorites.toggle', $product->id) }}"
-        method="POST"
-    >
-        @csrf
-
-        <button
-            type="submit"
-            class="favorite"
-        >
-            {{ $isFavorite
-                ? '♥ REMOVER DOS FAVORITOS'
-                : '♡ ADICIONAR AOS FAVORITOS' }}
-        </button>
-    </form>
-@else
-    <a
-        href="{{ route('login') }}"
-        class="favorite"
-        style="
-            display: block;
-            text-align: center;
-            text-decoration: none;
-            color: #111;
-        "
-    >
-        ♡ ENTRE PARA FAVORITAR
-    </a>
-@endauth
-
-
-
-    </div>
-
-</main>
+    </main>
 
 
 </body>

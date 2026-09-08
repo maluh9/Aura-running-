@@ -52,17 +52,16 @@
 
 
         .logo {
-            color: #111;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
 
-            text-decoration: none;
-
-            font-family: 'Barlow Condensed', sans-serif;
-
-            font-size: 31px;
-            font-weight: 700;
-
-            letter-spacing: .20em;
-        }
+.logo img {
+    width: 105px;
+    height: auto;
+    display: block;
+}
 
 
         .store-button {
@@ -819,9 +818,9 @@
             }
 
 
-            .logo {
-                font-size: 26px;
-            }
+            .logo img {
+    width: 90px;
+}
 
 
             .store-button {
@@ -879,14 +878,15 @@
 <header>
 
 
-    <a
-        href="{{ route('home') }}"
-        class="logo"
+  <a
+    href="{{ route('home') }}"
+    class="logo"
+>
+    <img
+        src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 12_48_49.png') }}"
+        alt="AURA Running"
     >
-
-        AURA
-
-    </a>
+</a>
 
 
     <a

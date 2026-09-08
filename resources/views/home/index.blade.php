@@ -1110,6 +1110,49 @@ body.login-travado{
     }
 }
 
+/* ══════════════════════════════
+   PRODUTOS SEM ESTOQUE
+══════════════════════════════ */
+
+.home-out-of-stock img {
+    opacity: .68;
+}
+
+.home-stock-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    z-index: 9;
+
+    padding: 8px 13px;
+
+    background: #111;
+    color: #fff;
+
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+
+    letter-spacing: .10em;
+    text-transform: uppercase;
+
+    border-radius: 3px;
+}
+
+.home-stock-status {
+    display: block;
+    margin-top: 8px;
+
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+
+    letter-spacing: .06em;
+    text-transform: uppercase;
+
+    color: #777;
+}
+
     </style>
 </head>
 
@@ -1201,10 +1244,10 @@ body.login-travado{
         <!-- Perfil -->
         <a
             href="{{ auth()->check()
-                ? route('profile.edit')
+                ? route('account.index')
                 : route('login') }}"
             class="icone"
-            title="{{ auth()->check() ? 'Meu perfil' : 'Entrar' }}"
+            title="{{ auth()->check() ? 'Minha conta' : 'Entrar' }}"
         >
             <svg
                 width="19"
@@ -1325,50 +1368,75 @@ body.login-travado{
     >
         <div class="carrossel">
             @foreach($featuredProducts as $product)
-                <article class="card-destaque">
-                    @auth
-                        <form
-                            action="{{ route('favorites.toggle', $product->id) }}"
-                            method="POST"
-                            class="favorite-product-form"
-                        >
-                            @csrf
 
-                            <button
-                                type="submit"
-                                class="favorite-button {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
-                                title="Alternar favorito"
-                            >
-                                {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
-                            </button>
-                        </form>
-                    @else
-                        <div class="favorite-product-form">
-                            <a
-                                href="{{ route('login') }}"
-                                class="favorite-button"
-                                title="Entre para favoritar"
-                            >
-                                ♡
-                            </a>
-                        </div>
-                    @endauth
+    <article
+        class="card-destaque {{ $product->stock <= 0 ? 'home-out-of-stock' : '' }}"
+    >
 
-                    <a
-                        href="{{ route('products.show', $product->slug) }}"
-                        class="card-destaque-link"
-                    >
-                        <img
-                            src="{{ $product->image_url }}"
-                            alt="{{ $product->name }}"
-                        >
+        @auth
 
-                        <span class="card-destaque-nome">
-                            {{ $product->name }}
-                        </span>
-                    </a>
-                </article>
-            @endforeach
+            <form
+                action="{{ route('favorites.toggle', $product->id) }}"
+                method="POST"
+                class="favorite-product-form"
+            >
+                @csrf
+
+                <button
+                    type="submit"
+                    class="favorite-button {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
+                    title="Alternar favorito"
+                >
+                    {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
+                </button>
+            </form>
+
+        @else
+
+            <div class="favorite-product-form">
+
+                <a
+                    href="{{ route('login') }}"
+                    class="favorite-button"
+                    title="Entre para favoritar"
+                >
+                    ♡
+                </a>
+
+            </div>
+
+        @endauth
+
+
+        <a
+            href="{{ route('products.show', $product->slug) }}"
+            class="card-destaque-link"
+        >
+
+            @if($product->stock <= 0)
+
+                <span class="home-stock-badge">
+                    Sem estoque
+                </span>
+
+            @endif
+
+
+            <img
+                src="{{ $product->image_url }}"
+                alt="{{ $product->name }}"
+            >
+
+
+            <span class="card-destaque-nome">
+                {{ $product->name }}
+            </span>
+
+        </a>
+
+    </article>
+
+@endforeach
         </div>
     </div>
 </section>
@@ -1398,61 +1466,107 @@ body.login-travado{
         id="carrossel-roupas"
     >
         <div class="carrossel">
-            @foreach($outfitProducts as $product)
-                <article class="card-roupa">
-                    @auth
-                        <form
-                            action="{{ route('favorites.toggle', $product->id) }}"
-                            method="POST"
-                            class="favorite-product-form"
-                        >
-                            @csrf
+           @foreach($outfitProducts as $product)
 
-                            <button
-                                type="submit"
-                                class="btn-favorito {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
-                            >
-                                {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
-                            </button>
-                        </form>
-                    @else
-                        <div class="favorite-product-form">
-                            <a
-                                href="{{ route('login') }}"
-                                class="btn-favorito"
-                            >
-                                ♡
-                            </a>
-                        </div>
-                    @endauth
+    <article
+        class="card-roupa {{ $product->stock <= 0 ? 'home-out-of-stock' : '' }}"
+    >
 
-                    <a
-                        href="{{ route('products.show', $product->slug) }}"
-                        class="card-roupa-img"
-                    >
-                        <img
-                            src="{{ $product->image_url }}"
-                            alt="{{ $product->name }}"
-                        >
-                    </a>
+        @auth
 
-                    <div class="card-roupa-info">
-                        @if(in_array($product->id, $favoriteProductIds))
-                            <span class="tag-favoritos">
-                                Favorito
-                            </span>
-                        @endif
+            <form
+                action="{{ route('favorites.toggle', $product->id) }}"
+                method="POST"
+                class="favorite-product-form"
+            >
+                @csrf
 
-                        <h3>{{ $product->name }}</h3>
+                <button
+                    type="submit"
+                    class="btn-favorito {{ in_array($product->id, $favoriteProductIds) ? 'active' : '' }}"
+                >
+                    {{ in_array($product->id, $favoriteProductIds) ? '♥' : '♡' }}
+                </button>
 
-                        <p>{{ $product->description }}</p>
+            </form>
 
-                        <strong>
-                            R$ {{ number_format($product->price, 2, ',', '.') }}
-                        </strong>
-                    </div>
-                </article>
-            @endforeach
+        @else
+
+            <div class="favorite-product-form">
+
+                <a
+                    href="{{ route('login') }}"
+                    class="btn-favorito"
+                >
+                    ♡
+                </a>
+
+            </div>
+
+        @endauth
+
+
+        <a
+            href="{{ route('products.show', $product->slug) }}"
+            class="card-roupa-img"
+        >
+
+            @if($product->stock <= 0)
+
+                <span class="home-stock-badge">
+                    Sem estoque
+                </span>
+
+            @endif
+
+
+            <img
+                src="{{ $product->image_url }}"
+                alt="{{ $product->name }}"
+            >
+
+        </a>
+
+
+        <div class="card-roupa-info">
+
+            @if(in_array($product->id, $favoriteProductIds))
+
+                <span class="tag-favoritos">
+                    Favorito
+                </span>
+
+            @endif
+
+
+            <h3>
+                {{ $product->name }}
+            </h3>
+
+
+            <p>
+                {{ $product->description }}
+            </p>
+
+
+            <strong>
+                R$ {{ number_format($product->price, 2, ',', '.') }}
+            </strong>
+
+
+            @if($product->stock <= 0)
+
+                <span class="home-stock-status">
+                    Temporariamente indisponível
+                </span>
+
+            @endif
+
+        </div>
+
+    </article>
+
+@endforeach
         </div>
     </div>
 </section>
