@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
+use RuntimeException;
 
 class OrderController extends Controller
 {
@@ -22,7 +24,10 @@ class OrderController extends Controller
             ->latest()
             ->get();
 
-        return view('orders.index', compact('orders'));
+        return view(
+            'orders.index',
+            compact('orders')
+        );
     }
 
 
@@ -35,7 +40,10 @@ class OrderController extends Controller
             ->where('user_id', Auth::id())
             ->findOrFail($id);
 
-        return view('orders.show', compact('order'));
+        return view(
+            'orders.show',
+            compact('order')
+        );
     }
 
 
@@ -44,53 +52,317 @@ class OrderController extends Controller
      */
     public function checkout(): RedirectResponse
     {
-        $cart = Cart::with('items.product')
-            ->where('user_id', Auth::id())
+        $userId = Auth::id();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | CARRINHO
+        |--------------------------------------------------------------------------
+        */
+
+        $cart = Cart::where('user_id', $userId)
+            ->with('items')
             ->first();
 
-        // Verifica se existe carrinho
-        if (!$cart || $cart->items->count() === 0) {
+
+        if (
+            !$cart
+            || $cart->items->isEmpty()
+        ) {
+
             return redirect()
                 ->route('cart.index')
-                ->with('error', 'Seu carrinho está vazio.');
+                ->with(
+                    'error',
+                    'Seu carrinho está vazio.'
+                );
         }
 
-        // Calcula o total
-        $total = $cart->items->sum(function ($item) {
-            return $item->price * $item->quantity;
-        });
 
-        // Cria o pedido e seus itens
-        $order = DB::transaction(function () use ($cart, $total) {
+        try {
 
-            $order = Order::create([
-                'user_id' => Auth::id(),
-                'order_number' => 'AURA-' . strtoupper(uniqid()),
-                'total' => $total,
-                'status' => 'pedido_realizado',
-                'payment_status' => 'pendente',
-            ]);
+            /*
+            |--------------------------------------------------------------------------
+            | TRANSAÇÃO
+            |--------------------------------------------------------------------------
+            |
+            | Tudo acontece junto:
+            |
+            | 1. verifica produtos;
+            | 2. verifica categorias;
+            | 3. verifica estoque;
+            | 4. calcula o total;
+            | 5. cria o pedido;
+            | 6. cria os itens;
+            | 7. desconta o estoque;
+            | 8. limpa o carrinho.
+            |
+            | Se alguma etapa falhar, nada é salvo pela metade.
+            |
+            */
 
-            foreach ($cart->items as $item) {
+            $order = DB::transaction(
+                function () use ($cart, $userId) {
 
-                OrderItem::create([
-                    'order_id' => $order->id,
-                    'product_id' => $item->product_id,
-                    'size' => $item->size,
-                    'quantity' => $item->quantity,
-                    'price' => $item->price,
-                ]);
-            }
 
-            return $order;
-        });
+                    $orderItems = [];
 
-        // Limpa o carrinho depois de criar o pedido
-        $cart->items()->delete();
+                    $total = 0;
+
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | VERIFICA TODOS OS PRODUTOS
+                    |--------------------------------------------------------------------------
+                    */
+
+                    foreach ($cart->items as $item) {
+
+
+                        /*
+                        | lockForUpdate impede duas compras simultâneas
+                        | de venderem o mesmo estoque.
+                        */
+
+                        $product = Product::with('category')
+                            ->whereKey($item->product_id)
+                            ->lockForUpdate()
+                            ->first();
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | PRODUTO EXISTE?
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (!$product) {
+
+                            throw new RuntimeException(
+                                'Um dos produtos do seu carrinho não está mais disponível.'
+                            );
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | PRODUTO ATIVO?
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (!$product->active) {
+
+                            throw new RuntimeException(
+                                "O produto {$product->name} não está mais disponível para compra."
+                            );
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | CATEGORIA ATIVA?
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if (
+                            !$product->category
+                            || !$product->category->active
+                        ) {
+
+                            throw new RuntimeException(
+                                "O produto {$product->name} não está disponível no momento."
+                            );
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | ESTOQUE
+                        |--------------------------------------------------------------------------
+                        */
+
+                        if ($product->stock < 1) {
+
+                            throw new RuntimeException(
+                                "O produto {$product->name} está sem estoque."
+                            );
+                        }
+
+
+                        if (
+                            $item->quantity
+                            > $product->stock
+                        ) {
+
+                            throw new RuntimeException(
+                                "A quantidade solicitada de {$product->name} não está disponível em estoque."
+                            );
+                        }
+
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | PREÇO ATUAL
+                        |--------------------------------------------------------------------------
+                        |
+                        | Usamos o preço atual do produto no momento
+                        | em que o pedido é finalizado.
+                        |
+                        */
+
+                        $price = $product->price;
+
+
+                        $subtotal =
+                            $price
+                            * $item->quantity;
+
+
+                        $total += $subtotal;
+
+
+                        /*
+                        | Guardamos temporariamente os dados.
+                        | O pedido será criado depois de todos
+                        | os produtos serem validados.
+                        */
+
+                        $orderItems[] = [
+                            'product' => $product,
+                            'size' => $item->size,
+                            'quantity' => $item->quantity,
+                            'price' => $price,
+                        ];
+                    }
+
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | CRIA O PEDIDO
+                    |--------------------------------------------------------------------------
+                    */
+
+                    $order = Order::create([
+
+                        'user_id' => $userId,
+
+                        'order_number' =>
+                            'AURA-'
+                            . strtoupper(uniqid()),
+
+                        'total' => $total,
+
+                        'status' =>
+                            'pedido_realizado',
+
+                        'payment_status' =>
+                            'pendente',
+
+                    ]);
+
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | CRIA OS ITENS + DESCONTA ESTOQUE
+                    |--------------------------------------------------------------------------
+                    */
+
+                    foreach (
+                        $orderItems as $orderItem
+                    ) {
+
+
+                        $product =
+                            $orderItem['product'];
+
+
+                        OrderItem::create([
+
+                            'order_id' =>
+                                $order->id,
+
+                            'product_id' =>
+                                $product->id,
+
+                            'size' =>
+                                $orderItem['size'],
+
+                            'quantity' =>
+                                $orderItem['quantity'],
+
+                            'price' =>
+                                $orderItem['price'],
+
+                        ]);
+
+
+                        /*
+                        | Desconta do estoque.
+                        */
+
+                        $product->decrement(
+                            'stock',
+                            $orderItem['quantity']
+                        );
+
+                    }
+
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | LIMPA O CARRINHO
+                    |--------------------------------------------------------------------------
+                    |
+                    | Só limpa se o pedido inteiro tiver sido criado.
+                    |
+                    */
+
+                    $cart->items()->delete();
+
+
+                    return $order;
+                }
+            );
+
+
+        } catch (RuntimeException $exception) {
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ERRO DE DISPONIBILIDADE
+            |--------------------------------------------------------------------------
+            */
+
+            return redirect()
+                ->route('cart.index')
+                ->with(
+                    'error',
+                    $exception->getMessage()
+                );
+        }
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | SUCESSO
+        |--------------------------------------------------------------------------
+        */
 
         return redirect()
-            ->route('orders.show', $order->id)
-            ->with('success', 'Pedido realizado com sucesso!');
+            ->route(
+                'orders.show',
+                $order->id
+            )
+            ->with(
+                'success',
+                'Pedido realizado com sucesso!'
+            );
     }
 }
-

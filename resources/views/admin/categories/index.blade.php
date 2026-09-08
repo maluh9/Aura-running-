@@ -684,7 +684,9 @@
 
         <div class="category-pagination">
 
-            {{ $categories->links() }}
+            @include('admin.partials.pagination', [
+                'paginator' => $categories
+            ])  
 
         </div>
 

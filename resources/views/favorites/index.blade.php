@@ -1,297 +1,780 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    @include('partials.page-meta', ['pageTitle' => 'Favoritos'])
 
-@include('partials.page-meta', ['pageTitle' => 'Favoritos'])
 
-<style>
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
+    <style>
 
-    body {
-        font-family: Arial, Helvetica, sans-serif;
-        color: #111;
-        background: #fff;
-    }
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
 
-    header {
-        height: 80px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 0 50px;
-        border-bottom: 1px solid #eee;
-    }
 
-    .logo {
-        font-size: 25px;
-        font-weight: 800;
-        letter-spacing: 3px;
-    }
-
-    nav {
-        display: flex;
-        gap: 35px;
-    }
-
-    nav a {
-        color: #111;
-        text-decoration: none;
-        font-size: 14px;
-    }
-
-    nav a:hover {
-        opacity: 0.5;
-    }
-
-    .header-icons {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-    }
-
-    .header-icons a {
-        color: #111;
-        text-decoration: none;
-        font-size: 20px;
-    }
-
-    .header-icons a:hover {
-        opacity: 0.5;
-    }
-
-    .page {
-        padding: 60px 50px;
-    }
-
-    .page h1 {
-        font-size: 38px;
-        margin-bottom: 10px;
-    }
-
-    .subtitle {
-        color: #666;
-        margin-bottom: 40px;
-    }
-
-    .favorites-grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 25px;
-    }
-
-    .product-card {
-        position: relative;
-    }
-
-    .product-image {
-        width: 100%;
-        height: 360px;
-        background: #f5f5f5;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 18px;
-    }
-
-    .product-image img {
-        width: 100%;
-        height: 100%;
-        object-fit: contain;
-    }
-
-    .product-name {
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 8px;
-    }
-
-    .product-price {
-        font-size: 15px;
-        margin-bottom: 15px;
-    }
-
-    .product-actions {
-        display: flex;
-        gap: 10px;
-    }
-
-    .view-product {
-        flex: 1;
-        padding: 13px;
-        background: #111;
-        color: white;
-        text-align: center;
-        text-decoration: none;
-        font-size: 13px;
-        font-weight: bold;
-    }
-
-    .remove-button {
-        width: 45px;
-        border: 1px solid #111;
-        background: white;
-        cursor: pointer;
-        font-size: 18px;
-    }
-
-    .remove-button:hover {
-        background: #f5f5f5;
-    }
-
-    .empty {
-        text-align: center;
-        padding: 100px 20px;
-    }
-
-    .empty h2 {
-        font-size: 25px;
-        margin-bottom: 15px;
-    }
-
-    .empty p {
-        color: #666;
-        margin-bottom: 25px;
-    }
-
-    .empty a {
-        display: inline-block;
-        padding: 15px 30px;
-        background: #111;
-        color: white;
-        text-decoration: none;
-        font-weight: bold;
-    }
-
-    @media (max-width: 900px) {
-
-        header {
-            padding: 0 20px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        nav {
-            display: none;
+
+        body {
+            font-family: 'Barlow', sans-serif;
+
+            background: #f6f6f6;
+
+            color: #111;
         }
+
+
+
+        /* =========================================
+           PÁGINA
+        ========================================= */
 
         .page {
-            padding: 40px 20px;
+            width: 100%;
+
+            max-width: 1380px;
+
+            margin: 0 auto;
+
+            padding: 65px 50px 100px;
         }
+
+
+
+        /* =========================================
+           CABEÇALHO DA PÁGINA
+        ========================================= */
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 30px;
+
+            margin-bottom: 42px;
+        }
+
+
+        .page-label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: #999;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            letter-spacing: .15em;
+
+            text-transform: uppercase;
+        }
+
+
+        .page h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 56px;
+            font-weight: 600;
+
+            line-height: .95;
+
+            letter-spacing: -.02em;
+        }
+
+
+        .subtitle {
+            max-width: 520px;
+
+            margin-top: 13px;
+
+            color: #777;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+        }
+
+
+        .favorites-count {
+            min-height: 40px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 18px;
+
+            background: #fff;
+
+            border: 1px solid #dedede;
+            border-radius: 999px;
+
+            color: #555;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            letter-spacing: .05em;
+
+            text-transform: uppercase;
+
+            white-space: nowrap;
+        }
+
+
+
+        /* =========================================
+           GRID
+        ========================================= */
 
         .favorites-grid {
-            grid-template-columns: repeat(2, 1fr);
+            display: grid;
+
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+
+            gap: 30px 18px;
         }
-    }
 
-    @media (max-width: 550px) {
 
-        .favorites-grid {
-            grid-template-columns: 1fr;
+
+        /* =========================================
+           CARD PRODUTO
+        ========================================= */
+
+        .product-card {
+            min-width: 0;
         }
-    }
-</style>
 
+
+        .product-image-wrapper {
+            position: relative;
+
+            overflow: hidden;
+
+            width: 100%;
+            aspect-ratio: 3 / 4;
+
+            margin-bottom: 17px;
+
+            background: #eeeeee;
+
+            border-radius: 7px;
+        }
+
+
+        .product-image-link {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+        }
+
+
+        .product-image {
+            width: 100%;
+            height: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
+
+            object-fit: cover;
+
+            transition: transform .35s ease;
+        }
+
+
+        .product-card:hover .product-image img {
+            transform: scale(1.035);
+        }
+
+
+
+        /* =========================================
+           CORAÇÃO
+        ========================================= */
+
+        .favorite-form {
+            position: absolute;
+
+            top: 14px;
+            right: 14px;
+
+            z-index: 5;
+        }
+
+
+        .remove-button {
+            width: 42px;
+            height: 42px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+
+            background: rgba(255,255,255,.94);
+
+            color: #111;
+
+            border: 1px solid rgba(0,0,0,.10);
+            border-radius: 50%;
+
+            font-size: 20px;
+
+            cursor: pointer;
+
+            box-shadow: 0 4px 14px rgba(0,0,0,.07);
+
+            transition: .2s ease;
+        }
+
+
+        .remove-button:hover {
+            background: #111;
+
+            color: #fff;
+
+            border-color: #111;
+
+            transform: scale(1.05);
+        }
+
+
+
+        /* =========================================
+           INFORMAÇÕES
+        ========================================= */
+
+        .product-info {
+            padding: 0 2px;
+        }
+
+
+        .product-label {
+            display: block;
+
+            margin-bottom: 6px;
+
+            color: #999;
+
+            font-size: 9px;
+            font-weight: 600;
+
+            letter-spacing: .11em;
+
+            text-transform: uppercase;
+        }
+
+
+        .product-name {
+            margin-bottom: 5px;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 21px;
+            font-weight: 600;
+
+            line-height: 1.1;
+        }
+
+
+        .product-price {
+            margin-bottom: 16px;
+
+            color: #333;
+
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+
+
+        /* =========================================
+           BOTÃO VER PRODUTO
+        ========================================= */
+
+        .view-product {
+            width: 100%;
+            min-height: 43px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 18px;
+
+            background: #111;
+
+            color: #fff;
+
+            border: 1px solid #111;
+            border-radius: 999px;
+
+            text-align: center;
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            letter-spacing: .05em;
+
+            transition: .2s ease;
+        }
+
+
+        .view-product:hover {
+            background: #fff;
+
+            color: #111;
+
+            transform: translateY(-1px);
+
+            box-shadow: 0 6px 16px rgba(0,0,0,.07);
+        }
+
+
+
+        /* =========================================
+           SEM FAVORITOS
+        ========================================= */
+
+        .empty {
+            min-height: 430px;
+
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            padding: 70px 30px;
+
+            background: #fff;
+
+            border: 1px solid #e4e4e4;
+            border-radius: 9px;
+
+            text-align: center;
+        }
+
+
+        .empty-heart {
+            width: 62px;
+            height: 62px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            margin-bottom: 22px;
+
+            background: #111;
+
+            color: #fff;
+
+            border-radius: 50%;
+
+            font-size: 25px;
+        }
+
+
+        .empty h2 {
+            margin-bottom: 8px;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+
+        .empty p {
+            max-width: 430px;
+
+            margin-bottom: 27px;
+
+            color: #777;
+
+            font-size: 14px;
+
+            line-height: 1.5;
+        }
+
+
+        .empty a {
+            min-height: 46px;
+
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0 26px;
+
+            background: #111;
+
+            color: #fff;
+
+            border: 1px solid #111;
+            border-radius: 999px;
+
+            text-decoration: none;
+
+            font-size: 11px;
+            font-weight: 600;
+
+            letter-spacing: .05em;
+
+            transition: .2s ease;
+        }
+
+
+        .empty a:hover {
+            background: #fff;
+
+            color: #111;
+
+            transform: translateY(-1px);
+
+            box-shadow: 0 6px 16px rgba(0,0,0,.07);
+        }
+
+
+
+        /* =========================================
+           RESPONSIVO
+        ========================================= */
+
+        @media (max-width: 1100px) {
+
+            .favorites-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+
+        }
+
+
+        @media (max-width: 800px) {
+
+            .page {
+                padding: 45px 22px 75px;
+            }
+
+
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+
+                gap: 20px;
+            }
+
+
+            .page h1 {
+                font-size: 45px;
+            }
+
+
+            .favorites-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+
+                gap: 28px 14px;
+            }
+
+        }
+
+
+        @media (max-width: 520px) {
+
+            .page {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+
+
+            .page h1 {
+                font-size: 41px;
+            }
+
+
+            .favorites-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .product-image-wrapper {
+                aspect-ratio: 4 / 5;
+            }
+
+        }
+
+    </style>
 
 </head>
 
+
 <body>
 
-@include('partials.store-header')
 
-<main class="page">
+    {{-- HEADER PADRÃO DA LOJA --}}
 
-
-<h1>Meus Favoritos</h1>
-
-<p class="subtitle">
-    Produtos que você salvou para depois.
-</p>
+    @include('partials.store-header')
 
 
-@if($favorites->count())
 
-    <div class="favorites-grid">
+    <main class="page">
 
-        @foreach($favorites as $favorite)
 
-            <div class="product-card">
+        {{-- =========================================
+             CABEÇALHO
+        ========================================= --}}
 
-                <div class="product-image">
+        <div class="page-header">
 
-                    <img
-                        src="{{ $favorite->product->image_url }}"
-                        alt="{{ $favorite->product->name }}"
-                    >
 
-                </div>
+            <div>
 
-                <div class="product-name">
-                    {{ $favorite->product->name }}
-                </div>
 
-                <div class="product-price">
-                    R$ {{ number_format($favorite->product->price, 2, ',', '.') }}
-                </div>
+                <span class="page-label">
 
-                <div class="product-actions">
+                    Sua seleção
 
-                    <a
-                        href="{{ route('products.show', $favorite->product->slug) }}"
-                        class="view-product"
-                    >
-                        VER PRODUTO
-                    </a>
+                </span>
 
-                    <form
-    action="{{ route('favorites.toggle', $favorite->product->id) }}"
-    method="POST"
->
-    @csrf
 
-    <button
-        type="submit"
-        class="remove-button"
-        title="Remover dos favoritos"
-    >
-        ♥
-    </button>
-</form>
+                <h1>
 
-                </div>
+                    Meus favoritos
+
+                </h1>
+
+
+                <p class="subtitle">
+
+                    Os produtos que você marcou para encontrar
+                    facilmente sempre que quiser.
+
+                </p>
+
 
             </div>
 
-        @endforeach
-
-    </div>
-
-@else
-
-    <div class="empty">
-
-        <h2>Você ainda não tem favoritos.</h2>
-
-        <p>
-            Salve seus produtos favoritos para encontrá-los facilmente depois.
-        </p>
-
-        <a href="/">
-            EXPLORAR PRODUTOS
-        </a>
-
-    </div>
-
-@endif
 
 
-</main>
+            @if($favorites->count())
+
+
+                <div class="favorites-count">
+
+                    {{ $favorites->count() }}
+
+                    {{ $favorites->count() === 1
+                        ? 'produto salvo'
+                        : 'produtos salvos' }}
+
+                </div>
+
+
+            @endif
+
+
+        </div>
+
+
+
+        {{-- =========================================
+             FAVORITOS
+        ========================================= --}}
+
+        @if($favorites->count())
+
+
+            <div class="favorites-grid">
+
+
+                @foreach($favorites as $favorite)
+
+
+                    <article class="product-card">
+
+
+
+                        {{-- IMAGEM --}}
+
+                        <div class="product-image-wrapper">
+
+
+                            <a
+                                href="{{ route('products.show', $favorite->product->slug) }}"
+                                class="product-image-link"
+                            >
+
+
+                                <div class="product-image">
+
+
+                                    <img
+                                        src="{{ $favorite->product->image_url }}"
+                                        alt="{{ $favorite->product->name }}"
+                                    >
+
+
+                                </div>
+
+
+                            </a>
+
+
+
+                            {{-- REMOVER FAVORITO --}}
+
+                            <form
+                                action="{{ route('favorites.toggle', $favorite->product->id) }}"
+                                method="POST"
+                                class="favorite-form"
+                            >
+
+                                @csrf
+
+
+                                <button
+                                    type="submit"
+                                    class="remove-button"
+                                    title="Remover dos favoritos"
+                                    aria-label="Remover {{ $favorite->product->name }} dos favoritos"
+                                >
+
+                                    ♥
+
+                                </button>
+
+
+                            </form>
+
+
+                        </div>
+
+
+
+                        {{-- INFORMAÇÕES --}}
+
+                        <div class="product-info">
+
+
+                            <span class="product-label">
+
+                                Favorito
+
+                            </span>
+
+
+                            <div class="product-name">
+
+                                {{ $favorite->product->name }}
+
+                            </div>
+
+
+                            <div class="product-price">
+
+                                R$ {{ number_format(
+                                    $favorite->product->price,
+                                    2,
+                                    ',',
+                                    '.'
+                                ) }}
+
+                            </div>
+
+
+
+                            <a
+                                href="{{ route('products.show', $favorite->product->slug) }}"
+                                class="view-product"
+                            >
+
+                                VER PRODUTO
+
+                            </a>
+
+
+                        </div>
+
+
+                    </article>
+
+
+                @endforeach
+
+
+            </div>
+
+
+        @else
+
+
+            {{-- =========================================
+                 FAVORITOS VAZIOS
+            ========================================= --}}
+
+            <div class="empty">
+
+
+                <div class="empty-heart">
+
+                    ♡
+
+                </div>
+
+
+                <h2>
+
+                    Sua lista de favoritos está vazia
+
+                </h2>
+
+
+                <p>
+
+                    Salve os produtos que mais combinam com você
+                    e encontre tudo rapidamente por aqui.
+
+                </p>
+
+
+                <a href="{{ route('home') }}">
+
+                    EXPLORAR PRODUTOS
+
+                </a>
+
+
+            </div>
+
+
+        @endif
+
+
+    </main>
+
 
 </body>
+
 </html>

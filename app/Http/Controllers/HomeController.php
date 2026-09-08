@@ -10,32 +10,68 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Exibe no máximo os 10 produtos marcados como destaque.
+        /*
+        |--------------------------------------------------------------------------
+        | DESTAQUES
+        |--------------------------------------------------------------------------
+        |
+        | Exibe somente produtos:
+        | - ativos;
+        | - marcados como destaque;
+        | - pertencentes a categorias ativas.
+        |
+        */
+
         $featuredProducts = Product::where('active', true)
             ->where('featured', true)
+            ->whereHas('category', function ($query) {
+
+                $query->where('active', true);
+
+            })
             ->with('category')
             ->orderBy('id')
             ->limit(10)
             ->get();
 
-        // Produtos exibidos no carrossel de outfits.
+
+        /*
+        |--------------------------------------------------------------------------
+        | OUTFITS
+        |--------------------------------------------------------------------------
+        |
+        | Exibe somente produtos:
+        | - ativos;
+        | - da categoria roupas;
+        | - cuja categoria também esteja ativa.
+        |
+        */
+
         $outfitProducts = Product::where('active', true)
             ->whereHas('category', function ($query) {
-                $query->where('slug', 'roupas');
+
+                $query
+                    ->where('slug', 'roupas')
+                    ->where('active', true);
+
             })
-            ->whereNotIn('name', [
-                'Aura Performance T-Shirt',
-                'Aura Running Shorts',
-            ])
             ->with('category')
             ->orderBy('id')
             ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | FAVORITOS DO USUÁRIO
+        |--------------------------------------------------------------------------
+        */
 
         $favoriteProductIds = Auth::check()
             ? Favorite::where('user_id', Auth::id())
                 ->pluck('product_id')
                 ->all()
             : [];
+
 
         return view('home.index', compact(
             'featuredProducts',

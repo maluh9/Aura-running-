@@ -12,6 +12,8 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 
 // HOME
 Route::get('/', [HomeController::class, 'index'])
@@ -37,7 +39,6 @@ Route::get(
 
 // ROTAS PROTEGIDAS POR LOGIN
 Route::middleware('auth')->group(function () {
-
     // CARRINHO
     Route::get('/carrinho', [CartController::class, 'index'])->name('cart.index');
     Route::post('/carrinho/adicionar/{productId}', [CartController::class, 'add'])->name('cart.add');
@@ -102,4 +103,48 @@ Route::middleware(['auth', 'admin'])
         Route::get('/categorias/{category}/editar', [AdminCategoryController::class, 'edit'])->name('categories.edit');
         Route::put('/categorias/{category}', [AdminCategoryController::class, 'update'])->name('categories.update');
         Route::patch('/categorias/{category}/status', [AdminCategoryController::class, 'toggleStatus'])->name('categories.toggle-status');
+
+        // PEDIDOS
+        Route::get(
+            '/pedidos',
+            [AdminOrderController::class, 'index']
+        )->name('orders.index');
+
+        Route::get(
+            '/pedidos/{order}',
+            [AdminOrderController::class, 'show']
+        )->name('orders.show');
+
+        Route::patch(
+            '/pedidos/{order}/status',
+            [AdminOrderController::class, 'updateStatus']
+        )->name('orders.update-status');
+
+        Route::patch(
+            '/pedidos/{order}/pagamento',
+            [AdminOrderController::class, 'updatePayment']
+        )->name('orders.update-payment');
+
+        Route::patch(
+            '/pedidos/{order}/rastreamento',
+            [AdminOrderController::class, 'updateTracking']
+        )->name('orders.update-tracking');
+
+        Route::patch(
+            '/pedidos/{order}/cancelar',
+            [AdminOrderController::class, 'cancel']
+        )->name('orders.cancel');
+
+
+        // CLIENTES
+        Route::get(
+            '/clientes',
+            [AdminCustomerController::class, 'index']
+        )->name('customers.index');
+
+        Route::get(
+            '/clientes/{customer}',
+            [AdminCustomerController::class, 'show']
+        )->name('customers.show');
+
     });

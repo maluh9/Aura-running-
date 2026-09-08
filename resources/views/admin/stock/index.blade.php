@@ -553,7 +553,7 @@
                                 @if($product->image)
 
                                     <img
-                                        src="{{ asset('storage/' . $product->image) }}"
+                                        src="{{ $product->image_url }}"
                                         alt="{{ $product->name }}"
                                     >
 
@@ -701,9 +701,11 @@
 
     <div class="stock-pagination">
 
-        {{ $products->links() }}
+    @include('admin.partials.pagination', [
+        'paginator' => $products
+    ])
 
-    </div>
+</div>
 
 
 </div>

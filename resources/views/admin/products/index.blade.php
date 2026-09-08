@@ -563,7 +563,7 @@
                                     @if($product->image)
 
                                         <img
-                                            src="{{ asset('storage/' . $product->image) }}"
+                                            src="{{ $product->image_url }}"
                                             alt="{{ $product->name }}"
                                         >
 
@@ -748,11 +748,13 @@
         </table>
 
 
-        <div class="admin-pagination">
+<div class="admin-pagination">
 
-            {{ $products->links() }}
+    @include('admin.partials.pagination', [
+        'paginator' => $products
+    ])
 
-        </div>
+</div>
 
 
     @else

@@ -635,7 +635,7 @@ textarea.form-control {
                     @if($product->image)
 
                         <img
-                            src="{{ asset('storage/' . $product->image) }}"
+                            src="{{ $product->image_url }}"
                             alt="{{ $product->name }}"
                         >
 

@@ -45,15 +45,15 @@ class Product extends Model
     public function getImageUrlAttribute(): string
     {
         if (!$this->image) {
-            return asset('favicon.ico');
-        }
+            return null;
+    }
 
-        // Imagens que estão dentro de public/imagens
+        // Imagens que já ficam dentro de public/imagens
         if (str_starts_with($this->image, 'imagens/')) {
             return asset($this->image);
-        }
+    }
 
-        // Imagens cadastradas pelo sistema em storage/app/public
-        return asset('storage/' . $this->image);
+        // Imagens cadastradas pelo painel Admin
+        return asset('storage/' . ltrim($this->image, '/'));
     }
 }
