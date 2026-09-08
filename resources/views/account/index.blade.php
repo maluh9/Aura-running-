@@ -1010,10 +1010,11 @@
                 </a>
 
 
-                <a href="{{ route('orders.index') }}">
-
+                <a
+                    href="{{ route('orders.tracking') }}"
+                    class="{{ request()->routeIs('orders.tracking') ? 'active' : '' }}"
+                >
                     Acompanhar entrega
-
                 </a>
 
 

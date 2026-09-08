@@ -14,6 +14,9 @@ use RuntimeException;
 
 class OrderController extends Controller
 {
+
+
+
     /**
      * Lista os pedidos do usuário.
      */
@@ -46,6 +49,23 @@ class OrderController extends Controller
         );
     }
 
+ /**
+ * Acompanha as entregas do usuário.
+ */
+public function tracking(): View
+{
+    $orders = Order::with('items.product')
+        ->where('user_id', Auth::id())
+        ->where('payment_status', 'pago')
+        ->where('status', '!=', 'cancelado')
+        ->latest()
+        ->get();
+
+    return view(
+        'orders.tracking',
+        compact('orders')
+    );
+}
 
     /**
      * Finaliza a compra.
