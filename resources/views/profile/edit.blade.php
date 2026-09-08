@@ -1,21 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     @include('partials.page-meta', ['pageTitle' => 'Perfil'])
 
-
     <style>
-
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
-
 
         * {
             margin: 0;
@@ -23,12 +20,9 @@
             box-sizing: border-box;
         }
 
-
         body {
             font-family: 'Barlow', sans-serif;
-
             background: #f6f6f6;
-
             color: #111;
         }
 
@@ -38,7 +32,7 @@
         ========================================= */
 
         header {
-            height: 82px;
+            height: 76px;
 
             display: flex;
             align-items: center;
@@ -53,16 +47,18 @@
 
 
         .logo {
-            color: #111;
+            display: flex;
+            align-items: center;
 
             text-decoration: none;
+        }
 
-            font-family: 'Barlow Condensed', sans-serif;
 
-            font-size: 31px;
-            font-weight: 700;
+        .logo img {
+            width: 105px;
+            height: auto;
 
-            letter-spacing: .20em;
+            display: block;
         }
 
 
@@ -71,7 +67,7 @@
         ========================================= */
 
         .back {
-            min-height: 42px;
+            min-height: 40px;
 
             display: inline-flex;
             align-items: center;
@@ -80,7 +76,6 @@
             padding: 0 20px;
 
             background: #fff;
-
             color: #111;
 
             border: 1px solid #dcdcdc;
@@ -99,7 +94,6 @@
 
         .back:hover {
             background: #111;
-
             color: #fff;
 
             border-color: #111;
@@ -110,33 +104,31 @@
         }
 
 
-
         /* =========================================
            PÁGINA
         ========================================= */
 
         .page {
             width: 100%;
-
-            max-width: 980px;
+            max-width: 1040px;
 
             margin: 0 auto;
 
-            padding: 60px 30px 90px;
+            padding: 28px 30px 45px;
         }
 
 
         .page-header {
-            margin-bottom: 38px;
+            margin-bottom: 24px;
         }
 
 
         .page-label {
-            margin-bottom: 8px;
+            margin-bottom: 5px;
 
             color: #999;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
 
             letter-spacing: .15em;
@@ -148,7 +140,7 @@
         h1 {
             font-family: 'Barlow Condensed', sans-serif;
 
-            font-size: 54px;
+            font-size: 50px;
             font-weight: 600;
 
             line-height: .95;
@@ -158,17 +150,16 @@
 
 
         .page-subtitle {
-            max-width: 530px;
+            max-width: 560px;
 
-            margin-top: 14px;
+            margin-top: 9px;
 
             color: #777;
 
-            font-size: 15px;
+            font-size: 14px;
 
-            line-height: 1.5;
+            line-height: 1.45;
         }
-
 
 
         /* =========================================
@@ -177,9 +168,9 @@
 
         .success,
         .error {
-            margin-bottom: 24px;
+            margin-bottom: 18px;
 
-            padding: 16px 18px;
+            padding: 13px 16px;
 
             background: #fff;
 
@@ -210,7 +201,6 @@
         }
 
 
-
         /* =========================================
            GRID
         ========================================= */
@@ -218,13 +208,14 @@
         .profile-grid {
             display: grid;
 
-            grid-template-columns: minmax(0, 1.6fr) minmax(280px, .8fr);
+            grid-template-columns:
+                minmax(0, 1.55fr)
+                minmax(280px, .8fr);
 
-            gap: 24px;
+            gap: 20px;
 
             align-items: start;
         }
-
 
 
         /* =========================================
@@ -242,7 +233,7 @@
 
 
         .card-header {
-            padding: 22px 25px;
+            padding: 17px 22px;
 
             background: #fafafa;
 
@@ -253,11 +244,11 @@
         .card-label {
             display: block;
 
-            margin-bottom: 4px;
+            margin-bottom: 3px;
 
             color: #999;
 
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
 
             letter-spacing: .12em;
@@ -269,26 +260,27 @@
         .card-header h2 {
             font-family: 'Barlow Condensed', sans-serif;
 
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 600;
+
+            line-height: 1.05;
         }
 
 
         .card-header p {
-            margin-top: 5px;
+            margin-top: 4px;
 
             color: #888;
 
-            font-size: 12px;
+            font-size: 11px;
 
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
 
         .card-body {
-            padding: 27px 25px;
+            padding: 20px 22px;
         }
-
 
 
         /* =========================================
@@ -296,23 +288,23 @@
         ========================================= */
 
         .field {
-            margin-bottom: 22px;
+            margin-bottom: 16px;
         }
 
 
         .field:last-of-type {
-            margin-bottom: 27px;
+            margin-bottom: 20px;
         }
 
 
         .field label {
             display: block;
 
-            margin-bottom: 8px;
+            margin-bottom: 6px;
 
             color: #444;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
 
             letter-spacing: .05em;
@@ -323,9 +315,9 @@
 
         .field input {
             width: 100%;
-            height: 52px;
+            height: 48px;
 
-            padding: 0 16px;
+            padding: 0 15px;
 
             background: #fafafa;
 
@@ -358,22 +350,20 @@
         }
 
 
-
         /* =========================================
            BOTÃO SALVAR
         ========================================= */
 
         .save-button {
-            min-height: 46px;
+            min-height: 42px;
 
             display: inline-flex;
             align-items: center;
             justify-content: center;
 
-            padding: 0 25px;
+            padding: 0 23px;
 
             background: #111;
-
             color: #fff;
 
             border: 1px solid #111;
@@ -381,7 +371,7 @@
 
             font-family: 'Barlow', sans-serif;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
 
             letter-spacing: .06em;
@@ -394,7 +384,6 @@
 
         .save-button:hover {
             background: #fff;
-
             color: #111;
 
             transform: translateY(-1px);
@@ -403,58 +392,56 @@
         }
 
 
-
         /* =========================================
-           CARD DE SENHA
+           CARD DE SEGURANÇA
         ========================================= */
 
         .security-icon {
-            width: 46px;
-            height: 46px;
+            width: 42px;
+            height: 42px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            margin-bottom: 20px;
+            margin-bottom: 14px;
 
             background: #111;
-
             color: #fff;
 
             border-radius: 50%;
 
             font-family: 'Barlow Condensed', sans-serif;
 
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 600;
         }
 
 
         .security-title {
-            margin-bottom: 7px;
+            margin-bottom: 5px;
 
             font-family: 'Barlow Condensed', sans-serif;
 
-            font-size: 22px;
+            font-size: 21px;
             font-weight: 600;
         }
 
 
         .security-text {
-            margin-bottom: 23px;
+            margin-bottom: 17px;
 
             color: #777;
 
-            font-size: 13px;
+            font-size: 12px;
 
-            line-height: 1.5;
+            line-height: 1.45;
         }
 
 
         .password-link {
             width: 100%;
-            min-height: 44px;
+            min-height: 40px;
 
             display: inline-flex;
             align-items: center;
@@ -469,7 +456,7 @@
 
             text-decoration: none;
 
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
 
             letter-spacing: .05em;
@@ -487,15 +474,14 @@
         }
 
 
-
         /* =========================================
-           BLOCO DA CONTA
+           CONTA CONECTADA
         ========================================= */
 
         .account-info {
-            margin-top: 24px;
+            margin-top: 18px;
 
-            padding-top: 20px;
+            padding-top: 15px;
 
             border-top: 1px solid #eee;
         }
@@ -504,11 +490,11 @@
         .account-info span {
             display: block;
 
-            margin-bottom: 5px;
+            margin-bottom: 4px;
 
             color: #999;
 
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 600;
 
             letter-spacing: .08em;
@@ -520,12 +506,11 @@
         .account-info strong {
             color: #333;
 
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
 
             word-break: break-word;
         }
-
 
 
         /* =========================================
@@ -540,7 +525,7 @@
 
 
             .page {
-                padding: 45px 22px 70px;
+                padding: 30px 22px 55px;
             }
 
 
@@ -559,35 +544,40 @@
         @media (max-width: 550px) {
 
             header {
-                height: 72px;
+                height: 70px;
 
                 padding: 0 16px;
             }
 
 
-            .logo {
-                font-size: 26px;
+            .logo img {
+                width: 88px;
             }
 
 
             .back {
-                min-height: 38px;
+                min-height: 37px;
 
                 padding: 0 15px;
 
-                font-size: 11px;
+                font-size: 10px;
             }
 
 
             .page {
-                padding: 35px 16px 60px;
+                padding: 25px 16px 50px;
+            }
+
+
+            .page-header {
+                margin-bottom: 20px;
             }
 
 
             .card-header,
             .card-body {
-                padding-left: 20px;
-                padding-right: 20px;
+                padding-left: 18px;
+                padding-right: 18px;
             }
 
 
@@ -613,7 +603,10 @@
         class="logo"
     >
 
-        AURA
+        <img
+            src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 12_48_49.png') }}"
+            alt="AURA Running"
+        >
 
     </a>
 
@@ -635,9 +628,7 @@
 <main class="page">
 
 
-    {{-- =========================================
-         CABEÇALHO
-    ========================================= --}}
+    {{-- CABEÇALHO --}}
 
     <div class="page-header">
 
@@ -668,9 +659,7 @@
 
 
 
-    {{-- =========================================
-         SUCESSO
-    ========================================= --}}
+    {{-- SUCESSO --}}
 
     @if (session('status') === 'profile-updated')
 
@@ -686,9 +675,7 @@
 
 
 
-    {{-- =========================================
-         ERROS
-    ========================================= --}}
+    {{-- ERROS --}}
 
     @if ($errors->any())
 
@@ -716,17 +703,12 @@
 
 
 
-    {{-- =========================================
-         CONTEÚDO
-    ========================================= --}}
+    {{-- CONTEÚDO --}}
 
     <div class="profile-grid">
 
 
-
-        {{-- =========================================
-             DADOS PESSOAIS
-        ========================================= --}}
+        {{-- DADOS PESSOAIS --}}
 
         <div class="card">
 
@@ -776,8 +758,6 @@
 
 
 
-                    {{-- NOME --}}
-
                     <div class="field">
 
 
@@ -801,8 +781,6 @@
                     </div>
 
 
-
-                    {{-- EMAIL --}}
 
                     <div class="field">
 
@@ -848,9 +826,7 @@
 
 
 
-        {{-- =========================================
-             SEGURANÇA / SENHA
-        ========================================= --}}
+        {{-- SEGURANÇA --}}
 
         <div class="card">
 
@@ -881,7 +857,7 @@
 
                 <div class="security-icon">
 
-                    A
+                    {{ strtoupper(substr($user->name, 0, 1)) }}
 
                 </div>
 

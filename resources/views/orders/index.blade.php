@@ -28,157 +28,104 @@
         }
 
 
-        /* =========================================
-           HEADER
-        ========================================= */
+/* =========================================
+   HEADER - ÁREA MINHA CONTA
+========================================= */
 
-        header {
-            height: 82px;
+header {
+    width: 100%;
+    height: 82px;
 
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-            padding: 0 55px;
+    padding: 0 55px;
 
-            background: #fff;
+    background: #fff;
 
-            border-bottom: 1px solid #e8e8e8;
-        }
-
-
-        .logo {
-            color: #111;
-
-            text-decoration: none;
-
-            font-family: 'Barlow Condensed', sans-serif;
-
-            font-size: 31px;
-            font-weight: 700;
-
-            letter-spacing: .20em;
-        }
+    border-bottom: 1px solid #e8e8e8;
+}
 
 
-        nav {
-            display: flex;
-            align-items: center;
+/* LOGO */
 
-            gap: 34px;
-        }
+.logo {
+    display: flex;
+    align-items: center;
 
+    text-decoration: none;
+}
 
-        nav a {
-            position: relative;
+.logo img {
+    width: 105px;
+    height: auto;
 
-            color: #111;
+    display: block;
 
-            text-decoration: none;
-
-            font-family: 'Barlow Condensed', sans-serif;
-
-            font-size: 14px;
-            font-weight: 500;
-
-            letter-spacing: .08em;
-
-            text-transform: uppercase;
-        }
+    object-fit: contain;
+}
 
 
-        nav a::after {
-            content: "";
+/* BOTÃO VOLTAR */
 
-            position: absolute;
+.account-button {
+    min-height: 42px;
 
-            left: 0;
-            bottom: -6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-            width: 0;
-            height: 1px;
+    padding: 0 21px;
 
-            background: #111;
+    background: #fff;
+    color: #111;
 
-            transition: .25s ease;
-        }
+    border: 1px solid #dcdcdc;
+    border-radius: 999px;
 
+    text-decoration: none;
 
-        nav a:hover::after {
-            width: 100%;
-        }
+    font-size: 12px;
+    font-weight: 600;
 
+    letter-spacing: .03em;
 
-        .header-icons {
-            display: flex;
-            align-items: center;
+    transition: .2s ease;
+}
 
-            gap: 12px;
-        }
+.account-button:hover {
+    background: #111;
+    color: #fff;
 
+    border-color: #111;
 
-        .header-icons a {
-            text-decoration: none;
-        }
+    transform: translateY(-1px);
 
-
-        .user-profile {
-            width: 42px;
-            height: 42px;
-
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            border-radius: 50%;
-
-            background: #111;
-
-            color: #fff;
-
-            font-size: 14px;
-            font-weight: 600;
-
-            transition: .2s ease;
-        }
+    box-shadow: 0 7px 20px rgba(0,0,0,.10);
+}
 
 
-        .user-profile:hover {
-            background: #333;
+@media (max-width: 550px) {
 
-            transform: translateY(-1px);
-        }
+    header {
+        height: 72px;
 
+        padding: 0 16px;
+    }
 
-        .cart-icon {
-            min-width: 42px;
-            height: 42px;
+    .logo img {
+        width: 88px;
+    }
 
-            padding: 0 13px;
+    .account-button {
+        min-height: 38px;
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        padding: 0 15px;
 
-            border: 1px solid #ddd;
-            border-radius: 999px;
-
-            background: #fff;
-
-            color: #111;
-
-            font-size: 18px;
-
-            transition: .2s ease;
-        }
-
-
-        .cart-icon:hover {
-            background: #111;
-            color: #fff;
-
-            border-color: #111;
-        }
+        font-size: 10px;
+    }
+}
 
 
 
@@ -203,52 +150,46 @@
 
 
 
+
         /* =========================================
            BOTÃO MINHA CONTA
         ========================================= */
 
-        .back {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
+        .account-button {
+    min-height: 42px;
 
-            min-height: 43px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 
-            padding: 0 21px;
+    padding: 0 22px;
 
-            margin-bottom: 30px;
+    background: #fff;
+    color: #111;
 
-            background: #fff;
+    border: 1px solid #dcdcdc;
+    border-radius: 999px;
 
-            color: #111;
+    text-decoration: none;
 
-            border: 1px solid #dedede;
-            border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
 
-            text-decoration: none;
+    letter-spacing: .03em;
 
-            font-size: 12px;
-            font-weight: 600;
+    transition: .2s ease;
+}
 
-            letter-spacing: .03em;
+.account-button:hover {
+    background: #111;
+    color: #fff;
 
-            box-shadow: 0 2px 8px rgba(0,0,0,.025);
+    border-color: #111;
 
-            transition: .2s ease;
-        }
+    transform: translateY(-1px);
 
-
-        .back:hover {
-            background: #111;
-
-            color: #fff;
-
-            border-color: #111;
-
-            transform: translateY(-1px);
-
-            box-shadow: 0 7px 18px rgba(0,0,0,.10);
-        }
+    box-shadow: 0 7px 20px rgba(0,0,0,.10);
+}
 
 
 
@@ -905,84 +846,29 @@
 
 <header>
 
-
     <a
         href="{{ route('home') }}"
         class="logo"
     >
-
-        AURA
-
+        <img
+            src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 12_48_49.png') }}"
+            alt="AURA Running"
+        >
     </a>
 
 
-    <nav>
-
-        <a href="{{ route('categories.show', 'tenis') }}">
-            Tênis
-        </a>
-
-        <a href="{{ route('categories.show', 'roupas') }}">
-            Roupas
-        </a>
-
-        <a href="{{ route('categories.show', 'acessorios') }}">
-            Acessórios
-        </a>
-
-    </nav>
-
-
-    <div class="header-icons">
-
-
-        <a
-            href="{{ route('account.index') }}"
-            class="user-profile"
-            title="Minha conta"
-        >
-
-            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-
-        </a>
-
-
-        <a
-            href="{{ route('cart.index') }}"
-            class="cart-icon"
-            title="Carrinho"
-        >
-
-            🛒
-
-        </a>
-
-
-    </div>
-
+    <a
+        href="{{ route('account.index') }}"
+        class="account-button"
+    >
+        Minha conta
+    </a>
 
 </header>
 
 
 
 <main class="page">
-
-
-    <div class="page-top">
-
-
-        {{-- BOTÃO MINHA CONTA --}}
-
-        <a
-            href="{{ route('account.index') }}"
-            class="back"
-        >
-
-            Minha conta
-
-        </a>
-
-
 
         <div class="page-label">
 
