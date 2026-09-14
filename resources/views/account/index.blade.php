@@ -1018,11 +1018,12 @@
                 </a>
 
 
-                <a href="#">
-
-                    Pagamentos
-
-                </a>
+                <a
+    href="{{ route('payments.index') }}"
+    class="{{ request()->routeIs('payments.*') ? 'active' : '' }}"
+>
+    Pagamentos
+</a>
 
 
                 <a

@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\StockController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
-
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,8 +145,50 @@ Route::middleware('auth')->group(function () {
         [OrderController::class, 'checkout']
     )->name('orders.checkout');
 
+/*
+|--------------------------------------------------------------------------
+| PAGAMENTOS
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/pagamentos',
+    [PaymentController::class, 'index']
+)->name('payments.index');
 
 
+Route::get(
+    '/pagamentos/{order}',
+    [PaymentController::class, 'checkout']
+)->name('payments.checkout');
+
+
+Route::post(
+    '/pagamentos/{order}/processar',
+    [PaymentController::class, 'process']
+)->name('payments.process');
+
+
+Route::get(
+    '/pagamentos/{order}/status',
+    [PaymentController::class, 'status']
+)->name('payments.status');
+
+
+Route::post(
+    '/pagamentos/{order}/atualizar',
+    [PaymentController::class, 'refresh']
+)->name('payments.refresh');
+
+Route::get('/dashboard', function () {
+
+    if (auth()->user()->is_admin) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return redirect()->route('account.index');
+
+})->name('dashboard');
     /*
     |--------------------------------------------------------------------------
     | MINHA CONTA

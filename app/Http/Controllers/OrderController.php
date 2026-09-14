@@ -376,13 +376,10 @@ public function tracking(): View
         */
 
         return redirect()
-            ->route(
-                'orders.show',
-                $order->id
-            )
-            ->with(
-                'success',
-                'Pedido realizado com sucesso!'
-            );
+    ->route('payments.checkout', $order)
+    ->with(
+        'success',
+        'Pedido criado. Agora escolha a forma de pagamento.'
+    );
     }
 }
