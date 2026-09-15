@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\NationalTeam;
 
 class Product extends Model
 {
     protected $fillable = [
+        'national_team_id',
         'category_id',
         'name',
         'slug',
@@ -55,5 +57,12 @@ class Product extends Model
 
     // Imagens cadastradas pelo painel Admin
     return asset('storage/' . ltrim($this->image, '/'));
+}
+
+    public function nationalTeam()
+{
+    return $this->belongsTo(
+        NationalTeam::class
+    );
 }
 }

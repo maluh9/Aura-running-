@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Favorite;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use App\Models\NationalTeam;
 
 class ProductController extends Controller
 {

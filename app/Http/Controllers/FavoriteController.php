@@ -44,16 +44,27 @@ class FavoriteController extends Controller
         );
     }
 
-    public function index(Request $request): View
-    {
-        $favorites = Favorite::where(
-            'user_id',
-            $request->user()->id
-        )
-            ->with('product.category')
-            ->latest()
-            ->get();
+        public function index(Request $request): View
+{
+    $favorites = Favorite::where(
+        'user_id',
+        $request->user()->id
+    )
+        ->whereHas('product', function ($query) {
+            $query->where('active', true);
+        })
+        ->with([
+            'product' => function ($query) {
+                $query->where('active', true)
+                    ->with('category');
+            }
+        ])
+        ->latest()
+        ->get();
 
-        return view('favorites.index', compact('favorites'));
-    }
+    return view(
+        'favorites.index',
+        compact('favorites')
+    );
+}
 }

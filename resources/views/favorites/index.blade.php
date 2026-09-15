@@ -524,6 +524,18 @@
             }
 
         }
+        .out-of-stock {
+    margin: -7px 0 14px;
+
+    color: #a72e2e;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: .08em;
+
+    text-transform: uppercase;
+}
 
     </style>
 
@@ -702,7 +714,13 @@
                                 ) }}
 
                             </div>
+@if($favorite->product->stock <= 0)
 
+    <div class="out-of-stock">
+        SEM ESTOQUE
+    </div>
+
+@endif
 
 
                             <a

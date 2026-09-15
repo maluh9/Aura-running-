@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Models\NationalTeam;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+
 
 class ProductController extends Controller
 {
@@ -16,17 +18,31 @@ class ProductController extends Controller
     | LISTAR PRODUTOS
     |--------------------------------------------------------------------------
     */
+
     public function index(Request $request)
     {
-        $query = Product::with('category');
+        $query = Product::with([
+            'category',
+            'nationalTeam',
+        ]);
 
-        // Busca
         if ($request->filled('search')) {
+
             $search = $request->search;
 
             $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', "%{$search}%")
-                  ->orWhere('description', 'like', "%{$search}%");
+
+                $q->where(
+                    'name',
+                    'like',
+                    "%{$search}%"
+                )
+                ->orWhere(
+                    'description',
+                    'like',
+                    "%{$search}%"
+                );
+
             });
         }
 
@@ -35,7 +51,10 @@ class ProductController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.products.index', compact('products'));
+        return view(
+            'admin.products.index',
+            compact('products')
+        );
     }
 
 
@@ -44,13 +63,33 @@ class ProductController extends Controller
     | FORMULÁRIO NOVO PRODUTO
     |--------------------------------------------------------------------------
     */
+
     public function create()
     {
-        $categories = Category::where('active', true)
+        $categories = Category::where(
+            'active',
+            true
+        )
             ->orderBy('name')
             ->get();
 
-        return view('admin.products.create', compact('categories'));
+
+        $nationalTeams = NationalTeam::where(
+            'active',
+            true
+        )
+            ->orderBy('sort_order')
+            ->orderBy('name')
+            ->get();
+
+
+        return view(
+            'admin.products.create',
+            compact(
+                'categories',
+                'nationalTeams'
+            )
+        );
     }
 
 
@@ -59,14 +98,25 @@ class ProductController extends Controller
     | SALVAR NOVO PRODUTO
     |--------------------------------------------------------------------------
     */
+
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+            ],
 
             'category_id' => [
                 'required',
                 'exists:categories,id',
+            ],
+
+            'national_team_id' => [
+                'nullable',
+                'exists:national_teams,id',
             ],
 
             'description' => [
@@ -92,6 +142,7 @@ class ProductController extends Controller
                 'mimes:jpg,jpeg,png,webp',
                 'max:4096',
             ],
+
         ]);
 
 
@@ -101,12 +152,27 @@ class ProductController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $baseSlug = Str::slug($validated['name']);
+        $baseSlug = Str::slug(
+            $validated['name']
+        );
+
         $slug = $baseSlug;
+
         $contador = 1;
 
-        while (Product::where('slug', $slug)->exists()) {
-            $slug = $baseSlug . '-' . $contador;
+
+        while (
+            Product::where(
+                'slug',
+                $slug
+            )->exists()
+        ) {
+
+            $slug =
+                $baseSlug
+                . '-'
+                . $contador;
+
             $contador++;
         }
 
@@ -119,9 +185,16 @@ class ProductController extends Controller
 
         $imagePath = null;
 
+
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')
-                ->store('products', 'public');
+
+            $imagePath = $request
+                ->file('image')
+                ->store(
+                    'products',
+                    'public'
+                );
+
         }
 
 
@@ -132,22 +205,54 @@ class ProductController extends Controller
         */
 
         Product::create([
-            'category_id' => $validated['category_id'],
-            'name' => $validated['name'],
-            'slug' => $slug,
-            'description' => $validated['description'] ?? null,
-            'price' => $validated['price'],
-            'stock' => $validated['stock'],
-            'image' => $imagePath,
 
-            'featured' => $request->boolean('featured'),
-            'active' => $request->boolean('active'),
+            'category_id' =>
+                $validated['category_id'],
+
+            'national_team_id' =>
+                $validated['national_team_id']
+                ?? null,
+
+            'name' =>
+                $validated['name'],
+
+            'slug' =>
+                $slug,
+
+            'description' =>
+                $validated['description']
+                ?? null,
+
+            'price' =>
+                $validated['price'],
+
+            'stock' =>
+                $validated['stock'],
+
+            'image' =>
+                $imagePath,
+
+            'featured' =>
+                $request->boolean(
+                    'featured'
+                ),
+
+            'active' =>
+                $request->boolean(
+                    'active'
+                ),
+
         ]);
 
 
         return redirect()
-            ->route('admin.products.index')
-            ->with('success', 'Produto cadastrado com sucesso.');
+            ->route(
+                'admin.products.index'
+            )
+            ->with(
+                'success',
+                'Produto cadastrado com sucesso.'
+            );
     }
 
 
@@ -156,13 +261,28 @@ class ProductController extends Controller
     | FORMULÁRIO EDITAR
     |--------------------------------------------------------------------------
     */
+
     public function edit(Product $product)
     {
-        $categories = Category::orderBy('name')->get();
+        $categories = Category::orderBy(
+            'name'
+        )->get();
+
+
+        $nationalTeams = NationalTeam::orderBy(
+            'sort_order'
+        )
+            ->orderBy('name')
+            ->get();
+
 
         return view(
             'admin.products.edit',
-            compact('product', 'categories')
+            compact(
+                'product',
+                'categories',
+                'nationalTeams'
+            )
         );
     }
 
@@ -172,9 +292,13 @@ class ProductController extends Controller
     | ATUALIZAR PRODUTO
     |--------------------------------------------------------------------------
     */
-    public function update(Request $request, Product $product)
-    {
+
+    public function update(
+        Request $request,
+        Product $product
+    ) {
         $validated = $request->validate([
+
             'name' => [
                 'required',
                 'string',
@@ -184,6 +308,11 @@ class ProductController extends Controller
             'category_id' => [
                 'required',
                 'exists:categories,id',
+            ],
+
+            'national_team_id' => [
+                'nullable',
+                'exists:national_teams,id',
             ],
 
             'description' => [
@@ -209,6 +338,7 @@ class ProductController extends Controller
                 'mimes:jpg,jpeg,png,webp',
                 'max:4096',
             ],
+
         ]);
 
 
@@ -218,20 +348,41 @@ class ProductController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        if ($product->name !== $validated['name']) {
+        if (
+            $product->name !==
+            $validated['name']
+        ) {
 
-            $baseSlug = Str::slug($validated['name']);
+            $baseSlug = Str::slug(
+                $validated['name']
+            );
+
             $slug = $baseSlug;
+
             $contador = 1;
 
+
             while (
-                Product::where('slug', $slug)
-                    ->where('id', '!=', $product->id)
+                Product::where(
+                    'slug',
+                    $slug
+                )
+                    ->where(
+                        'id',
+                        '!=',
+                        $product->id
+                    )
                     ->exists()
             ) {
-                $slug = $baseSlug . '-' . $contador;
+
+                $slug =
+                    $baseSlug
+                    . '-'
+                    . $contador;
+
                 $contador++;
             }
+
 
             $product->slug = $slug;
         }
@@ -246,15 +397,29 @@ class ProductController extends Controller
         if ($request->hasFile('image')) {
 
             if (
-                $product->image &&
-                Storage::disk('public')->exists($product->image)
+                $product->image
+                &&
+                Storage::disk('public')
+                    ->exists(
+                        $product->image
+                    )
             ) {
-                Storage::disk('public')->delete($product->image);
+
+                Storage::disk('public')
+                    ->delete(
+                        $product->image
+                    );
+
             }
+
 
             $product->image = $request
                 ->file('image')
-                ->store('products', 'public');
+                ->store(
+                    'products',
+                    'public'
+                );
+
         }
 
 
@@ -264,21 +429,55 @@ class ProductController extends Controller
         |--------------------------------------------------------------------------
         */
 
-        $product->category_id = $validated['category_id'];
-        $product->name = $validated['name'];
-        $product->description = $validated['description'] ?? null;
-        $product->price = $validated['price'];
-        $product->stock = $validated['stock'];
+        $product->category_id =
+            $validated['category_id'];
 
-        $product->featured = $request->boolean('featured');
-        $product->active = $request->boolean('active');
+
+        $product->national_team_id =
+            $validated['national_team_id']
+            ?? null;
+
+
+        $product->name =
+            $validated['name'];
+
+
+        $product->description =
+            $validated['description']
+            ?? null;
+
+
+        $product->price =
+            $validated['price'];
+
+
+        $product->stock =
+            $validated['stock'];
+
+
+        $product->featured =
+            $request->boolean(
+                'featured'
+            );
+
+
+        $product->active =
+            $request->boolean(
+                'active'
+            );
+
 
         $product->save();
 
 
         return redirect()
-            ->route('admin.products.index')
-            ->with('success', 'Produto atualizado com sucesso.');
+            ->route(
+                'admin.products.index'
+            )
+            ->with(
+                'success',
+                'Produto atualizado com sucesso.'
+            );
     }
 
 
@@ -287,15 +486,24 @@ class ProductController extends Controller
     | ATIVAR / DESATIVAR
     |--------------------------------------------------------------------------
     */
-    public function toggleStatus(Product $product)
-    {
-        $product->active = !$product->active;
+
+    public function toggleStatus(
+        Product $product
+    ) {
+        $product->active =
+            !$product->active;
+
+
         $product->save();
 
+
         return redirect()
-            ->route('admin.products.index')
+            ->route(
+                'admin.products.index'
+            )
             ->with(
                 'success',
+
                 $product->active
                     ? 'Produto ativado com sucesso.'
                     : 'Produto desativado com sucesso.'

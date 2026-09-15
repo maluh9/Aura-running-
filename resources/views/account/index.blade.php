@@ -867,6 +867,110 @@
 
         }
 
+/* =========================================
+   ÚLTIMO PEDIDO
+========================================= */
+
+.last-order {
+    margin-top: 18px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    background: #fafafa;
+
+    border: 1px solid #e5e5e5;
+    border-radius: 7px;
+}
+
+
+.last-order small {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color: #999;
+
+    font-size: 9px;
+    font-weight: 600;
+
+    letter-spacing: .10em;
+
+    text-transform: uppercase;
+}
+
+
+.last-order strong {
+    display: block;
+
+    font-family: 'Barlow Condensed', sans-serif;
+
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+.last-order p {
+    margin-top: 5px;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+.last-order-button {
+    min-height: 40px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 18px;
+
+    background: #111;
+
+    color: #fff;
+
+    border: 1px solid #111;
+    border-radius: 999px;
+
+    text-decoration: none;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+.last-order-button:hover {
+    background: #fff;
+
+    color: #111;
+}
+
+
+@media(max-width: 550px) {
+
+    .last-order {
+        flex-direction: column;
+
+        align-items: flex-start;
+    }
+
+
+    .last-order-button {
+        width: 100%;
+    }
+
+}
+
     </style>
 
 </head>
@@ -1018,9 +1122,8 @@
                 </a>
 
 
-                <a
-    href="{{ route('payments.index') }}"
-    class="{{ request()->routeIs('payments.*') ? 'active' : '' }}"
+<a
+    href="{{ route('orders.index') }}"
 >
     Pagamentos
 </a>
@@ -1209,81 +1312,112 @@
 
 
 
-                    {{-- AÇÕES RÁPIDAS --}}
+                   {{-- AÇÕES RÁPIDAS --}}
 
-                    <h3 class="quick-title">
-
-                        Acesso rápido
-
-                    </h3>
+<h3 class="quick-title">
+    Acesso rápido
+</h3>
 
 
-                    <div class="quick-actions">
+<div class="quick-actions">
 
 
-                        <a
-                            href="{{ route('orders.index') }}"
-                            class="quick-action"
-                        >
+    {{-- PEDIDOS --}}
+    <a
+        href="{{ route('orders.index') }}"
+        class="quick-action"
+    >
 
-                            <small>
+        <small>
+            Compras
+        </small>
 
-                                Compras
+        <strong>
+            {{ $orderCount }}
+            {{ $orderCount === 1 ? 'pedido' : 'pedidos' }}
+        </strong>
 
-                            </small>
-
-                            <strong>
-
-                                Meus pedidos
-
-                            </strong>
-
-                        </a>
+    </a>
 
 
 
-                        <a
-                            href="{{ route('favorites.index') }}"
-                            class="quick-action"
-                        >
+    {{-- FAVORITOS --}}
+    <a
+        href="{{ route('favorites.index') }}"
+        class="quick-action"
+    >
 
-                            <small>
+        <small>
+            Produtos salvos
+        </small>
 
-                                Produtos
+        <strong>
+            {{ $favoriteCount }}
+            {{ $favoriteCount === 1 ? 'favorito' : 'favoritos' }}
+        </strong>
 
-                            </small>
-
-                            <strong>
-
-                                Meus favoritos
-
-                            </strong>
-
-                        </a>
+    </a>
 
 
 
-                        <a
-                            href="{{ route('profile.password') }}"
-                            class="quick-action"
-                        >
+    {{-- CARRINHO --}}
+    <a
+        href="{{ route('cart.index') }}"
+        class="quick-action"
+    >
 
-                            <small>
+        <small>
+            Carrinho
+        </small>
 
-                                Segurança
+        <strong>
+            {{ $cartItemCount }}
+            {{ $cartItemCount === 1 ? 'item' : 'itens' }}
+        </strong>
 
-                            </small>
-
-                            <strong>
-
-                                Alterar senha
-
-                            </strong>
-
-                        </a>
+    </a>
 
 
-                    </div>
+</div>
+
+@if($lastOrder)
+
+    <div class="last-order">
+
+        <div>
+
+            <small>
+                Último pedido
+            </small>
+
+            <strong>
+                #{{ $lastOrder->order_number }}
+            </strong>
+
+            <p>
+                Status:
+                {{ ucfirst(
+                    str_replace(
+                        '_',
+                        ' ',
+                        $lastOrder->status
+                    )
+                ) }}
+            </p>
+
+        </div>
+
+
+        <a
+            href="{{ route('orders.show', $lastOrder->id) }}"
+            class="last-order-button"
+        >
+            VER PEDIDO
+        </a>
+
+    </div>
+
+@endif
 
 
 

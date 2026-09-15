@@ -2,12 +2,24 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Pedido #{{ $order->order_number }} | AURA Running</title>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    @include(
+        'partials.page-meta',
+        ['pageTitle' => 'Pedido ' . $order->order_number]
+    )
+
 
     <style>
+
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
+
 
         * {
             margin: 0;
@@ -15,343 +27,725 @@
             box-sizing: border-box;
         }
 
+
         body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #fff;
+            background: #f6f6f6;
             color: #111;
+
+            font-family: 'Barlow', sans-serif;
         }
 
-        /* HEADER */
+
+
+        /* ==============================
+           HEADER
+        ============================== */
 
         header {
-            height: 80px;
+            width: 100%;
+            height: 82px;
 
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            padding: 0 50px;
+            padding: 0 55px;
 
-            border-bottom: 1px solid #eee;
+            background: #fff;
+
+            border-bottom: 1px solid #e8e8e8;
         }
+
 
         .logo {
-            color: #111;
-            text-decoration: none;
-
-            font-size: 25px;
-            font-weight: 800;
-
-            letter-spacing: 3px;
-        }
-
-        nav {
-            display: flex;
-            gap: 35px;
-        }
-
-        nav a {
-            color: #111;
-            text-decoration: none;
-
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            opacity: .5;
-        }
-
-        .header-icons {
             display: flex;
             align-items: center;
-            gap: 20px;
-        }
 
-        .header-icons a {
             text-decoration: none;
-            color: #111;
         }
 
-        .user-profile {
-            width: 38px;
-            height: 38px;
 
-            border-radius: 50%;
+        .logo img {
+            width: 105px;
+            height: auto;
 
-            background: #111;
-            color: white !important;
+            display: block;
+            object-fit: contain;
+        }
 
-            display: flex;
+
+        .account-button {
+            min-height: 42px;
+
+            display: inline-flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 14px;
-            font-weight: bold;
-        }
+            padding: 0 22px;
 
-        .cart-icon {
-            font-size: 20px;
-        }
+            background: #fff;
+            color: #111;
 
-
-        /* PÁGINA */
-
-        .page {
-            max-width: 1100px;
-
-            margin: auto;
-
-            padding: 60px 40px;
-        }
-
-        .back {
-            display: inline-block;
-
-            margin-bottom: 30px;
-
-            color: #555;
+            border: 1px solid #dcdcdc;
+            border-radius: 999px;
 
             text-decoration: none;
 
-            font-size: 14px;
+            font-size: 12px;
+            font-weight: 600;
+
+            transition: .2s ease;
         }
+
+
+        .account-button:hover {
+            background: #111;
+            color: #fff;
+            border-color: #111;
+        }
+
+
+
+        /* ==============================
+           PÁGINA
+        ============================== */
+
+        .page {
+            width: 100%;
+            max-width: 1180px;
+
+            margin: 0 auto;
+
+            padding: 45px 30px 80px;
+        }
+
+
+        .back {
+            display: inline-flex;
+
+            margin-bottom: 26px;
+
+            color: #666;
+
+            text-decoration: none;
+
+            font-size: 12px;
+            font-weight: 500;
+        }
+
 
         .back:hover {
             color: #111;
         }
 
-        h1 {
-            font-size: 38px;
 
-            margin-bottom: 10px;
+
+        /* ==============================
+           TÍTULO
+        ============================== */
+
+        .page-label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            color: #999;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            letter-spacing: .14em;
+
+            text-transform: uppercase;
         }
 
-        .order-date {
-            color: #666;
 
-            margin-bottom: 45px;
-        }
+        .title-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
 
-
-        /* STATUS */
-
-        .tracking {
-            border: 1px solid #eee;
-
-            padding: 30px;
-
-            margin-bottom: 35px;
-        }
-
-        .tracking h2 {
-            font-size: 20px;
+            gap: 20px;
 
             margin-bottom: 30px;
         }
 
-        .steps {
+
+        h1 {
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 48px;
+            font-weight: 600;
+
+            line-height: 1;
+        }
+
+
+        .date {
+            margin-top: 10px;
+
+            color: #777;
+
+            font-size: 13px;
+        }
+
+
+
+        /* ==============================
+           STATUS
+        ============================== */
+
+        .status-badge {
+            min-height: 36px;
+
+            display: inline-flex;
+            align-items: center;
+
+            padding: 0 16px;
+
+            background: #111;
+            color: #fff;
+
+            border-radius: 999px;
+
+            font-size: 10px;
+            font-weight: 600;
+
+            letter-spacing: .05em;
+
+            text-transform: uppercase;
+        }
+
+
+        .status-badge.cancelado {
+            background: #a72e2e;
+        }
+
+
+        .status-badge.entregue {
+            background: #26733c;
+        }
+
+
+
+        /* ==============================
+           GRID PRINCIPAL
+        ============================== */
+
+        .content-grid {
+            display: grid;
+
+            grid-template-columns:
+                minmax(0, 1fr)
+                320px;
+
+            gap: 24px;
+
+            align-items: start;
+        }
+
+
+
+        /* ==============================
+           CARDS
+        ============================== */
+
+        .card {
+            overflow: hidden;
+
+            background: #fff;
+
+            border: 1px solid #e3e3e3;
+            border-radius: 9px;
+        }
+
+
+        .card + .card {
+            margin-top: 20px;
+        }
+
+
+        .card-header {
+            padding: 20px 24px;
+
+            background: #fafafa;
+
+            border-bottom: 1px solid #e8e8e8;
+        }
+
+
+        .card-header small {
+            display: block;
+
+            margin-bottom: 4px;
+
+            color: #999;
+
+            font-size: 9px;
+            font-weight: 600;
+
+            letter-spacing: .11em;
+
+            text-transform: uppercase;
+        }
+
+
+        .card-header h2 {
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 25px;
+            font-weight: 600;
+        }
+
+
+        .card-body {
+            padding: 24px;
+        }
+
+
+
+        /* ==============================
+           PROGRESSO
+        ============================== */
+
+        .progress {
             display: grid;
 
             grid-template-columns: repeat(4, 1fr);
 
-            gap: 15px;
+            position: relative;
+
+            gap: 8px;
         }
+
+
+        .progress::before {
+            content: '';
+
+            position: absolute;
+
+            top: 17px;
+            left: 12.5%;
+            right: 12.5%;
+
+            height: 2px;
+
+            background: #e4e4e4;
+
+            z-index: 0;
+        }
+
 
         .step {
-            text-align: center;
-
             position: relative;
+            z-index: 1;
+
+            text-align: center;
         }
 
-        .circle {
-            width: 38px;
-            height: 38px;
 
-            margin: 0 auto 12px;
-
-            border-radius: 50%;
-
-            background: #eee;
+        .step-circle {
+            width: 36px;
+            height: 36px;
 
             display: flex;
             align-items: center;
             justify-content: center;
 
-            font-size: 14px;
-            font-weight: bold;
+            margin: 0 auto 10px;
+
+            background: #eee;
+            color: #777;
+
+            border-radius: 50%;
+
+            font-size: 11px;
+            font-weight: 600;
         }
 
-        .step.active .circle {
+
+        .step.active .step-circle {
             background: #111;
-
-            color: white;
+            color: #fff;
         }
+
+
+        .step.done .step-circle {
+            background: #111;
+            color: #fff;
+        }
+
 
         .step span {
-            font-size: 12px;
+            display: block;
 
             color: #777;
+
+            font-size: 10px;
+
+            line-height: 1.3;
         }
 
-        .step.active span {
+
+        .step.active span,
+        .step.done span {
             color: #111;
 
-            font-weight: bold;
+            font-weight: 600;
         }
 
 
-        /* PRODUTOS */
 
-        .box {
-            border: 1px solid #eee;
+        /* ==============================
+           PRODUTOS
+        ============================== */
 
-            padding: 30px;
+        .order-item {
+            display: grid;
 
-            margin-bottom: 25px;
-        }
+            grid-template-columns: 105px 1fr auto;
 
-        .box h2 {
-            font-size: 20px;
-
-            margin-bottom: 25px;
-        }
-
-        .item {
-            display: flex;
+            gap: 18px;
 
             align-items: center;
-
-            gap: 20px;
 
             padding: 20px 0;
 
             border-bottom: 1px solid #eee;
         }
 
-        .item:last-child {
+
+        .order-item:first-child {
+            padding-top: 0;
+        }
+
+
+        .order-item:last-child {
+            padding-bottom: 0;
+
             border-bottom: none;
         }
 
-        .item img {
-            width: 100px;
-            height: 100px;
+
+        .item-image {
+            width: 105px;
+            height: 105px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            overflow: hidden;
+
+            background: #f1f1f1;
+
+            border-radius: 7px;
+        }
+
+
+        .item-image img {
+            width: 100%;
+            height: 100%;
+
+            display: block;
 
             object-fit: contain;
-
-            background: #f5f5f5;
         }
 
-        .item-info {
-            flex: 1;
+
+        .no-image {
+            color: #999;
+
+            font-size: 10px;
+
+            text-align: center;
         }
+
 
         .item-info h3 {
-            font-size: 17px;
+            margin-bottom: 7px;
 
-            margin-bottom: 8px;
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 21px;
+            font-weight: 600;
         }
 
-        .item-info p {
-            color: #666;
 
+        .item-info p {
+            margin-top: 4px;
+
+            color: #777;
+
+            font-size: 12px;
+        }
+
+
+        .item-price {
+            text-align: right;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 19px;
+            font-weight: 600;
+
+            white-space: nowrap;
+        }
+
+
+
+        /* ==============================
+           RESUMO
+        ============================== */
+
+        .summary {
+            position: sticky;
+
+            top: 20px;
+        }
+
+
+        .summary-line {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding: 13px 0;
+
+            border-bottom: 1px solid #eee;
+
+            font-size: 12px;
+        }
+
+
+        .summary-line span:first-child {
+            color: #777;
+        }
+
+
+        .summary-line strong {
+            text-align: right;
+
+            font-weight: 600;
+        }
+
+
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+
+            gap: 15px;
+
+            padding-top: 20px;
+
+            font-family: 'Barlow Condensed', sans-serif;
+
+            font-size: 23px;
+            font-weight: 600;
+        }
+
+
+
+        /* ==============================
+           RASTREAMENTO
+        ============================== */
+
+        .tracking-box {
+            margin-top: 18px;
+
+            padding: 16px;
+
+            background: #fafafa;
+
+            border: 1px solid #ededed;
+            border-radius: 7px;
+        }
+
+
+        .tracking-box small {
+            display: block;
+
+            margin-bottom: 5px;
+
+            color: #999;
+
+            font-size: 9px;
+            font-weight: 600;
+
+            letter-spacing: .09em;
+
+            text-transform: uppercase;
+        }
+
+
+        .tracking-box strong {
             font-size: 13px;
+        }
+
+
+
+        /* ==============================
+           CANCELADO
+        ============================== */
+
+        .cancel-box {
+            margin-bottom: 20px;
+
+            padding: 18px 20px;
+
+            background: #fff2f2;
+
+            color: #8f2a2a;
+
+            border: 1px solid #efd2d2;
+            border-radius: 8px;
+        }
+
+
+        .cancel-box strong {
+            display: block;
 
             margin-bottom: 5px;
         }
 
-        .item-price {
-            font-weight: bold;
+
+        .cancel-box p {
+            font-size: 12px;
+
+            line-height: 1.5;
         }
 
 
-        /* TOTAL */
 
-        .summary {
+        /* ==============================
+           BOTÕES
+        ============================== */
+
+        .actions {
+            margin-top: 20px;
+
             display: flex;
-
             flex-direction: column;
 
-            gap: 12px;
+            gap: 10px;
         }
 
-        .summary-line {
+
+        .button {
+            min-height: 43px;
+
             display: flex;
+            align-items: center;
+            justify-content: center;
 
-            justify-content: space-between;
+            padding: 0 18px;
 
-            font-size: 14px;
-        }
+            background: #111;
+            color: #fff;
 
-        .summary-line.total {
-            border-top: 1px solid #eee;
+            border: 1px solid #111;
+            border-radius: 999px;
 
-            padding-top: 18px;
+            text-decoration: none;
 
-            margin-top: 8px;
-
-            font-size: 19px;
-
-            font-weight: bold;
-        }
-
-
-        /* PAGAMENTO */
-
-        .payment {
-            color: #555;
-
-            font-size: 14px;
+            font-size: 10px;
+            font-weight: 600;
         }
 
 
-        /* RASTREAMENTO */
-
-        .tracking-code {
-            background: #f5f5f5;
-
-            padding: 15px;
-
-            margin-top: 15px;
-
-            font-weight: bold;
-
-            letter-spacing: 1px;
+        .button.secondary {
+            background: #fff;
+            color: #111;
         }
 
 
-        /* RESPONSIVO */
+        .button:hover {
+            opacity: .8;
+        }
 
-        @media (max-width: 800px) {
+
+
+        /* ==============================
+           RESPONSIVO
+        ============================== */
+
+        @media(max-width: 850px) {
 
             header {
-                padding: 0 20px;
+                padding: 0 22px;
             }
 
-            nav {
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .summary {
+                position: static;
+            }
+
+
+            .title-row {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+        }
+
+
+        @media(max-width: 600px) {
+
+            header {
+                height: 72px;
+
+                padding: 0 16px;
+            }
+
+
+            .logo img {
+                width: 90px;
+            }
+
+
+            .page {
+                padding: 32px 16px 60px;
+            }
+
+
+            h1 {
+                font-size: 38px;
+            }
+
+
+            .progress {
+                grid-template-columns: 1fr 1fr;
+
+                gap: 25px 10px;
+            }
+
+
+            .progress::before {
                 display: none;
             }
 
-            .page {
-                padding: 40px 20px;
+
+            .order-item {
+                grid-template-columns: 80px 1fr;
             }
 
-            h1 {
-                font-size: 30px;
+
+            .item-image {
+                width: 80px;
+                height: 80px;
             }
 
-            .steps {
-                grid-template-columns: 1fr 1fr;
 
-                row-gap: 25px;
-            }
+            .item-price {
+                grid-column: 2;
 
-            .item {
-                align-items: flex-start;
-            }
-
-            .item img {
-                width: 75px;
-                height: 75px;
+                text-align: left;
             }
 
         }
@@ -360,67 +754,77 @@
 
 </head>
 
-@include('partials.page-meta', [
-    'pageTitle' => 'PEDIDO #' . $order->order_number,
-])
 
 <body>
 
 
-<!-- HEADER -->
-
 <header>
 
-    <a href="{{ url('/') }}" class="logo">
-        AURA
+    <a
+        href="{{ route('home') }}"
+        class="logo"
+    >
+
+        <img
+            src="{{ asset('imagens/ChatGPT Image 28 de abr. de 2026, 12_48_49.png') }}"
+            alt="AURA Running"
+        >
+
     </a>
 
 
-    <nav>
-
-        <a href="{{ url('/') }}">
-            TÊNIS
-        </a>
-
-        <a href="{{ url('/') }}">
-            ROUPAS
-        </a>
-
-        <a href="{{ url('/') }}">
-            ACESSÓRIOS
-        </a>
-
-    </nav>
-
-
-    <div class="header-icons">
-
-        <a
-            href="{{ route('account.index') }}"
-            class="user-profile"
-        >
-
-            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-
-        </a>
-
-
-        <a
-            href="{{ route('cart.index') }}"
-            class="cart-icon"
-        >
-
-            🛒
-
-        </a>
-
-    </div>
+    <a
+        href="{{ route('account.index') }}"
+        class="account-button"
+    >
+        Minha conta
+    </a>
 
 </header>
 
 
 
-<!-- CONTEÚDO -->
+@php
+
+    $statusLabels = [
+        'pedido_realizado' => 'Pedido realizado',
+        'em_preparacao' => 'Em preparação',
+        'enviado' => 'Enviado',
+        'entregue' => 'Entregue',
+        'cancelado' => 'Cancelado',
+    ];
+
+
+    $paymentLabels = [
+        'pendente' => 'Pendente',
+        'pago' => 'Pago',
+        'recusado' => 'Recusado',
+        'cancelado' => 'Cancelado',
+        'reembolsado' => 'Reembolsado',
+    ];
+
+
+    $steps = [
+        'pedido_realizado',
+        'em_preparacao',
+        'enviado',
+        'entregue',
+    ];
+
+
+    $currentStep = array_search(
+        $order->status,
+        $steps
+    );
+
+
+    if ($currentStep === false) {
+        $currentStep = 0;
+    }
+
+@endphp
+
+
 
 <main class="page">
 
@@ -429,288 +833,458 @@
         href="{{ route('orders.index') }}"
         class="back"
     >
-
         ← Voltar para meus pedidos
-
     </a>
 
 
-    <h1>
 
-        Pedido #{{ $order->order_number }}
-
-    </h1>
+    <div class="title-row">
 
 
-    <p class="order-date">
+        <div>
 
-        Pedido realizado em
-        {{ $order->created_at->format('d/m/Y H:i') }}
-
-    </p>
-
+            <span class="page-label">
+                Detalhes do pedido
+            </span>
 
 
-    <!-- ACOMPANHAMENTO -->
-
-    <div class="tracking">
-
-        <h2>
-            Acompanhe seu pedido
-        </h2>
+            <h1>
+                Pedido #{{ $order->order_number }}
+            </h1>
 
 
-        @php
+            <p class="date">
 
-            $statuses = [
-                'pedido_realizado',
-                'pagamento_aprovado',
-                'preparando_pedido',
-                'enviado',
-                'entregue'
-            ];
+                Realizado em
 
-            $currentStatus = array_search(
-                $order->status,
-                $statuses
-            );
+                {{ $order->created_at->format('d/m/Y') }}
 
-            if ($currentStatus === false) {
-                $currentStatus = 0;
-            }
+                às
 
-        @endphp
+                {{ $order->created_at->format('H:i') }}
+
+            </p>
+
+        </div>
 
 
-        <div class="steps">
+        <span
+            class="status-badge {{ $order->status }}"
+        >
 
-            @foreach ($statuses as $index => $status)
+            {{ $statusLabels[$order->status]
+                ?? ucfirst(
+                    str_replace('_', ' ', $order->status)
+                )
+            }}
 
-                <div
-                    class="step {{ $index <= $currentStatus ? 'active' : '' }}"
-                >
+        </span>
 
-                    <div class="circle">
 
-                        {{ $index + 1 }}
+    </div>
+
+
+
+    @if($order->status === 'cancelado')
+
+        <div class="cancel-box">
+
+            <strong>
+                Este pedido foi cancelado.
+            </strong>
+
+
+            @if($order->cancellation_reason)
+
+                <p>
+                    Motivo:
+                    {{ $order->cancellation_reason }}
+                </p>
+
+            @endif
+
+
+            @if($order->cancellation_note)
+
+                <p>
+                    {{ $order->cancellation_note }}
+                </p>
+
+            @endif
+
+        </div>
+
+    @endif
+
+
+
+    <div class="content-grid">
+
+
+        <section>
+
+
+            {{-- ACOMPANHAMENTO --}}
+
+            @if($order->status !== 'cancelado')
+
+                <div class="card">
+
+
+                    <div class="card-header">
+
+                        <small>
+                            Acompanhamento
+                        </small>
+
+                        <h2>
+                            Status do pedido
+                        </h2>
 
                     </div>
 
 
-                    <span>
+                    <div class="card-body">
 
-                        {{ str_replace('_', ' ', $status) }}
 
-                    </span>
+                        <div class="progress">
+
+
+                            @foreach($steps as $index => $step)
+
+                                <div
+                                    class="step
+                                    {{ $index < $currentStep ? 'done' : '' }}
+                                    {{ $index === $currentStep ? 'active' : '' }}"
+                                >
+
+                                    <div class="step-circle">
+                                        {{ $index + 1 }}
+                                    </div>
+
+
+                                    <span>
+                                        {{ $statusLabels[$step] }}
+                                    </span>
+
+                                </div>
+
+                            @endforeach
+
+
+                        </div>
+
+
+                    </div>
 
                 </div>
 
-            @endforeach
-
-        </div>
-
-    </div>
+            @endif
 
 
 
-    <!-- PRODUTOS -->
+            {{-- PRODUTOS --}}
 
-    <div class="box">
-
-        <h2>
-            Produtos
-        </h2>
+            <div class="card">
 
 
-        @foreach ($order->items as $item)
+                <div class="card-header">
 
-            <div class="item">
+                    <small>
+                        Itens da compra
+                    </small>
 
-
-                <img
-                    src="{{ asset('storage/' . $item->product->image) }}"
-                    alt="{{ $item->product->name }}"
-                >
-
-
-                <div class="item-info">
-
-                    <h3>
-
-                        {{ $item->product->name }}
-
-                    </h3>
-
-
-                    <p>
-
-                        Tamanho:
-                        {{ $item->size }}
-
-                    </p>
-
-
-                    <p>
-
-                        Quantidade:
-                        {{ $item->quantity }}
-
-                    </p>
+                    <h2>
+                        Produtos
+                    </h2>
 
                 </div>
 
 
-                <div class="item-price">
+                <div class="card-body">
 
-                    R$
-                    {{ number_format(
-                        $item->price * $item->quantity,
-                        2,
-                        ',',
-                        '.'
-                    ) }}
+
+                    @foreach($order->items as $item)
+
+
+                        <div class="order-item">
+
+
+                            <div class="item-image">
+
+
+                                @if(
+                                    $item->product
+                                    && $item->product->image_url
+                                )
+
+                                    <img
+                                        src="{{ $item->product->image_url }}"
+                                        alt="{{ $item->product->name }}"
+                                    >
+
+                                @else
+
+                                    <span class="no-image">
+                                        Imagem indisponível
+                                    </span>
+
+                                @endif
+
+
+                            </div>
+
+
+
+                            <div class="item-info">
+
+
+                                <h3>
+
+                                    {{ $item->product->name
+                                        ?? 'Produto indisponível'
+                                    }}
+
+                                </h3>
+
+
+                                <p>
+                                    Tamanho:
+                                    <strong>
+                                        {{ $item->size }}
+                                    </strong>
+                                </p>
+
+
+                                <p>
+                                    Quantidade:
+                                    <strong>
+                                        {{ $item->quantity }}
+                                    </strong>
+                                </p>
+
+
+                                <p>
+
+                                    Valor unitário:
+
+                                    R$
+                                    {{ number_format(
+                                        $item->price,
+                                        2,
+                                        ',',
+                                        '.'
+                                    ) }}
+
+                                </p>
+
+
+                            </div>
+
+
+
+                            <div class="item-price">
+
+                                R$
+
+                                {{ number_format(
+                                    $item->price
+                                    * $item->quantity,
+                                    2,
+                                    ',',
+                                    '.'
+                                ) }}
+
+                            </div>
+
+
+                        </div>
+
+
+                    @endforeach
+
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        {{-- RESUMO --}}
+
+        <aside>
+
+
+            <div class="card summary">
+
+
+                <div class="card-header">
+
+                    <small>
+                        Compra
+                    </small>
+
+                    <h2>
+                        Resumo do pedido
+                    </h2>
 
                 </div>
 
 
+                <div class="card-body">
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Número
+                        </span>
+
+                        <strong>
+                            #{{ $order->order_number }}
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Status
+                        </span>
+
+                        <strong>
+
+                            {{ $statusLabels[$order->status]
+                                ?? ucfirst(
+                                    str_replace(
+                                        '_',
+                                        ' ',
+                                        $order->status
+                                    )
+                                )
+                            }}
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Pagamento
+                        </span>
+
+                        <strong>
+
+                            {{ $paymentLabels[$order->payment_status]
+                                ?? ucfirst(
+                                    $order->payment_status
+                                )
+                            }}
+
+                        </strong>
+
+                    </div>
+
+
+
+                    <div class="summary-line">
+
+                        <span>
+                            Itens
+                        </span>
+
+                        <strong>
+
+                            {{ $order->items->sum('quantity') }}
+
+                        </strong>
+
+                    </div>
+
+
+
+                    @if($order->tracking_code)
+
+                        <div class="tracking-box">
+
+                            <small>
+                                Código de rastreamento
+                            </small>
+
+                            <strong>
+                                {{ $order->tracking_code }}
+                            </strong>
+
+                        </div>
+
+                    @endif
+
+
+
+                    <div class="summary-total">
+
+                        <span>
+                            Total
+                        </span>
+
+                        <span>
+
+                            R$
+
+                            {{ number_format(
+                                $order->total,
+                                2,
+                                ',',
+                                '.'
+                            ) }}
+
+                        </span>
+
+                    </div>
+
+
+
+                    <div class="actions">
+
+
+                        <a
+                            href="{{ route('orders.index') }}"
+                            class="button"
+                        >
+                            MEUS PEDIDOS
+                        </a>
+
+
+                        @if($order->status !== 'cancelado')
+
+                            <a
+                                href="{{ route('orders.tracking') }}"
+                                class="button secondary"
+                            >
+                                ACOMPANHAR ENTREGA
+                            </a>
+
+                        @endif
+
+
+                    </div>
+
+
+                </div>
+
             </div>
 
-        @endforeach
 
-    </div>
+        </aside>
 
-
-
-    <!-- PAGAMENTO -->
-
-    <div class="box">
-
-        <h2>
-            Pagamento
-        </h2>
-
-
-        <p class="payment">
-
-            Status:
-
-            <strong>
-
-                {{ str_replace(
-                    '_',
-                    ' ',
-                    $order->payment_status
-                ) }}
-
-            </strong>
-
-        </p>
-
-    </div>
-
-
-
-    <!-- RASTREAMENTO -->
-
-    <div class="box">
-
-        <h2>
-            Entrega
-        </h2>
-
-
-        @if ($order->tracking_code)
-
-            <p>
-                Código de rastreamento:
-            </p>
-
-
-            <div class="tracking-code">
-
-                {{ $order->tracking_code }}
-
-            </div>
-
-        @else
-
-            <p class="payment">
-
-                O código de rastreamento estará disponível
-                quando o pedido for enviado.
-
-            </p>
-
-        @endif
-
-    </div>
-
-
-
-    <!-- RESUMO -->
-
-    <div class="box">
-
-        <h2>
-            Resumo do pedido
-        </h2>
-
-
-        <div class="summary">
-
-            <div class="summary-line">
-
-                <span>
-                    Produtos
-                </span>
-
-                <span>
-                    R$
-                    {{ number_format(
-                        $order->total,
-                        2,
-                        ',',
-                        '.'
-                    ) }}
-                </span>
-
-            </div>
-
-
-            <div class="summary-line">
-
-                <span>
-                    Frete
-                </span>
-
-                <span>
-                    Grátis
-                </span>
-
-            </div>
-
-
-            <div class="summary-line total">
-
-                <span>
-                    Total
-                </span>
-
-                <span>
-
-                    R$
-                    {{ number_format(
-                        $order->total,
-                        2,
-                        ',',
-                        '.'
-                    ) }}
-
-                </span>
-
-            </div>
-
-        </div>
 
     </div>
 

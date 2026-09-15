@@ -1596,36 +1596,97 @@ body.login-travado{
             <h2>Encontre sua seleção</h2>
 
             <div class="grade-selecoes">
-                <button class="card-selecao ativo" data-camisa="{{ asset('imagens/camisa-brasil.png') }}" data-link="brasil.html">
-                    <img src="{{ asset('imagens/brasao-brasil.png') }}" alt="Brasil">
-                    <span>Brasil</span>
-                </button>
 
-                <button class="card-selecao" data-camisa="{{ asset('imagens/camisa-eua.png') }}" data-link="eua.html">
-                    <img src="{{ asset('imagens/brasao-eua.png') }}" alt="Estados Unidos">
-                    <span>Estados Unidos</span>
-                </button>
+    <button
+        class="card-selecao ativo"
+        data-camisa="{{ asset('imagens/camisa-brasil.png') }}"
+        data-link="{{ route('worldcup.show', 'brasil') }}"
+        type="button"
+    >
+        <img
+            src="{{ asset('imagens/brasao-brasil.png') }}"
+            alt="Brasil"
+        >
 
-                <button class="card-selecao" data-camisa="{{ asset('imagens/camisa-canada.png') }}" data-link="canada.html">
-                    <img src="{{ asset('imagens/brasao-canada.png') }}" alt="Canadá">
-                    <span>Canadá</span>
-                </button>
+        <span>Brasil</span>
+    </button>
 
-                <button class="card-selecao" data-camisa="{{ asset('imagens/camisa-espanha.png') }}" data-link="espanha.html">
-                    <img src="{{ asset('imagens/brasao-espanha.png') }}" alt="Espanha">
-                    <span>Espanha</span>
-                </button>
 
-                <button class="card-selecao" data-camisa="{{ asset('imagens/camisa-franca.png') }}" data-link="franca.html">
-                    <img src="{{ asset('imagens/brasao-franca.png') }}" alt="França">
-                    <span>França</span>
-                </button>
+    <button
+        class="card-selecao"
+        data-camisa="{{ asset('imagens/camisa-eua.png') }}"
+        data-link="{{ route('worldcup.show', 'estados-unidos') }}"
+        type="button"
+    >
+        <img
+            src="{{ asset('imagens/brasao-eua.png') }}"
+            alt="Estados Unidos"
+        >
 
-                <button class="card-selecao" data-camisa="{{ asset('imagens/camisa-nova-zelandia.png') }}" data-link="nova-zelandia.html">
-                    <img src="{{ asset('imagens/brasao-nova-zelandia.png') }}" alt="Nova Zelândia">
-                    <span>Nova Zelândia</span>
-                </button>
-           </div>
+        <span>Estados Unidos</span>
+    </button>
+
+
+    <button
+        class="card-selecao"
+        data-camisa="{{ asset('imagens/camisa-canada.png') }}"
+        data-link="{{ route('worldcup.show', 'canada') }}"
+        type="button"
+    >
+        <img
+            src="{{ asset('imagens/brasao-canada.png') }}"
+            alt="Canadá"
+        >
+
+        <span>Canadá</span>
+    </button>
+
+
+    <button
+        class="card-selecao"
+        data-camisa="{{ asset('imagens/camisa-espanha.png') }}"
+        data-link="{{ route('worldcup.show', 'espanha') }}"
+        type="button"
+    >
+        <img
+            src="{{ asset('imagens/brasao-espanha.png') }}"
+            alt="Espanha"
+        >
+
+        <span>Espanha</span>
+    </button>
+
+
+    <button
+        class="card-selecao"
+        data-camisa="{{ asset('imagens/camisa-franca.png') }}"
+        data-link="{{ route('worldcup.show', 'franca') }}"
+        type="button"
+    >
+        <img
+            src="{{ asset('imagens/brasao-franca.png') }}"
+            alt="França"
+        >
+
+        <span>França</span>
+    </button>
+
+
+    <button
+        class="card-selecao"
+        data-camisa="{{ asset('imagens/camisa-nova-zelandia.png') }}"
+        data-link="{{ route('worldcup.show', 'nova-zelandia') }}"
+        type="button"
+    >
+        <img
+            src="{{ asset('imagens/brasao-nova-zelandia.png') }}"
+            alt="Nova Zelândia"
+        >
+
+        <span>Nova Zelândia</span>
+    </button>
+
+</div>
         </div>
 
         <a href="#" class="preview-camisa" id="previewCamisa">

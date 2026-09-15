@@ -17,13 +17,18 @@ use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\AccountController;
+use App\Http\Controllers\NationalTeamController;
 
 /*
 |--------------------------------------------------------------------------
 | LOJA
 |--------------------------------------------------------------------------
 */
-
+Route::get(
+    '/copa-do-mundo/{slug}',
+    [NationalTeamController::class, 'show']
+)->name('worldcup.show');
 
 // HOME
 Route::get(
@@ -196,13 +201,9 @@ Route::get('/dashboard', function () {
     */
 
     Route::get(
-        '/minha-conta',
-        function () {
-
-            return view('account.index');
-
-        }
-    )->name('account.index');
+    '/minha-conta',
+    [AccountController::class, 'index']
+)->name('account.index');
 
 
 

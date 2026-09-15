@@ -17,23 +17,31 @@
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
+
     gap: 25px;
 
     margin-bottom: 32px;
 }
 
+
 .product-form-header h2 {
     font-family: 'Barlow Condensed', sans-serif;
+
     font-size: 50px;
     font-weight: 600;
+
     line-height: 1;
 }
 
+
 .product-form-header p {
     color: #777;
+
     font-size: 15px;
+
     margin-top: 10px;
 }
+
 
 
 /* =========================================
@@ -43,30 +51,35 @@
 .btn-back {
     display: inline-flex;
     align-items: center;
+
     gap: 9px;
 
+    padding: 12px 18px;
+
+    background: #fff;
+
     color: #111;
+
+    border: 1px solid #ddd;
+    border-radius: 999px;
 
     text-decoration: none;
 
     font-size: 14px;
     font-weight: 600;
 
-    padding: 12px 18px;
-
-    background: #fff;
-
-    border: 1px solid #ddd;
-    border-radius: 999px;
-
     transition: .2s ease;
 }
 
+
 .btn-back:hover {
     background: #111;
+
     color: #fff;
+
     border-color: #111;
 }
+
 
 
 /* =========================================
@@ -75,37 +88,45 @@
 
 .product-form-layout {
     display: grid;
-    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+
+    grid-template-columns:
+        minmax(0, 2fr)
+        minmax(300px, 1fr);
 
     gap: 22px;
 
     align-items: start;
 }
 
+
 .form-card {
+    padding: 28px;
+
     background: #fff;
 
     border: 1px solid #e5e5e5;
     border-radius: 7px;
-
-    padding: 28px;
 }
+
 
 .form-card + .form-card {
     margin-top: 20px;
 }
 
+
 .form-card h3 {
+    margin-bottom: 24px;
+
     font-family: 'Barlow Condensed', sans-serif;
 
     font-size: 22px;
     font-weight: 600;
 
     text-transform: uppercase;
-    letter-spacing: .04em;
 
-    margin-bottom: 24px;
+    letter-spacing: .04em;
 }
+
 
 
 /* =========================================
@@ -116,50 +137,60 @@
     margin-bottom: 22px;
 }
 
+
 .form-group:last-child {
     margin-bottom: 0;
 }
+
 
 .form-group label {
     display: block;
 
     margin-bottom: 8px;
 
+    color: #333;
+
     font-size: 13px;
     font-weight: 600;
-
-    color: #333;
 }
+
 
 .required {
     color: #b42318;
 }
 
+
 .form-control {
     width: 100%;
     min-height: 50px;
 
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 0 15px;
 
     background: #fafafa;
 
-    padding: 0 15px;
+    color: #111;
+
+    border: 1px solid #ddd;
+    border-radius: 5px;
 
     outline: none;
 
     font-family: 'Barlow', sans-serif;
+
     font-size: 15px;
 
-    color: #111;
-
-    transition: border .2s ease, background .2s ease;
+    transition:
+        border .2s ease,
+        background .2s ease;
 }
+
 
 .form-control:focus {
-    border-color: #111;
     background: #fff;
+
+    border-color: #111;
 }
+
 
 textarea.form-control {
     min-height: 150px;
@@ -170,9 +201,11 @@ textarea.form-control {
     resize: vertical;
 }
 
+
 select.form-control {
     cursor: pointer;
 }
+
 
 
 /* =========================================
@@ -181,10 +214,14 @@ select.form-control {
 
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+
+    grid-template-columns:
+        1fr
+        1fr;
 
     gap: 18px;
 }
+
 
 
 /* =========================================
@@ -194,45 +231,50 @@ select.form-control {
 .image-upload-box {
     position: relative;
 
-    border: 1px dashed #bbb;
-    border-radius: 7px;
+    padding: 30px 20px;
 
     background: #fafafa;
 
-    padding: 30px 20px;
+    border: 1px dashed #bbb;
+    border-radius: 7px;
 
     text-align: center;
 }
 
+
 .image-upload-box i {
-    font-size: 30px;
+    margin-bottom: 12px;
 
     color: #777;
 
-    margin-bottom: 12px;
+    font-size: 30px;
 }
 
+
 .image-upload-box p {
-    font-size: 14px;
+    margin-bottom: 5px;
 
     color: #555;
 
-    margin-bottom: 5px;
+    font-size: 14px;
 }
+
 
 .image-upload-box span {
     display: block;
 
+    margin-bottom: 18px;
+
     color: #999;
 
     font-size: 12px;
-
-    margin-bottom: 18px;
 }
+
 
 .image-upload-box input {
     width: 100%;
 }
+
 
 
 /* =========================================
@@ -251,28 +293,34 @@ select.form-control {
     border-bottom: 1px solid #eee;
 }
 
+
 .option-row:first-child {
     padding-top: 0;
 }
 
+
 .option-row:last-child {
     padding-bottom: 0;
+
     border-bottom: none;
 }
+
 
 .option-info strong {
     display: block;
 
-    font-size: 14px;
-
     margin-bottom: 4px;
+
+    font-size: 14px;
 }
+
 
 .option-info span {
     color: #888;
 
     font-size: 12px;
 }
+
 
 
 /* SWITCH */
@@ -288,16 +336,17 @@ select.form-control {
     flex-shrink: 0;
 }
 
+
 .switch input {
-    opacity: 0;
     width: 0;
     height: 0;
+
+    opacity: 0;
 }
+
 
 .slider {
     position: absolute;
-
-    cursor: pointer;
 
     inset: 0;
 
@@ -305,36 +354,43 @@ select.form-control {
 
     border-radius: 999px;
 
+    cursor: pointer;
+
     transition: .2s;
 }
+
 
 .slider:before {
     content: "";
 
     position: absolute;
 
+    top: 3px;
+    left: 3px;
+
     width: 20px;
     height: 20px;
-
-    left: 3px;
-    top: 3px;
 
     background: #fff;
 
     border-radius: 50%;
 
-    transition: .2s;
+    box-shadow:
+        0 1px 4px rgba(0,0,0,.15);
 
-    box-shadow: 0 1px 4px rgba(0,0,0,.15);
+    transition: .2s;
 }
+
 
 .switch input:checked + .slider {
     background: #111;
 }
 
+
 .switch input:checked + .slider:before {
     transform: translateX(20px);
 }
+
 
 
 /* =========================================
@@ -351,47 +407,54 @@ select.form-control {
     margin-top: 22px;
 }
 
+
 .btn-cancel {
+    min-height: 48px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
 
-    min-height: 48px;
-
     padding: 0 22px;
+
+    background: #fff;
+
+    color: #111;
 
     border: 1px solid #ddd;
     border-radius: 999px;
 
-    background: #fff;
-    color: #111;
-
     text-decoration: none;
 
     font-family: 'Barlow', sans-serif;
+
     font-size: 14px;
     font-weight: 600;
 
     cursor: pointer;
 }
 
+
 .btn-save {
+    min-height: 48px;
+
     display: inline-flex;
     align-items: center;
     justify-content: center;
+
     gap: 9px;
 
-    min-height: 48px;
-
     padding: 0 26px;
+
+    background: #111;
+
+    color: #fff;
 
     border: none;
     border-radius: 999px;
 
-    background: #111;
-    color: #fff;
-
     font-family: 'Barlow', sans-serif;
+
     font-size: 14px;
     font-weight: 600;
 
@@ -400,9 +463,11 @@ select.form-control {
     transition: .2s ease;
 }
 
+
 .btn-save:hover {
     background: #333;
 }
+
 
 
 /* =========================================
@@ -410,18 +475,18 @@ select.form-control {
 ========================================= */
 
 .validation-errors {
-    background: #fff1f0;
-
-    border: 1px solid #f1c7c4;
-
-    color: #8a2721;
-
-    border-radius: 6px;
+    margin-bottom: 22px;
 
     padding: 16px 18px;
 
-    margin-bottom: 22px;
+    background: #fff1f0;
+
+    color: #8a2721;
+
+    border: 1px solid #f1c7c4;
+    border-radius: 6px;
 }
+
 
 .validation-errors strong {
     display: block;
@@ -431,15 +496,18 @@ select.form-control {
     font-size: 14px;
 }
 
+
 .validation-errors ul {
     padding-left: 20px;
 }
+
 
 .validation-errors li {
     margin: 4px 0;
 
     font-size: 13px;
 }
+
 
 
 /* =========================================
@@ -454,12 +522,14 @@ select.form-control {
 
 }
 
+
 @media (max-width: 700px) {
 
     .product-form-header {
         flex-direction: column;
         align-items: flex-start;
     }
+
 
     .form-row {
         grid-template-columns: 1fr;
@@ -472,20 +542,26 @@ select.form-control {
 @endsection
 
 
+
 @section('content')
 
 
 <div class="product-form-header">
 
+
     <div>
 
-        <h2>Novo produto</h2>
+        <h2>
+            Novo produto
+        </h2>
+
 
         <p>
             Cadastre um novo produto na Aura Running.
         </p>
 
     </div>
+
 
 
     <a
@@ -499,16 +575,20 @@ select.form-control {
 
     </a>
 
+
 </div>
+
 
 
 @if($errors->any())
 
     <div class="validation-errors">
 
+
         <strong>
             Verifique os campos abaixo:
         </strong>
+
 
         <ul>
 
@@ -522,9 +602,11 @@ select.form-control {
 
         </ul>
 
+
     </div>
 
 @endif
+
 
 
 <form
@@ -536,27 +618,41 @@ select.form-control {
     @csrf
 
 
+
     <div class="product-form-layout">
 
 
-        {{-- COLUNA PRINCIPAL --}}
+        {{-- =========================================
+             COLUNA PRINCIPAL
+        ========================================= --}}
+
         <div>
 
 
             <div class="form-card">
+
 
                 <h3>
                     Informações do produto
                 </h3>
 
 
+
                 {{-- NOME --}}
+
                 <div class="form-group">
 
+
                     <label for="name">
+
                         Nome do produto
-                        <span class="required">*</span>
+
+                        <span class="required">
+                            *
+                        </span>
+
                     </label>
+
 
                     <input
                         type="text"
@@ -564,20 +660,30 @@ select.form-control {
                         name="name"
                         class="form-control"
                         value="{{ old('name') }}"
-                        placeholder="Ex.: Aura Monster"
+                        placeholder="Ex.: Camisa Brasil AURA"
                         required
                     >
+
 
                 </div>
 
 
+
                 {{-- CATEGORIA --}}
+
                 <div class="form-group">
 
+
                     <label for="category_id">
+
                         Categoria
-                        <span class="required">*</span>
+
+                        <span class="required">
+                            *
+                        </span>
+
                     </label>
+
 
                     <select
                         id="category_id"
@@ -586,6 +692,7 @@ select.form-control {
                         required
                     >
 
+
                         <option value="">
                             Selecione uma categoria
                         </option>
@@ -593,29 +700,96 @@ select.form-control {
 
                         @foreach($categories as $category)
 
+
                             <option
                                 value="{{ $category->id }}"
-                                {{ old('category_id') == $category->id ? 'selected' : '' }}
+
+                                {{
+                                    old('category_id')
+                                    == $category->id
+                                        ? 'selected'
+                                        : ''
+                                }}
                             >
 
                                 {{ $category->name }}
 
                             </option>
 
+
                         @endforeach
 
 
                     </select>
 
+
                 </div>
 
 
-                {{-- DESCRIÇÃO --}}
+
+                {{-- =========================================
+                     SELEÇÃO DA COPA
+                ========================================= --}}
+
                 <div class="form-group">
+
+
+                    <label for="national_team_id">
+                        Seleção da Copa
+                    </label>
+
+
+                    <select
+                        id="national_team_id"
+                        name="national_team_id"
+                        class="form-control"
+                    >
+
+
+                        <option value="">
+                            Nenhuma seleção
+                        </option>
+
+
+                        @foreach($nationalTeams as $team)
+
+
+                            <option
+                                value="{{ $team->id }}"
+
+                                {{
+                                    old(
+                                        'national_team_id'
+                                    ) == $team->id
+                                        ? 'selected'
+                                        : ''
+                                }}
+                            >
+
+                                {{ $team->name }}
+
+                            </option>
+
+
+                        @endforeach
+
+
+                    </select>
+
+
+                </div>
+
+
+
+                {{-- DESCRIÇÃO --}}
+
+                <div class="form-group">
+
 
                     <label for="description">
                         Descrição
                     </label>
+
 
                     <textarea
                         id="description"
@@ -624,19 +798,29 @@ select.form-control {
                         placeholder="Descreva o produto..."
                     >{{ old('description') }}</textarea>
 
+
                 </div>
 
 
+
                 {{-- PREÇO E ESTOQUE --}}
+
                 <div class="form-row">
 
 
                     <div class="form-group">
 
+
                         <label for="price">
+
                             Preço
-                            <span class="required">*</span>
+
+                            <span class="required">
+                                *
+                            </span>
+
                         </label>
+
 
                         <input
                             type="number"
@@ -644,21 +828,30 @@ select.form-control {
                             name="price"
                             class="form-control"
                             value="{{ old('price') }}"
-                            placeholder="0,00"
+                            placeholder="0.00"
                             min="0"
                             step="0.01"
                             required
                         >
 
+
                     </div>
+
 
 
                     <div class="form-group">
 
+
                         <label for="stock">
+
                             Estoque
-                            <span class="required">*</span>
+
+                            <span class="required">
+                                *
+                            </span>
+
                         </label>
+
 
                         <input
                             type="number"
@@ -670,6 +863,7 @@ select.form-control {
                             step="1"
                             required
                         >
+
 
                     </div>
 
@@ -684,12 +878,17 @@ select.form-control {
 
 
 
-        {{-- COLUNA LATERAL --}}
+        {{-- =========================================
+             COLUNA LATERAL
+        ========================================= --}}
+
         <div>
 
 
             {{-- IMAGEM --}}
+
             <div class="form-card">
+
 
                 <h3>
                     Imagem
@@ -698,11 +897,14 @@ select.form-control {
 
                 <div class="image-upload-box">
 
+
                     <i class="fa-regular fa-image"></i>
+
 
                     <p>
                         Escolha a imagem do produto
                     </p>
+
 
                     <span>
                         JPG, JPEG, PNG ou WEBP
@@ -716,37 +918,49 @@ select.form-control {
                         accept=".jpg,.jpeg,.png,.webp"
                     >
 
+
                 </div>
+
 
             </div>
 
 
 
             {{-- VISIBILIDADE --}}
+
             <div class="form-card">
+
 
                 <h3>
                     Visibilidade
                 </h3>
 
 
+
                 {{-- ATIVO --}}
+
                 <div class="option-row">
 
+
                     <div class="option-info">
+
 
                         <strong>
                             Produto ativo
                         </strong>
 
+
                         <span>
                             Disponibilizar produto na loja.
                         </span>
 
+
                     </div>
 
 
+
                     <label class="switch">
+
 
                         <input
                             type="checkbox"
@@ -755,30 +969,41 @@ select.form-control {
                             {{ old('active', true) ? 'checked' : '' }}
                         >
 
+
                         <span class="slider"></span>
 
+
                     </label>
+
 
                 </div>
 
 
+
                 {{-- DESTAQUE --}}
+
                 <div class="option-row">
 
+
                     <div class="option-info">
+
 
                         <strong>
                             Produto em destaque
                         </strong>
 
+
                         <span>
                             Marcar produto como destaque.
                         </span>
 
+
                     </div>
 
 
+
                     <label class="switch">
+
 
                         <input
                             type="checkbox"
@@ -787,9 +1012,12 @@ select.form-control {
                             {{ old('featured') ? 'checked' : '' }}
                         >
 
+
                         <span class="slider"></span>
 
+
                     </label>
+
 
                 </div>
 
@@ -803,6 +1031,10 @@ select.form-control {
     </div>
 
 
+
+    {{-- =========================================
+         AÇÕES
+    ========================================= --}}
 
     <div class="form-actions">
 
@@ -833,4 +1065,4 @@ select.form-control {
 </form>
 
 
-@endsection 
+@endsection

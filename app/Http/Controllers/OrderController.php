@@ -56,7 +56,6 @@ public function tracking(): View
 {
     $orders = Order::with('items.product')
         ->where('user_id', Auth::id())
-        ->where('payment_status', 'pago')
         ->where('status', '!=', 'cancelado')
         ->latest()
         ->get();
@@ -376,10 +375,10 @@ public function tracking(): View
         */
 
         return redirect()
-    ->route('payments.checkout', $order)
+    ->route('orders.show', $order->id)
     ->with(
         'success',
-        'Pedido criado. Agora escolha a forma de pagamento.'
+        'Pedido realizado com sucesso!'
     );
     }
 }

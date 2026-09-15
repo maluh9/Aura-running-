@@ -199,10 +199,17 @@ class CartController extends Controller
         }
 
 
-        $quantity = min(
-            (int) $validated['quantity'],
-            $item->product->stock
-        );
+       if ((int) $validated['quantity'] > $item->product->stock) {
+
+    return back()->with(
+        'error',
+        'Há apenas ' .
+        $item->product->stock .
+        ' unidade(s) disponível(is) em estoque.'
+    );
+}
+
+$quantity = (int) $validated['quantity'];
 
 
         $item->update([
