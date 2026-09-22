@@ -75,16 +75,31 @@ Route::middleware('auth')->group(function () {
     |--------------------------------------------------------------------------
     */
 
-    Route::get(
-        '/carrinho',
-        [CartController::class, 'index']
-    )->name('cart.index');
+Route::get(
+    '/carrinho',
+    [CartController::class, 'index']
+)->name('cart.index');
 
 
-    Route::post(
-        '/carrinho/adicionar/{productId}',
-        [CartController::class, 'add']
-    )->name('cart.add');
+/*
+|--------------------------------------------------------------------------
+| QUANTIDADE DO CARRINHO
+|--------------------------------------------------------------------------
+|
+| Usada para atualizar o número do carrinho sem precisar apertar F5.
+|
+*/
+
+Route::get(
+    '/carrinho/quantidade',
+    [CartController::class, 'count']
+)->name('cart.count');
+
+
+Route::post(
+    '/carrinho/adicionar/{productId}',
+    [CartController::class, 'add']
+)->name('cart.add');
 
 
     Route::post(

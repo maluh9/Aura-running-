@@ -1198,6 +1198,49 @@ body.login-travado{
 
     color: #2d6b37;
 }
+
+/* =========================================
+   CONTADOR DO CARRINHO - HOME
+========================================= */
+
+.home-cart-icon {
+    position: relative;
+}
+
+.home-cart-badge {
+    position: absolute;
+
+    top: -7px;
+    right: -8px;
+
+    min-width: 18px;
+    height: 18px;
+
+    padding: 0 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #fff;
+    color: #111;
+
+    border: 2px solid #111;
+    border-radius: 999px;
+
+    font-family: Arial, sans-serif;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    line-height: 1;
+
+    pointer-events: none;
+}
+
+.home-cart-badge-hidden {
+    display: none !important;
+}
     </style>
 </head>
 
@@ -1266,25 +1309,80 @@ body.login-travado{
             </svg>
         </a>
 
-        <!-- Carrinho -->
-        <a
-            href="{{ route('cart.index') }}"
-            class="icone"
-            title="Carrinho"
+{{-- CARRINHO --}}
+
+@php
+
+    $homeCartCount = 0;
+
+    if (auth()->check()) {
+
+        $homeCartCount = (int) \App\Models\CartItem::whereHas(
+            'cart',
+            function ($query) {
+
+                $query->where(
+                    'user_id',
+                    auth()->id()
+                );
+
+            }
+        )->sum('quantity');
+
+    }
+
+@endphp
+
+
+<a
+    href="{{ auth()->check()
+        ? route('cart.index')
+        : route('login') }}"
+    class="icone home-cart-icon"
+    title="Carrinho"
+>
+
+    <svg
+        width="19"
+        height="19"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+    >
+
+        <circle
+            cx="9"
+            cy="20"
+            r="1"
+        />
+
+        <circle
+            cx="19"
+            cy="20"
+            r="1"
+        />
+
+        <path
+            d="M3 4h2l2.7 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"
+        />
+
+    </svg>
+
+
+    @auth
+
+        <span
+            id="homeCartBadge"
+            class="home-cart-badge {{ $homeCartCount < 1 ? 'home-cart-badge-hidden' : '' }}"
+            aria-label="{{ $homeCartCount }} item(ns) no carrinho"
         >
-            <svg
-                width="19"
-                height="19"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-            >
-                <circle cx="9" cy="20" r="1"/>
-                <circle cx="19" cy="20" r="1"/>
-                <path d="M3 4h2l2.7 11.4a2 2 0 0 0 2 1.6h7.7a2 2 0 0 0 2-1.6L21 8H6"/>
-            </svg>
-        </a>
+            {{ $homeCartCount }}
+        </span>
+
+    @endauth
+
+</a>
 
         <!-- Perfil -->
         <a
@@ -2293,6 +2391,81 @@ previewCamisa.addEventListener('click', function () {
 });
 
 </script>
+
+
+@auth
+<script>
+(function () {
+    const badge = document.getElementById('homeCartBadge');
+
+    if (!badge) {
+        return;
+    }
+
+    function updateHomeCartBadge(count) {
+        count = Number(count) || 0;
+
+        badge.textContent = count;
+        badge.setAttribute(
+            'aria-label',
+            count + ' item(ns) no carrinho'
+        );
+
+        if (count > 0) {
+            badge.classList.remove('home-cart-badge-hidden');
+        } else {
+            badge.classList.add('home-cart-badge-hidden');
+        }
+    }
+
+    async function refreshHomeCartBadge() {
+        try {
+            const response = await fetch(
+                '{{ route('cart.count') }}',
+                {
+                    method: 'GET',
+                    credentials: 'same-origin',
+                    cache: 'no-store',
+                    headers: {
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+            const count = Number(data.cart_count) || 0;
+
+            updateHomeCartBadge(count);
+            localStorage.setItem('aura_cart_count', String(count));
+        } catch (error) {
+            // Mantém o valor já renderizado se a atualização falhar.
+        }
+    }
+
+    window.addEventListener('pageshow', refreshHomeCartBadge);
+    window.addEventListener('focus', refreshHomeCartBadge);
+
+    document.addEventListener('visibilitychange', function () {
+        if (!document.hidden) {
+            refreshHomeCartBadge();
+        }
+    });
+
+    window.addEventListener('storage', function (event) {
+        if (event.key === 'aura_cart_count') {
+            updateHomeCartBadge(event.newValue);
+        }
+    });
+
+    refreshHomeCartBadge();
+})();
+</script>
+@endauth
 
 </body>
 </html>
