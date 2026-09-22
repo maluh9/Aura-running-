@@ -20,6 +20,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\NationalTeamController;
 
+use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\PageController;
 /*
 |--------------------------------------------------------------------------
 | LOJA
@@ -242,7 +244,22 @@ Route::get('/dashboard', function () {
 
 });
 
+Route::post(
+    '/newsletter',
+    [NewsletterController::class, 'store']
+)->name('newsletter.store');
 
+
+Route::get(
+    '/informacoes/{slug}',
+    [PageController::class, 'show']
+)->name('pages.info');
+
+
+Route::get(
+    '/explorar/{category:slug}',
+    [CategoryController::class, 'show']
+)->name('explore.category');
 /*
 |--------------------------------------------------------------------------
 | AUTENTICAÇÃO

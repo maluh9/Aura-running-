@@ -31,7 +31,6 @@ class HomeController extends Controller
             })
             ->with('category')
             ->orderBy('id')
-            ->limit(10)
             ->get();
 
 

@@ -1152,6 +1152,52 @@ body.login-travado{
     color: #777;
 }
 
+.newsletter-form {
+    position: relative;
+}
+
+.newsletter-form input {
+    padding-right: 70px;
+}
+
+.newsletter-form button {
+    position: absolute;
+
+    top: 50%;
+    right: 18px;
+
+    transform: translateY(-50%);
+
+    width: 42px;
+    height: 42px;
+
+    border: none;
+
+    background: #111;
+    color: #fff;
+
+    border-radius: 50%;
+
+    font-size: 20px;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+.newsletter-form button:hover {
+    transform:
+        translateY(-50%)
+        translateX(3px);
+}
+
+.newsletter-success {
+    margin-top: 12px;
+
+    font-size: 14px;
+
+    color: #2d6b37;
+}
     </style>
 </head>
 
@@ -1699,72 +1745,285 @@ body.login-travado{
 
     <div class="footer-topo">
 
+
+        {{-- NEWSLETTER --}}
+
         <div class="footer-newsletter">
+
             <h2>
                 Fique por dentro para receber ofertas exclusivas
                 e lançamentos antecipados
             </h2>
 
-            <form>
-                <input type="email" placeholder="E-mail *">
+
+            <form
+                action="{{ route('newsletter.store') }}"
+                method="POST"
+                class="newsletter-form"
+            >
+
+                @csrf
+
+                <input
+                    type="email"
+                    name="email"
+                    placeholder="E-mail *"
+                    required
+                >
+
+                <button
+                    type="submit"
+                    aria-label="Cadastrar e-mail"
+                >
+                    →
+                </button>
+
             </form>
+
+
+            @if(session('newsletter_success'))
+
+                <p class="newsletter-success">
+                    {{ session('newsletter_success') }}
+                </p>
+
+            @endif
+
         </div>
+
+
+
+        {{-- LINKS --}}
 
         <div class="footer-links">
 
-            <div class="footer-coluna">
-                <h4>Institucional</h4>
-
-                <a href="#">Sobre nós</a>
-                <a href="#">Inspirações</a>
-                <a href="#">Contato</a>
-            </div>
 
             <div class="footer-coluna">
-                <h4>Explorar</h4>
 
-                <a href="#">Masculino</a>
-                <a href="#">Feminino</a>
-                <a href="#">Acessórios</a>
-                <a href="#">Tênis</a>
-                <a href="#">Seleções</a>
+                <h4>
+                    Institucional
+                </h4>
+
+                <a
+                    href="{{ route('pages.info', 'sobre-nos') }}"
+                >
+                    Sobre nós
+                </a>
+
+                <a
+                    href="{{ route('pages.info', 'inspiracoes') }}"
+                >
+                    Inspirações
+                </a>
+
+                <a
+                    href="{{ route('pages.info', 'contato') }}"
+                >
+                    Contato
+                </a>
 
             </div>
+
+
 
             <div class="footer-coluna">
-                <h4>Ajuda</h4>
 
-                <a href="#">Trocas e devoluções</a>
-                <a href="#">Entregas</a>
-                <a href="#">FAQ</a>
+                <h4>
+                    Explorar
+                </h4>
+
+
+                <a
+                    href="{{ route('products.gender', 'masculino') }}"
+                >
+                    Masculino
+                </a>
+
+
+                <a
+                    href="{{ route('products.gender', 'feminino') }}"
+                >
+                    Feminino
+                </a>
+
+
+                <a
+                    href="{{ route('explore.category', 'acessorios') }}"
+                >
+                    Acessórios
+                </a>
+
+
+                <a
+                    href="{{ route('explore.category', 'tenis') }}"
+                >
+                    Tênis
+                </a>
+
+
+                <a
+                    href="{{ route('home') }}#copa"
+                >
+                    Seleções
+                </a>
 
             </div>
+
+
+
+            <div class="footer-coluna">
+
+                <h4>
+                    Ajuda
+                </h4>
+
+
+                <a
+                    href="{{ route('pages.info', 'trocas-e-devolucoes') }}"
+                >
+                    Trocas e devoluções
+                </a>
+
+
+                <a
+                    href="{{ route('pages.info', 'entregas') }}"
+                >
+                    Entregas
+                </a>
+
+
+                <a
+                    href="{{ route('pages.info', 'faq') }}"
+                >
+                    FAQ
+                </a>
+
+            </div>
+
 
         </div>
+
     </div>
 
+
+
+    {{-- BRASIL --}}
+
     <div class="footer-meio">
-        <img src="{{ asset('imagens/bandeira-brasil.svg') }}" alt="Brasil">
-        <span>Brasil</span>
+
+        <img
+            src="{{ asset('imagens/bandeira-brasil.svg') }}"
+            alt="Brasil"
+        >
+
+        <span>
+            Brasil
+        </span>
+
     </div>
+
+
+
+    {{-- RODAPÉ INFERIOR --}}
 
     <div class="footer-bottom">
 
+
         <div class="footer-legais">
-            <a href="#">© Aura Running 2026</a>
-            <a href="#">Termos e Condições</a>
-            <a href="#">Política de Privacidade</a>
-            <a href="#">Cookies</a>
-            <a href="#">Acessibilidade</a>
+
+            <a href="{{ route('home') }}">
+                © Aura Running 2026
+            </a>
+
+
+            <a
+                href="{{ route('pages.info', 'termos') }}"
+            >
+                Termos e Condições
+            </a>
+
+
+            <a
+                href="{{ route('pages.info', 'privacidade') }}"
+            >
+                Política de Privacidade
+            </a>
+
+
+            <a
+                href="{{ route('pages.info', 'cookies') }}"
+            >
+                Cookies
+            </a>
+
+
+            <a
+                href="{{ route('pages.info', 'acessibilidade') }}"
+            >
+                Acessibilidade
+            </a>
+
         </div>
 
+
+
+        {{-- REDES SOCIAIS --}}
+
         <div class="footer-redes">
-            <a href="https://www.instagram.com"><i class="fa-brands fa-instagram"></i></a>
-            <a href="https://www.tiktok.com"><i class="fa-brands fa-tiktok"></i></a>
-            <a href="https://www.youtube.com"><i class="fa-brands fa-youtube"></i></a>
-            <a href="https://www.twitter.com"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://www.linkedin.com"><i class="fa-brands fa-linkedin-in"></i></a>
+
+
+            <a
+                href="https://www.instagram.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+            >
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+
+
+            <a
+                href="https://www.tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="TikTok"
+            >
+                <i class="fa-brands fa-tiktok"></i>
+            </a>
+
+
+            <a
+                href="https://www.youtube.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="YouTube"
+            >
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+
+
+            <a
+                href="https://x.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="X"
+            >
+                <i class="fa-brands fa-x-twitter"></i>
+            </a>
+
+
+            <a
+                href="https://www.linkedin.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="LinkedIn"
+            >
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+
+
         </div>
+
 
     </div>
 

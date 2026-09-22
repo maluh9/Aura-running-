@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
 
     <meta
@@ -9,10 +10,16 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    @include('partials.page-meta', ['pageTitle' => $product->name])
+    @include(
+        'partials.page-meta',
+        ['pageTitle' => $product->name]
+    )
+
 
     <style>
+
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500;600&display=swap');
+
 
         * {
             margin: 0;
@@ -20,26 +27,34 @@
             box-sizing: border-box;
         }
 
+
         html,
         body {
             width: 100%;
             min-height: 100%;
         }
 
+
         body {
             font-family: 'Barlow', sans-serif;
+
             color: #111;
+
             background: #fff;
+
             overflow-x: hidden;
         }
 
 
+
         /* ========================================
-           ÁREA PRINCIPAL DO PRODUTO
+           ÁREA PRINCIPAL
         ======================================== */
 
         .product-page {
+
             width: 100%;
+
             max-width: 1480px;
 
             height: calc(100vh - 96px);
@@ -60,11 +75,13 @@
         }
 
 
+
         /* ========================================
            IMAGEM
         ======================================== */
 
         .product-image-wrapper {
+
             position: relative;
 
             width: 100%;
@@ -73,6 +90,7 @@
             max-height: 560px;
 
             display: flex;
+
             align-items: center;
             justify-content: center;
 
@@ -83,6 +101,7 @@
 
 
         .product-image-wrapper img {
+
             display: block;
 
             width: 100%;
@@ -102,18 +121,24 @@
 
 
         .product-image-wrapper:hover img {
+
             transform: scale(1.015);
         }
 
 
-        /* SEM ESTOQUE NA IMAGEM */
+
+        /* ========================================
+           SEM ESTOQUE NA IMAGEM
+        ======================================== */
 
         .product-image-wrapper.out-of-stock img {
+
             opacity: .68;
         }
 
 
         .stock-badge {
+
             position: absolute;
 
             top: 18px;
@@ -124,11 +149,15 @@
             padding: 8px 14px;
 
             background: #111;
+
             color: #fff;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
             font-size: 13px;
+
             font-weight: 600;
 
             letter-spacing: .12em;
@@ -139,27 +168,35 @@
         }
 
 
+
         /* ========================================
            INFORMAÇÕES
         ======================================== */
 
         .product-info {
+
             width: 100%;
 
             display: flex;
+
             flex-direction: column;
+
             justify-content: center;
         }
 
 
         .category {
+
             margin-bottom: 10px;
 
             color: #777;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
             font-size: 13px;
+
             font-weight: 500;
 
             letter-spacing: .12em;
@@ -169,11 +206,19 @@
 
 
         .product-info h1 {
+
             margin-bottom: 18px;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
-            font-size: clamp(42px, 3.4vw, 56px);
+            font-size:
+                clamp(
+                    42px,
+                    3.4vw,
+                    56px
+                );
 
             font-weight: 600;
 
@@ -186,6 +231,7 @@
 
 
         .description {
+
             max-width: 620px;
 
             margin-bottom: 22px;
@@ -199,6 +245,7 @@
 
 
         .price {
+
             margin-bottom: 24px;
 
             font-size: 27px;
@@ -207,27 +254,33 @@
         }
 
 
+
         /* ========================================
            AVISO SEM ESTOQUE
         ======================================== */
 
         .stock-alert {
+
             margin-bottom: 20px;
 
             padding: 14px 16px;
 
             background: #f5f5f5;
 
-            border-left: 3px solid #111;
+            border-left:
+                3px solid #111;
         }
 
 
         .stock-alert strong {
+
             display: block;
 
             margin-bottom: 4px;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
             font-size: 15px;
 
@@ -240,22 +293,31 @@
 
 
         .stock-alert span {
+
             color: #666;
 
             font-size: 13px;
         }
 
 
+
         /* ========================================
-           TAMANHOS
+           FORMULÁRIO
         ======================================== */
 
         .cart-form {
+
             width: 100%;
         }
 
 
+
+        /* ========================================
+           TAMANHOS
+        ======================================== */
+
         .sizes-title {
+
             margin-bottom: 10px;
 
             font-size: 14px;
@@ -265,19 +327,26 @@
 
 
         .sizes {
+
             display: flex;
 
             flex-wrap: wrap;
 
             gap: 9px;
 
-            margin-bottom: 22px;
+            margin-bottom: 18px;
         }
 
 
         .size {
-            width: 50px;
+
+            width: auto;
+
+            min-width: 50px;
+
             height: 46px;
+
+            padding: 0 12px;
 
             display: flex;
 
@@ -286,9 +355,12 @@
 
             background: #fff;
 
-            border: 1px solid #ccc;
+            border:
+                1px solid #ccc;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
             font-size: 16px;
 
@@ -299,16 +371,19 @@
 
 
         .size:hover {
+
             border-color: #111;
         }
 
 
         .size input {
+
             display: none;
         }
 
 
         .size:has(input:checked) {
+
             background: #111;
 
             color: #fff;
@@ -317,11 +392,39 @@
         }
 
 
+
         /* ========================================
-           BOTÃO DO CARRINHO
+           ESTOQUE DISPONÍVEL
+        ======================================== */
+
+        .stock-info {
+
+            margin:
+                0
+                0
+                18px;
+
+            color: #888;
+
+            font-size: 13px;
+        }
+
+
+        .stock-info strong {
+
+            color: #111;
+
+            font-weight: 600;
+        }
+
+
+
+        /* ========================================
+           BOTÃO CARRINHO
         ======================================== */
 
         .cart-button {
+
             width: 100%;
 
             min-height: 54px;
@@ -333,13 +436,16 @@
 
             padding: 14px 20px;
 
-            border: 1px solid #111;
+            border:
+                1px solid #111;
 
             background: #111;
 
             color: #fff;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
             font-size: 17px;
 
@@ -358,6 +464,7 @@
 
 
         .cart-button:hover {
+
             background: #333;
 
             border-color: #333;
@@ -366,6 +473,7 @@
 
         .cart-button.disabled,
         .cart-button:disabled {
+
             background: #d7d7d7;
 
             color: #777;
@@ -378,17 +486,20 @@
 
         .cart-button.disabled:hover,
         .cart-button:disabled:hover {
+
             background: #d7d7d7;
 
             border-color: #d7d7d7;
         }
 
 
+
         /* ========================================
-           FAVORITO
+           FAVORITOS
         ======================================== */
 
         .favorite {
+
             width: 100%;
 
             min-height: 50px;
@@ -402,13 +513,16 @@
 
             padding: 12px 18px;
 
-            border: 1px solid #111;
+            border:
+                1px solid #111;
 
             background: #fff;
 
             color: #111;
 
-            font-family: 'Barlow Condensed', sans-serif;
+            font-family:
+                'Barlow Condensed',
+                sans-serif;
 
             font-size: 16px;
 
@@ -425,32 +539,46 @@
 
 
         .favorite:hover {
+
             background: #f4f4f4;
         }
 
 
+
         /* ========================================
            DESKTOP
-           SEM ROLAGEM VERTICAL
         ======================================== */
 
-        @media (min-width: 1001px) and (min-height: 700px) {
+        @media (
+            min-width: 1001px
+        ) and (
+            min-height: 700px
+        ) {
 
             body {
+
                 overflow-y: hidden;
             }
 
         }
 
 
+
         /* ========================================
-           NOTEBOOKS MENORES
+           NOTEBOOK
         ======================================== */
 
-        @media (max-width: 1250px) and (min-width: 1001px) {
+        @media (
+            max-width: 1250px
+        ) and (
+            min-width: 1001px
+        ) {
 
             .product-page {
-                padding: 24px 34px;
+
+                padding:
+                    24px
+                    34px;
 
                 gap: 38px;
 
@@ -462,50 +590,64 @@
 
             .product-image-wrapper,
             .product-image-wrapper img {
+
                 max-height: 500px;
             }
 
 
             .product-info h1 {
+
                 font-size: 46px;
             }
 
 
             .description {
+
                 margin-bottom: 18px;
             }
 
 
             .price {
+
                 margin-bottom: 20px;
             }
 
         }
 
 
+
         /* ========================================
            TABLET
         ======================================== */
 
-        @media (max-width: 1000px) {
+        @media (
+            max-width: 1000px
+        ) {
 
             body {
+
                 overflow-y: auto;
             }
 
 
             .product-page {
+
                 height: auto;
 
-                grid-template-columns: 1fr;
+                grid-template-columns:
+                    1fr;
 
                 gap: 30px;
 
-                padding: 32px 25px 60px;
+                padding:
+                    32px
+                    25px
+                    60px;
             }
 
 
             .product-image-wrapper {
+
                 height: auto;
 
                 max-height: none;
@@ -513,6 +655,7 @@
 
 
             .product-image-wrapper img {
+
                 width: 100%;
 
                 height: auto;
@@ -525,69 +668,104 @@
         }
 
 
+
         /* ========================================
            CELULAR
         ======================================== */
 
-        @media (max-width: 600px) {
+        @media (
+            max-width: 600px
+        ) {
 
             .product-page {
-                padding: 20px 16px 45px;
+
+                padding:
+                    20px
+                    16px
+                    45px;
 
                 gap: 24px;
             }
 
 
             .product-image-wrapper img {
+
                 max-height: 350px;
             }
 
 
             .product-info h1 {
+
                 font-size: 42px;
             }
 
 
             .description {
+
                 font-size: 15px;
             }
 
 
             .size {
-                width: 46px;
+
+                min-width: 46px;
 
                 height: 44px;
+
+                padding: 0 10px;
             }
 
         }
 
     </style>
+
 </head>
 
 
 <body>
 
 
+    {{-- =========================================
+         HEADER
+    ========================================= --}}
+
     @include('partials.store-header')
+
 
 
     <main class="product-page">
 
 
-        {{-- IMAGEM DO PRODUTO --}}
+        {{-- =========================================
+             IMAGEM
+        ========================================= --}}
 
         <div
-            class="product-image-wrapper {{ $product->stock <= 0 ? 'out-of-stock' : '' }}"
+            class="
+                product-image-wrapper
+                {{
+                    $product->stock <= 0
+                        ? 'out-of-stock'
+                        : ''
+                }}
+            "
         >
 
 
-            @if($product->stock <= 0)
+            @if(
+                $product->stock <= 0
+            )
+
 
                 <span class="stock-badge">
+
                     Sem estoque
+
                 </span>
 
+
             @endif
+
 
 
             <img
@@ -600,7 +778,9 @@
 
 
 
-        {{-- INFORMAÇÕES DO PRODUTO --}}
+        {{-- =========================================
+             INFORMAÇÕES
+        ========================================= --}}
 
         <div class="product-info">
 
@@ -612,11 +792,13 @@
             </span>
 
 
+
             <h1>
 
                 {{ $product->name }}
 
             </h1>
+
 
 
             <p class="description">
@@ -626,9 +808,12 @@
             </p>
 
 
+
             <div class="price">
 
-                R$ {{ number_format(
+                R$
+
+                {{ number_format(
                     $product->price,
                     2,
                     ',',
@@ -639,33 +824,63 @@
 
 
 
-            {{-- AVISO SEM ESTOQUE --}}
+            {{-- =========================================
+                 SEM ESTOQUE
+            ========================================= --}}
 
-            @if($product->stock <= 0)
+            @if(
+                $product->stock <= 0
+            )
+
 
                 <div class="stock-alert">
 
+
                     <strong>
+
                         Sem estoque
+
                     </strong>
 
+
                     <span>
-                        Este produto está temporariamente indisponível.
+
+                        Este produto está
+                        temporariamente
+                        indisponível.
+
                     </span>
 
+
                 </div>
+
 
             @endif
 
 
 
-            {{-- TAMANHOS --}}
+            {{-- =========================================
+                 TAMANHOS / VARIAÇÕES
+            ========================================= --}}
 
             @php
 
-                $sizes = match($product->category->slug) {
 
-                    'tenis' => [
+                /*
+                |--------------------------------------------------------------------------
+                | TÊNIS E SLIDE
+                |--------------------------------------------------------------------------
+                */
+
+                if (
+                    $product->category->slug
+                        === 'tenis'
+                    ||
+                    $product->slug
+                        === 'aura-recovery-slide'
+                ) {
+
+                    $sizes = [
                         '35',
                         '36',
                         '37',
@@ -673,52 +888,169 @@
                         '39',
                         '40',
                         '41',
-                        '42'
-                    ],
+                        '42',
+                    ];
 
-                    'roupas' => [
+                    $sizeTitle =
+                        'Escolha a numeração';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | RELÓGIOS
+                |--------------------------------------------------------------------------
+                */
+
+                } elseif (
+                    str_contains(
+                        $product->slug,
+                        'watch'
+                    )
+                ) {
+
+                    $sizes = [
+                        '38 mm',
+                        '40 mm',
+                        '42 mm',
+                        '44 mm',
+                    ];
+
+                    $sizeTitle =
+                        'Escolha o tamanho';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | GARRAFA
+                |--------------------------------------------------------------------------
+                */
+
+                } elseif (
+                    $product->slug
+                        === 'aura-sport-bottle'
+                ) {
+
+                    $sizes = [
+                        '500 ml',
+                        '1 L',
+                    ];
+
+                    $sizeTitle =
+                        'Escolha a capacidade';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | BONÉ
+                |--------------------------------------------------------------------------
+                */
+
+                } elseif (
+                    $product->slug
+                        === 'aura-running-cap'
+                ) {
+
+                    $sizes = [
+                        'P/M',
+                        'M/G',
+                        'G/GG',
+                    ];
+
+                    $sizeTitle =
+                        'Escolha o tamanho';
+
+
+                /*
+                |--------------------------------------------------------------------------
+                | ROUPAS E COPA
+                |--------------------------------------------------------------------------
+                */
+
+                } elseif (
+                    $product->category->slug
+                        === 'roupas'
+                    ||
+                    $product->category->slug
+                        === 'copa'
+                ) {
+
+                    $sizes = [
                         'P',
                         'M',
                         'G',
-                        'GG'
-                    ],
+                        'GG',
+                    ];
 
-                    default => [
-                        'Único'
-                    ],
+                    $sizeTitle =
+                        'Escolha o tamanho';
 
-                };
+
+                /*
+                |--------------------------------------------------------------------------
+                | OUTROS
+                |--------------------------------------------------------------------------
+                */
+
+                } else {
+
+                    $sizes = [
+                        'Único',
+                    ];
+
+                    $sizeTitle =
+                        'Escolha a opção';
+
+                }
+
 
             @endphp
 
 
 
-            {{-- PRODUTO DISPONÍVEL --}}
+            {{-- =========================================
+                 PRODUTO DISPONÍVEL
+            ========================================= --}}
 
-            @if($product->stock > 0)
+            @if(
+                $product->stock > 0
+            )
 
 
                 @auth
 
 
                     <form
-                        action="{{ route('cart.add', $product->id) }}"
+                        action="{{
+                            route(
+                                'cart.add',
+                                $product->id
+                            )
+                        }}"
                         method="POST"
                         class="cart-form"
                     >
 
+
                         @csrf
 
 
+
+                        {{-- TÍTULO DA VARIAÇÃO --}}
+
                         <div class="sizes-title">
-                            Escolha o tamanho
+
+                            {{ $sizeTitle }}
+
                         </div>
 
+
+
+                        {{-- OPÇÕES --}}
 
                         <div class="sizes">
 
 
-                            @foreach($sizes as $size)
+                           @foreach($sizes as $size)
 
 
                                 <label class="size">
@@ -745,6 +1077,28 @@
 
 
 
+                        {{-- =========================================
+                             ESTOQUE
+                        ========================================= --}}
+
+                        <div class="stock-info">
+
+                            Disponível em estoque:
+
+                            <strong>
+
+                                {{ $product->stock }}
+
+                            </strong>
+
+                        </div>
+
+
+
+                        {{-- =========================================
+                             CARRINHO
+                        ========================================= --}}
+
                         <button
                             type="submit"
                             class="cart-button"
@@ -758,15 +1112,37 @@
                     </form>
 
 
+
                 @else
 
 
+                    {{-- =========================================
+                         ESTOQUE PARA VISITANTE
+                    ========================================= --}}
+
+                    <div class="stock-info">
+
+                        Disponível em estoque:
+
+                        <strong>
+
+                            {{ $product->stock }}
+
+                        </strong>
+
+                    </div>
+
+
+
                     <a
-                        href="{{ route('login') }}"
+                        href="{{
+                            route('login')
+                        }}"
                         class="cart-button"
                     >
 
-                        Entre para adicionar ao carrinho
+                        Entre para adicionar
+                        ao carrinho
 
                     </a>
 
@@ -775,14 +1151,19 @@
 
 
 
-            {{-- PRODUTO SEM ESTOQUE --}}
+            {{-- =========================================
+                 PRODUTO SEM ESTOQUE
+            ========================================= --}}
 
             @else
 
 
                 <button
                     type="button"
-                    class="cart-button disabled"
+                    class="
+                        cart-button
+                        disabled
+                    "
                     disabled
                 >
 
@@ -795,17 +1176,26 @@
 
 
 
-            {{-- FAVORITOS --}}
+            {{-- =========================================
+                 FAVORITOS
+            ========================================= --}}
 
             @auth
 
 
                 <form
-                    action="{{ route('favorites.toggle', $product->id) }}"
+                    action="{{
+                        route(
+                            'favorites.toggle',
+                            $product->id
+                        )
+                    }}"
                     method="POST"
                 >
 
+
                     @csrf
+
 
 
                     <button
@@ -813,10 +1203,15 @@
                         class="favorite"
                     >
 
-                        {{ $isFavorite
-                            ? '♥ REMOVER DOS FAVORITOS'
-                            : '♡ ADICIONAR AOS FAVORITOS'
+
+                        {{
+                            $isFavorite
+
+                                ? '♥ REMOVER DOS FAVORITOS'
+
+                                : '♡ ADICIONAR AOS FAVORITOS'
                         }}
+
 
                     </button>
 
@@ -824,11 +1219,14 @@
                 </form>
 
 
+
             @else
 
 
                 <a
-                    href="{{ route('login') }}"
+                    href="{{
+                        route('login')
+                    }}"
                     class="favorite"
                 >
 

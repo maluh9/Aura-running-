@@ -15,15 +15,10 @@ class CategoryController extends Controller
     |--------------------------------------------------------------------------
     | CATEGORIA
     |--------------------------------------------------------------------------
-    |
-    | Exibe somente categorias ativas.
-    | Dentro da categoria, exibe somente produtos ativos.
-    |
     */
 
     public function show(Category $category): View
     {
-        // Categoria desativada não pode ser acessada pelo cliente.
         abort_unless($category->active, 404);
 
 
@@ -51,59 +46,261 @@ class CategoryController extends Controller
 
     /*
     |--------------------------------------------------------------------------
-    | MASCULINO / FEMININO
+    | PRA ELE / PRA ELA
     |--------------------------------------------------------------------------
     |
-    | Exibe somente produtos:
-    | - ativos;
-    | - do gênero solicitado ou unissex;
-    | - pertencentes a categorias ativas.
+    | Tênis:
+    | aparecem nos dois.
+    |
+    | Acessórios:
+    | aparecem nos dois.
+    |
+    | Copa:
+    | aparece nos dois.
+    |
+    | Roupas:
+    | feminino → Pra ela
+    | masculino → Pra ele
+    | unissex → nos dois
     |
     */
 
     public function gender(string $gender): View
     {
+        /*
+        |--------------------------------------------------------------------------
+        | VALIDA GÊNERO
+        |--------------------------------------------------------------------------
+        */
+
         abort_unless(
             in_array(
                 $gender,
-                ['masculino', 'feminino'],
+                [
+                    'masculino',
+                    'feminino',
+                ],
                 true
             ),
             404
         );
 
 
-        $products = Product::where('active', true)
+        /*
+        |--------------------------------------------------------------------------
+        | PRODUTOS
+        |--------------------------------------------------------------------------
+        */
 
-            ->whereIn(
-                'gender',
-                [$gender, 'unissex']
+        $products = Product::where(
+            'active',
+            true
+        )
+
+            /*
+            |--------------------------------------------------------------------------
+            | CATEGORIA ATIVA
+            |--------------------------------------------------------------------------
+            */
+
+            ->whereHas(
+                'category',
+                function ($query) {
+
+                    $query->where(
+                        'active',
+                        true
+                    );
+
+                }
             )
 
-            ->whereHas('category', function ($query) {
 
-                $query->where('active', true);
+            /*
+            |--------------------------------------------------------------------------
+            | FILTRO PRA ELE / PRA ELA
+            |--------------------------------------------------------------------------
+            */
 
-            })
+            ->where(
+                function ($query) use ($gender) {
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | NÃO É ROUPA
+                    |--------------------------------------------------------------------------
+                    |
+                    | Tênis, acessórios e Copa aparecem nos dois.
+                    |
+                    */
+
+                    $query->whereHas(
+                        'category',
+                        function ($category) {
+
+                            $category->where(
+                                'slug',
+                                '!=',
+                                'roupas'
+                            );
+
+                        }
+                    )
+
+
+                    /*
+                    |--------------------------------------------------------------------------
+                    | ROUPAS
+                    |--------------------------------------------------------------------------
+                    */
+
+                    ->orWhere(
+                        function ($clothing) use ($gender) {
+
+
+                            $clothing
+
+                                ->whereHas(
+                                    'category',
+                                    function ($category) {
+
+                                        $category->where(
+                                            'slug',
+                                            'roupas'
+                                        );
+
+                                    }
+                                )
+
+                                ->whereIn(
+                                    'gender',
+                                    [
+                                        $gender,
+                                        'unissex',
+                                    ]
+                                );
+
+                        }
+                    );
+
+                }
+            )
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | CARREGA CATEGORIA
+            |--------------------------------------------------------------------------
+            */
 
             ->with('category')
 
+
+            /*
+            |--------------------------------------------------------------------------
+            | ORDEM DOS PRODUTOS
+            |--------------------------------------------------------------------------
+            |
+            | 1 - Roupas
+            | 2 - Tênis
+            | 3 - Copa
+            | 4 - Relógios
+            | 5 - Garrafas
+            | 6 - Bonés
+            | 7 - Bolsas
+            | 8 - Slide
+            |
+            */
+
+            ->orderByRaw("
+                CASE
+
+                    /* ROUPAS */
+                    WHEN category_id = 2 THEN 1
+
+                    /* TÊNIS */
+                    WHEN category_id = 1 THEN 2
+
+                    /* COPA */
+                    WHEN category_id = 4 THEN 3
+
+                    /* RELÓGIOS */
+                    WHEN name LIKE '%Watch%' THEN 4
+
+                    /* GARRAFAS */
+                    WHEN name LIKE '%Bottle%' THEN 5
+
+                    /* BONÉS */
+                    WHEN name LIKE '%Cap%' THEN 6
+
+                    /* BOLSAS */
+                    WHEN name LIKE '%Bag%' THEN 7
+
+                    /* SLIDE / CHINELO */
+                    WHEN name LIKE '%Slide%' THEN 8
+
+                    ELSE 9
+
+                END
+            ")
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | DESTAQUES PRIMEIRO DENTRO DE CADA GRUPO
+            |--------------------------------------------------------------------------
+            */
+
             ->orderByDesc('featured')
+
+
+            /*
+            |--------------------------------------------------------------------------
+            | ORDEM ALFABÉTICA DENTRO DO GRUPO
+            |--------------------------------------------------------------------------
+            */
 
             ->orderBy('name')
 
             ->get();
 
 
-        $title = $gender === 'masculino'
-            ? 'Masculino'
-            : 'Feminino';
 
+        /*
+        |--------------------------------------------------------------------------
+        | TÍTULO
+        |--------------------------------------------------------------------------
+        */
+
+        $title = $gender === 'masculino'
+            ? 'Pra ele'
+            : 'Pra ela';
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | DESCRIÇÃO
+        |--------------------------------------------------------------------------
+        */
+
+        $description = $gender === 'masculino'
+            ? 'Tênis, acessórios e peças selecionadas para ele.'
+            : 'Tênis, acessórios e peças selecionadas para ela.';
+
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | VIEW
+        |--------------------------------------------------------------------------
+        */
 
         return $this->catalogView(
             $products,
             $title,
-            'Performance, conforto e estilo para acompanhar cada movimento.'
+            $description
         );
     }
 
@@ -120,6 +317,12 @@ class CategoryController extends Controller
         string $title,
         ?string $description
     ): View {
+
+        /*
+        |--------------------------------------------------------------------------
+        | FAVORITOS
+        |--------------------------------------------------------------------------
+        */
 
         $favoriteProductIds = Auth::check()
 
