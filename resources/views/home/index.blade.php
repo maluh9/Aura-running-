@@ -1467,10 +1467,10 @@ body.login-travado{
                 >
                     <img
                         src="{{ asset('imagens/Tênis Floresta.png') }}"
-                        alt="Tênis"
+                        alt="Calçados"
                     >
 
-                    <span>Tênis</span>
+                    <span>Calçados</span>
                 </a>
 
                 <a

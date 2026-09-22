@@ -548,7 +548,43 @@ textarea.form-control {
                     </select>
 
                 </div>
+<div class="form-group">
 
+    <label for="national_team_id">
+        Seleção — Copa do Mundo
+    </label>
+
+    <select
+        id="national_team_id"
+        name="national_team_id"
+        class="form-control"
+    >
+
+        <option value="">
+            Nenhuma seleção
+        </option>
+
+        @foreach($nationalTeams as $team)
+
+            <option
+                value="{{ $team->id }}"
+                {{
+                    old(
+                        'national_team_id',
+                        $product->national_team_id
+                    ) == $team->id
+                        ? 'selected'
+                        : ''
+                }}
+            >
+                {{ $team->name }}
+            </option>
+
+        @endforeach
+
+    </select>
+
+</div>
 
                 <div class="form-group">
 

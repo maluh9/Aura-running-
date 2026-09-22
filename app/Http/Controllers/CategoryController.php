@@ -56,7 +56,7 @@ class CategoryController extends Controller
     | aparecem nos dois.
     |
     | Copa:
-    | aparece nos dois.
+    | aparece somente no "Pra ele".
     |
     | Roupas:
     | feminino → Pra ela
@@ -118,6 +118,37 @@ class CategoryController extends Controller
 
             /*
             |--------------------------------------------------------------------------
+            | REMOVE COPA DO "PRA ELA"
+            |--------------------------------------------------------------------------
+            |
+            | Quando a página for feminino,
+            | produtos da categoria Copa não aparecem.
+            |
+            */
+
+            ->when(
+                $gender === 'feminino',
+                function ($query) {
+
+                    $query->whereHas(
+                        'category',
+                        function ($category) {
+
+                            $category->where(
+                                'slug',
+                                '!=',
+                                'copa'
+                            );
+
+                        }
+                    );
+
+                }
+            )
+
+
+            /*
+            |--------------------------------------------------------------------------
             | FILTRO PRA ELE / PRA ELA
             |--------------------------------------------------------------------------
             */
@@ -131,7 +162,10 @@ class CategoryController extends Controller
                     | NÃO É ROUPA
                     |--------------------------------------------------------------------------
                     |
-                    | Tênis, acessórios e Copa aparecem nos dois.
+                    | Tênis e acessórios aparecem nos dois.
+                    |
+                    | Copa aparece somente no "Pra ele"
+                    | por causa do filtro acima.
                     |
                     */
 
@@ -286,7 +320,7 @@ class CategoryController extends Controller
         */
 
         $description = $gender === 'masculino'
-            ? 'Tênis, acessórios e peças selecionadas para ele.'
+            ? 'Tênis, acessórios, produtos da Copa e peças selecionadas para ele.'
             : 'Tênis, acessórios e peças selecionadas para ela.';
 
 

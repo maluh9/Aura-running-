@@ -433,10 +433,23 @@ class ProductController extends Controller
             $validated['category_id'];
 
 
-        $product->national_team_id =
-            $validated['national_team_id']
-            ?? null;
+        /*
+|--------------------------------------------------------------------------
+| SELEÇÃO DA COPA
+|--------------------------------------------------------------------------
+|
+| Só altera a seleção se o formulário realmente enviar esse campo.
+| Assim, editar preço/estoque não apaga a ligação com a seleção.
+|
+*/
 
+if ($request->has('national_team_id')) {
+
+    $product->national_team_id =
+        $validated['national_team_id']
+        ?? null;
+
+}
 
         $product->name =
             $validated['name'];
